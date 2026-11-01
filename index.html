@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="it" class="h-full bg-slate-950 text-slate-100">
+<html lang="it" class="h-full">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>NATURAL SKIING — AI Biomechanics & Field Dataset</title>
+  <title>NATURAL SKIING — Coach Field Platform</title>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -14,7 +14,7 @@
   <!-- Google Fonts: Inter & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
@@ -27,25 +27,13 @@
             mono: ['JetBrains Mono', 'monospace'],
           },
           colors: {
-            snow: {
-              950: '#040711',
-              900: '#080e1a',
-              850: '#0e172a',
-              800: '#15223c',
-              700: '#1f3358',
-            },
-            pillar: {
-              taglio: '#00f2fe',
-              fulmine: '#ffb703',
-              treno: '#10b981',
-              excalibur: '#a855f7',
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#0284c7',
+              600: '#0369a1',
+              900: '#0c4a6e',
             }
-          },
-          boxShadow: {
-            'glow-taglio': '0 0 24px -4px rgba(0, 242, 254, 0.45)',
-            'glow-fulmine': '0 0 24px -4px rgba(255, 183, 3, 0.45)',
-            'glow-treno': '0 0 24px -4px rgba(16, 185, 129, 0.45)',
-            'glow-excalibur': '0 0 24px -4px rgba(168, 85, 247, 0.45)',
           }
         }
       }
@@ -53,850 +41,1000 @@
   </script>
 
   <style>
-    .pb-safe { padding-bottom: env(safe-area-inset-bottom, 16px); }
-    .pt-safe { padding-top: env(safe-area-inset-top, 16px); }
+    .pb-safe { padding-bottom: env(safe-area-inset-bottom, 18px); }
+    .pt-safe { padding-top: env(safe-area-inset-top, 14px); }
     button, input, select, textarea { touch-action: manipulation; }
-    .high-contrast-panel {
-      border: 1.5px solid rgba(255, 255, 255, 0.12);
-      background: linear-gradient(180deg, rgba(14, 23, 42, 0.98) 0%, rgba(8, 14, 26, 0.99) 100%);
-    }
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
-    ::-webkit-scrollbar-track { background: #040711; }
-    ::-webkit-scrollbar-thumb { background: #1f3358; border-radius: 6px; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+    .dark ::-webkit-scrollbar-thumb { background: #334155; }
   </style>
 </head>
 
-<body class="h-full flex flex-col font-sans select-none antialiased bg-snow-950 text-slate-100 overflow-hidden">
+<body class="h-full flex flex-col font-sans select-none antialiased bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200 overflow-hidden">
 
-  <!-- ================= TOP BAR (COACH & ACTIVE STATUS) ================= -->
-  <header class="pt-safe bg-snow-900 border-b border-slate-800/90 px-4 py-2.5 shrink-0 z-30 shadow-xl">
-    <div class="flex items-center justify-between gap-3 max-w-5xl mx-auto">
+  <!-- ================= TOP BAR ================= -->
+  <header class="pt-safe bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-2.5 shrink-0 z-30 shadow-sm">
+    <div class="flex items-center justify-between gap-2 max-w-5xl mx-auto">
       
-      <!-- Brand & Internal Tag -->
+      <!-- Brand Icon & Titles -->
       <div class="flex items-center space-x-2.5">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-amber-400 to-purple-600 p-[2px] flex items-center justify-center shadow-lg">
-          <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-            <i class="fa-solid fa-person-skiing text-cyan-400 text-lg"></i>
-          </div>
+        <!-- Minimal Ski Alpine Vector Icon -->
+        <div class="w-9 h-9 rounded-xl bg-slate-900 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 flex items-center justify-center shadow-inner">
+          <svg class="w-5 h-5 text-sky-500 dark:text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Dynamic Ski Tracks & Pole -->
+            <path d="M4 20L18 4" stroke-width="2.2" />
+            <path d="M14 2L20 8" />
+            <path d="M8 22L22 6" stroke-width="1.6" stroke-dasharray="2 2" />
+            <circle cx="16" cy="6" r="1.5" fill="currentColor" />
+          </svg>
         </div>
         <div>
           <div class="flex items-center space-x-1.5">
-            <span class="font-display font-black text-sm tracking-wide uppercase bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-sky-300 to-white">NATURAL SKIING</span>
-            <span class="bg-rose-500/20 text-rose-400 border border-rose-500/40 text-[9px] font-black px-1.5 py-0.5 rounded tracking-widest uppercase">INTERNAL AI</span>
+            <span class="font-display font-bold text-sm tracking-tight text-slate-900 dark:text-white uppercase">NATURAL SKIING</span>
+            <span id="roleBadge" class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-mono font-bold px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-700">COACH</span>
           </div>
-          <p class="text-[11px] text-slate-400 font-semibold">ENJOYSKI PRO CAMPS • Field Dataset Engine</p>
+          <p class="text-[10px] text-slate-500 dark:text-slate-400">Staff & Campo • Enjoyski</p>
         </div>
       </div>
 
-      <!-- Coach Selector & Dataset Quick Counter -->
-      <div class="flex items-center space-x-2">
-        <div class="bg-snow-800 border-2 border-slate-700/80 rounded-xl px-2.5 py-1.5 flex items-center">
-          <i class="fa-solid fa-id-badge text-amber-400 text-xs mr-2"></i>
-          <select id="activeCoachSelect" onchange="onCoachChange(this.value)" class="bg-transparent text-xs font-bold text-white focus:outline-none cursor-pointer">
-            <option value="Stefano" class="bg-slate-900">Coach Stefano</option>
-            <option value="Riccardo" class="bg-slate-900">Coach Riccardo</option>
-            <option value="Federico" class="bg-slate-900">Coach Federico</option>
-            <option value="Alessandro" class="bg-slate-900">Coach Alessandro</option>
-            <option value="Lorenzo" class="bg-slate-900">Coach Lorenzo</option>
-            <option value="Matteo" class="bg-slate-900">Coach Matteo</option>
-            <option value="Altro" class="bg-slate-900">Coach Guest / Altro</option>
+      <!-- Right Controls: Theme + Coach Selector + Settings -->
+      <div class="flex items-center space-x-1.5">
+        
+        <!-- Day / Night Toggle -->
+        <button onclick="toggleTheme()" title="Cambia Modalità Giorno/Notte" 
+          class="w-9 h-9 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+          <i id="themeIcon" class="fa-solid fa-moon text-sm"></i>
+        </button>
+
+        <!-- Active User Selector -->
+        <div class="bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2 py-1 flex items-center">
+          <select id="userSelector" onchange="onUserSelectChange(this.value)" class="bg-transparent text-xs font-bold text-slate-800 dark:text-slate-100 focus:outline-none cursor-pointer">
+            <!-- populated dynamically -->
           </select>
         </div>
 
-        <div class="bg-snow-800 border border-slate-700 rounded-xl px-2.5 py-1.5 hidden sm:flex items-center space-x-1.5">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span class="text-[11px] font-mono font-bold text-slate-300"><span id="topBarRecordCount">0</span> campioni</span>
-        </div>
+        <!-- Coach Roster Manager (Admin Only Trigger) -->
+        <button id="coachManageBtn" onclick="openCoachManagerModal()" title="Gestione Coach" 
+          class="w-9 h-9 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-sky-500 transition">
+          <i class="fa-solid fa-users-gear text-xs"></i>
+        </button>
+
       </div>
 
     </div>
   </header>
 
   <!-- ================= SUB-NOTIFICATION TOAST ================= -->
-  <div id="toastNotification" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4">
-    <div class="bg-emerald-500 text-slate-950 font-black px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow-2xl flex items-center space-x-2 border border-emerald-300">
-      <i class="fa-solid fa-check-double text-base"></i>
-      <span id="toastMessage">Osservazione salvata nel dataset AI!</span>
+  <div id="toastNotification" class="fixed top-14 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4">
+    <div class="bg-slate-900 text-white dark:bg-white dark:text-slate-950 font-semibold px-4 py-2 rounded-xl text-xs shadow-xl flex items-center space-x-2 border border-slate-700 dark:border-slate-300">
+      <i class="fa-solid fa-check text-sky-400 dark:text-sky-600"></i>
+      <span id="toastMessage">Operazione completata</span>
     </div>
   </div>
 
-  <!-- ================= MAIN VIEWPORT (SCROLLABLE) ================= -->
-  <main class="flex-1 overflow-y-auto px-3 sm:px-5 py-4 max-w-5xl w-full mx-auto pb-28">
+  <!-- ================= MAIN SCROLLABLE VIEWPORT ================= -->
+  <main class="flex-1 overflow-y-auto px-3.5 sm:px-6 py-4 max-w-4xl w-full mx-auto pb-24">
 
-    <!-- ================= TAB 1: MOTORE DI OSSERVAZIONE BIOMECCANICA ================= -->
-    <section id="tab-observe" class="space-y-4 block">
+    <!-- ================= TAB 1: AGGIUNGI ANALISI ================= -->
+    <section id="tab-add" class="space-y-4 block">
       
-      <!-- Alpine Header Card -->
-      <div class="bg-gradient-to-r from-snow-850 via-snow-900 to-snow-800 p-4 rounded-2xl border border-slate-700/80 shadow-lg">
-        <div class="flex items-center justify-between mb-1">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
-            <h2 class="font-display font-black text-sm uppercase tracking-wider text-cyan-300">Rilevamento in Pista / Seggiovia</h2>
-          </div>
-          <span class="text-[11px] font-mono text-slate-400 font-semibold" id="liveTimestampLabel">Oggi</span>
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2.5">
+        <div>
+          <h1 class="font-display font-extrabold text-base sm:text-lg text-slate-900 dark:text-white">Aggiungi Analisi</h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Registrazione rapida sul campo (seggiovia o bordo pista)</p>
         </div>
-        <p class="text-xs text-slate-300">Archivia in 20 secondi la casistica reale. Alimenta il modello per l'analisi video automatica.</p>
+        <span class="text-[11px] font-mono text-slate-400" id="currentDateLabel">Oggi</span>
       </div>
 
-      <!-- MAIN OBSERVATION FORM -->
-      <form id="observationForm" onsubmit="handleObservationSubmit(event)" class="bg-snow-850 border-2 border-slate-700 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-4">
+      <form id="analysisForm" onsubmit="handleAnalysisSubmit(event)" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm space-y-4">
         
-        <!-- STEP 1: PILASTRO BIOMECCANICO (4 BIG BUTTONS) -->
-        <div>
-          <label class="block text-[11px] font-black uppercase tracking-wider text-slate-300 mb-2 flex items-center justify-between">
-            <span>1. Pilastro Fondamentale (Natural Skiing)</span>
-            <span class="text-slate-400 font-normal">Obbligatorio</span>
+        <!-- ================= PARTE 1: LE 4 FRASI BIOMECCANICHE ================= -->
+        <div class="space-y-3.5">
+          
+          <!-- 1. Cosa vedo -->
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center text-[10px]">1</span>
+                Cosa vedo (Effetto / Sintomo visivo)
+              </label>
+              <span id="seenCountBadge" class="hidden text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-1.5 py-0.5 rounded font-mono font-medium"></span>
+            </div>
+            <input type="text" id="fieldEffect" list="effectsDatalist" required
+              oninput="checkExistingSymptom(this.value)"
+              placeholder="Es. Sci esterno che scivola via a centro curva..." 
+              class="w-full h-11 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 focus:border-sky-500 rounded-xl px-3 text-xs sm:text-sm font-medium text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none transition">
+            <datalist id="effectsDatalist"></datalist>
+          </div>
+
+          <!-- 2. Perché? -->
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
+              <span class="w-4 h-4 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center text-[10px]">2</span>
+              Perché? (Causa Biomeccanica Reale)
+            </label>
+            <textarea id="fieldCause" list="causesDatalist" rows="2" required 
+              placeholder="Es. Spinta muscolare attiva con la gamba esterna anziché appoggio naturale; rompe la deformazione progressiva dello sci." 
+              class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 focus:border-sky-500 rounded-xl p-3 text-xs sm:text-sm font-normal text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none transition"></textarea>
+            <datalist id="causesDatalist"></datalist>
+          </div>
+
+          <!-- 3. Focus mentale immediato in pista (ex Cue) -->
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-[11px] font-bold uppercase tracking-wider text-sky-700 dark:text-sky-400 flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full bg-sky-100 dark:bg-sky-950 text-sky-700 dark:text-sky-300 flex items-center justify-center text-[10px]">3</span>
+                Focus mentale immediato in pista (Frase-guida al volo)
+              </label>
+              <span class="text-[10px] font-mono text-slate-400" id="wordCountLabel">Max 5 parole</span>
+            </div>
+            <input type="text" id="fieldCue" required oninput="limitWords(this)"
+              placeholder='Es. "Non spingere: appoggiati"' 
+              class="w-full h-11 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 focus:border-sky-500 rounded-xl px-3 text-xs sm:text-sm font-semibold text-sky-900 dark:text-sky-200 placeholder-slate-400 focus:outline-none transition">
+          </div>
+
+          <!-- 4. Esercizio in pista -->
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
+              <span class="w-4 h-4 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center text-[10px]">4</span>
+              Esercizio in pista (Compito pratico con gli sci)
+            </label>
+            <input type="text" id="fieldDrill" required 
+              placeholder="Es. Curva a spazzaneve aperto su pendenza media sentendo solo il peso naturale sullo sci esterno." 
+              class="w-full h-11 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 focus:border-sky-500 rounded-xl px-3 text-xs sm:text-sm font-normal text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none transition">
+          </div>
+
+        </div>
+
+        <!-- ================= PARTE 2: PILASTRO FONDAMENTALE ================= -->
+        <div class="pt-2 border-t border-slate-200 dark:border-slate-800">
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+            Pilastro Fondamentale (Natural Skiing)
           </label>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
             
-            <button type="button" onclick="selectPillar('TAGLIO')" id="pillBtn-TAGLIO" 
-              class="pillar-selector h-15 py-3 px-2 rounded-2xl border-2 font-display font-black text-xs sm:text-sm flex flex-col items-center justify-center transition-all bg-snow-900 border-slate-700 text-slate-300 active:scale-95">
-              <span class="text-cyan-400 text-base mb-0.5"><i class="fa-solid fa-shapes"></i></span>
-              <span class="tracking-wide">TAGLIO</span>
-              <span class="text-[9px] font-sans font-normal opacity-70">Spigolo / Vincolo</span>
+            <button type="button" onclick="setFormPillar('TAGLIO')" id="fPill-TAGLIO" 
+              class="pillar-btn h-13 py-2 px-2 rounded-xl border font-display font-bold text-xs flex flex-col items-center justify-center transition bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-800 text-slate-700 dark:text-slate-300">
+              <span>TAGLIO</span>
+              <span class="text-[9px] font-normal text-slate-500">Spigolo / Presa</span>
             </button>
 
-            <button type="button" onclick="selectPillar('FULMINE')" id="pillBtn-FULMINE" 
-              class="pillar-selector h-15 py-3 px-2 rounded-2xl border-2 font-display font-black text-xs sm:text-sm flex flex-col items-center justify-center transition-all bg-snow-900 border-slate-700 text-slate-300 active:scale-95">
-              <span class="text-amber-400 text-base mb-0.5"><i class="fa-solid fa-bolt"></i></span>
-              <span class="tracking-wide">FULMINE</span>
-              <span class="text-[9px] font-sans font-normal opacity-70">Sagittale / Angoli</span>
+            <button type="button" onclick="setFormPillar('FULMINE')" id="fPill-FULMINE" 
+              class="pillar-btn h-13 py-2 px-2 rounded-xl border font-display font-bold text-xs flex flex-col items-center justify-center transition bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-800 text-slate-700 dark:text-slate-300">
+              <span>FULMINE</span>
+              <span class="text-[9px] font-normal text-slate-500">Sagittale / Angoli</span>
             </button>
 
-            <button type="button" onclick="selectPillar('TRENO')" id="pillBtn-TRENO" 
-              class="pillar-selector h-15 py-3 px-2 rounded-2xl border-2 font-display font-black text-xs sm:text-sm flex flex-col items-center justify-center transition-all bg-snow-900 border-slate-700 text-slate-300 active:scale-95">
-              <span class="text-emerald-400 text-base mb-0.5"><i class="fa-solid fa-arrows-split-up-and-left"></i></span>
-              <span class="tracking-wide">TRENO</span>
-              <span class="text-[9px] font-sans font-normal opacity-70">Traiettoria / Binari</span>
+            <button type="button" onclick="setFormPillar('TRENO')" id="fPill-TRENO" 
+              class="pillar-btn h-13 py-2 px-2 rounded-xl border font-display font-bold text-xs flex flex-col items-center justify-center transition bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-800 text-slate-700 dark:text-slate-300">
+              <span>TRENO</span>
+              <span class="text-[9px] font-normal text-slate-500">Traiettoria / Binari</span>
             </button>
 
-            <button type="button" onclick="selectPillar('EXCALIBUR')" id="pillBtn-EXCALIBUR" 
-              class="pillar-selector h-15 py-3 px-2 rounded-2xl border-2 font-display font-black text-xs sm:text-sm flex flex-col items-center justify-center transition-all bg-snow-900 border-slate-700 text-slate-300 active:scale-95">
-              <span class="text-purple-400 text-base mb-0.5"><i class="fa-solid fa-shield-halved"></i></span>
-              <span class="tracking-wide">EXCALIBUR</span>
-              <span class="text-[9px] font-sans font-normal opacity-70">Busto / Stabilità</span>
+            <button type="button" onclick="setFormPillar('EXCALIBUR')" id="fPill-EXCALIBUR" 
+              class="pillar-btn h-13 py-2 px-2 rounded-xl border font-display font-bold text-xs flex flex-col items-center justify-center transition bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-800 text-slate-700 dark:text-slate-300">
+              <span>EXCALIBUR</span>
+              <span class="text-[9px] font-normal text-slate-500">Busto / Stabilità</span>
             </button>
 
           </div>
-          <input type="hidden" id="selectedPillarInput" required value="TAGLIO">
+          <input type="hidden" id="formSelectedPillar" value="TAGLIO">
         </div>
 
-        <!-- CONDITONS ROW (SNOW & SLOPE) -->
-        <div class="grid grid-cols-2 gap-2.5 pt-1">
+        <!-- ================= PARTE 3: DETTAGLI CONTESTO IN FONDO ================= -->
+        <div class="pt-2 border-t border-slate-200 dark:border-slate-800 grid grid-cols-2 gap-2.5">
           <div>
-            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Fondo Neve</label>
-            <select id="obsSnowType" class="w-full h-11 bg-snow-900 border border-slate-700 rounded-xl px-3 text-xs font-bold text-white focus:outline-none focus:border-cyan-400">
-              <option value="Neve Compatta da Pista">❄️ Neve Compatta da Pista</option>
-              <option value="Neve Dura / Barrata / Ghiaccio">🧊 Dura / Barrata / Ghiaccio</option>
-              <option value="Neve Trasformata / Pappa">☀️ Pappa / Primaverile</option>
-              <option value="Neve Fresca / Riportata">🌨️ Fresca / Riportata</option>
-              <option value="Pendenza Elevata / Ripido">⚠️ Ripido / Muro</option>
+            <label class="block text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Condizione Neve</label>
+            <select id="fieldSnow" class="w-full h-10 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-sky-500">
+              <option value="Compatta da pista">Compatta da pista</option>
+              <option value="Dura / Barrata / Ghiaccio">Dura / Barrata / Ghiaccio</option>
+              <option value="Pappa / Primaverile">Pappa / Primaverile</option>
+              <option value="Fresca / Riportata">Fresca / Riportata</option>
+              <option value="Pendenza elevata / Muro">Pendenza elevata / Muro</option>
             </select>
           </div>
           <div>
-            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Raggio di Curva</label>
-            <select id="obsTurnRadius" class="w-full h-11 bg-snow-900 border border-slate-700 rounded-xl px-3 text-xs font-bold text-white focus:outline-none focus:border-cyan-400">
-              <option value="Arco Medio (Conduzione)">Arco Medio (Conduzione)</option>
-              <option value="Arco Ampio (Gigante)">Arco Ampio (Velocità)</option>
-              <option value="Arco Corto (Cortoraggio)">Arco Corto (Rapidità)</option>
+            <label class="block text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Raggio di Curva</label>
+            <select id="fieldRadius" class="w-full h-10 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-sky-500">
+              <option value="Arco Medio">Arco Medio (Conduzione)</option>
+              <option value="Cortoraggio">Cortoraggio</option>
+              <option value="Arco Ampio / Gigante">Arco Ampio / Gigante</option>
               <option value="Esercizio a Bassa Velocità">Drill a Bassa Velocità</option>
             </select>
           </div>
         </div>
 
-        <!-- STEP 2: COSA VEDO (EFFETTO VISIVO) CON AUTOCOMPLETAMENTO E STATS -->
-        <div class="space-y-1">
-          <div class="flex items-center justify-between">
-            <label class="block text-[11px] font-black uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
-              <i class="fa-solid fa-eye"></i> 2. COSA VEDO (Effetto Visivo / Sintomo Esterno)
-            </label>
-            <span id="effectFreqBadge" class="hidden text-[10px] bg-rose-500/20 text-rose-300 border border-rose-500/40 px-2 py-0.5 rounded font-mono font-bold">
-              Osservato già 0 volte
-            </span>
-          </div>
-          
-          <input type="text" id="obsEffect" list="knownEffectsList" required 
-            oninput="checkExistingEffect(this.value)"
-            placeholder="Es. Sci esterno che scivola via / Busto che anticipa la curva..." 
-            class="w-full h-13 bg-snow-900 border-2 border-slate-700 focus:border-rose-400 rounded-2xl px-4 text-sm font-bold text-white placeholder-slate-500 focus:outline-none transition">
-          <datalist id="knownEffectsList"></datalist>
-          <p class="text-[10px] text-slate-400">Digita o seleziona: il motore raggruppa le diciture uguali per calcolare la frequenza esatta per l'AI.</p>
-        </div>
-
-        <!-- STEP 3: PERCHÉ? (CAUSA BIOMECCANICA 20/80) -->
-        <div class="space-y-1">
-          <div class="flex items-center justify-between">
-            <label class="block text-[11px] font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-              <i class="fa-solid fa-dna"></i> 3. PERCHÉ? (Causa Biomeccanica Reale • Fattore 20/80)
-            </label>
-            <span id="causeCorrelationHint" class="hidden text-[10px] bg-amber-400/20 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded font-mono font-bold"></span>
-          </div>
-          
-          <textarea id="obsCause" list="knownCausesList" rows="2" required 
-            placeholder="Es. Spinta attiva muscolare con la gamba esterna anziché appoggio rilassato; blocca la caviglia ed impedisce la deformazione dello sci." 
-            class="w-full bg-snow-900 border-2 border-slate-700 focus:border-amber-400 rounded-2xl p-3 text-xs sm:text-sm font-medium text-white placeholder-slate-500 focus:outline-none transition"></textarea>
-          <datalist id="knownCausesList"></datalist>
-        </div>
-
-        <!-- STEP 4: SUGGERIMENTO CUE (MAX 4-5 PAROLE) -->
-        <div class="space-y-1">
-          <div class="flex items-center justify-between">
-            <label class="block text-[11px] font-black uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
-              <i class="fa-solid fa-bullhorn"></i> 4. SUGGERIMENTO (Cue sul campo • Max 4-5 parole)
-            </label>
-            <span class="text-[10px] text-slate-400 font-mono" id="cueWordCount">0/5 parole</span>
-          </div>
-          <input type="text" id="obsCue" required 
-            oninput="validateCueLength(this)"
-            placeholder='Es. "Non spingere: appoggiati"' 
-            class="w-full h-12 bg-snow-900 border-2 border-slate-700 focus:border-cyan-400 rounded-2xl px-4 text-sm font-black text-cyan-300 placeholder-slate-500 focus:outline-none transition">
-        </div>
-
-        <!-- STEP 5: PROPOSTA IN PISTA (DRILL CON GLI SCI) -->
-        <div class="space-y-1">
-          <label class="block text-[11px] font-black uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-            <i class="fa-solid fa-person-skiing"></i> 5. PROPOSTA (Compito / Esercizio Pratico in Pista)
-          </label>
-          <input type="text" id="obsDrill" required 
-            placeholder="Es. Curva a raggio naturale sollevando leggermente la coda dello sci interno a centro curva." 
-            class="w-full h-12 bg-snow-900 border-2 border-slate-700 focus:border-emerald-400 rounded-2xl px-4 text-xs sm:text-sm font-bold text-white placeholder-slate-500 focus:outline-none transition">
-        </div>
-
-        <!-- SUBMIT BUTTON (LARGE GLOVE-FRIENDLY TOUCH) -->
-        <div class="pt-2">
-          <button type="submit" id="saveObservationBtn" 
-            class="w-full h-14 bg-gradient-to-r from-cyan-400 via-sky-500 to-emerald-400 active:scale-[0.99] text-slate-950 font-black text-sm uppercase tracking-wider rounded-2xl shadow-glow-taglio flex items-center justify-center gap-2 transition-all">
-            <i class="fa-solid fa-database text-base"></i> Archivia nel Dataset AI
-          </button>
-        </div>
+        <!-- Submit Button -->
+        <button type="submit" class="w-full h-12 bg-slate-900 hover:bg-slate-800 text-white dark:bg-sky-500 dark:hover:bg-sky-400 dark:text-slate-950 font-bold text-xs uppercase tracking-wider rounded-xl transition flex items-center justify-center gap-2 shadow">
+          <i class="fa-solid fa-cloud-arrow-up text-sm"></i> Salva in Archivio
+        </button>
 
       </form>
     </section>
 
-    <!-- ================= TAB 2: LISTINO OSSERVAZIONI & RICERCA ================= -->
-    <section id="tab-catalog" class="space-y-4 hidden">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+    <!-- ================= TAB 2: ARCHIVIO (EX LISTINO) ================= -->
+    <section id="tab-archive" class="space-y-4 hidden">
+      
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2.5">
         <div>
-          <h2 class="font-display font-black text-lg text-white">Listino Correzioni & Frequenze</h2>
-          <p class="text-xs text-slate-400">Tutte le casistiche reali registrate dai coach sul campo.</p>
+          <h1 class="font-display font-extrabold text-base sm:text-lg text-slate-900 dark:text-white">Archivio Analisi</h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Casistiche registrate in pista dallo staff</p>
         </div>
-        <div class="flex items-center gap-2">
-          <button onclick="switchTab('tab-observe')" class="bg-cyan-500 text-slate-950 font-black text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-md">
-            <i class="fa-solid fa-plus"></i> Nuova
-          </button>
-        </div>
+        <button onclick="switchTab('tab-add')" class="bg-slate-900 dark:bg-sky-500 text-white dark:text-slate-950 text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+          <i class="fa-solid fa-plus"></i> Nuova
+        </button>
       </div>
 
-      <!-- Search & Filters -->
-      <div class="bg-snow-850 p-3 rounded-2xl border border-slate-800 space-y-2.5">
+      <!-- Filters & Search -->
+      <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2.5 shadow-sm">
         <div class="relative">
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-          <input type="text" id="catalogSearchInput" oninput="renderCatalog()" placeholder="Cerca sintomo, causa, cue o autore..." 
-            class="w-full h-11 bg-snow-900 border border-slate-700 rounded-xl pl-10 pr-4 text-xs font-bold text-white focus:outline-none focus:border-cyan-400">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="text" id="archiveSearch" oninput="renderArchive()" placeholder="Cerca sintomo, causa, focus o coach..." 
+            class="w-full h-10 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl pl-9 pr-3 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-sky-500">
         </div>
 
-        <!-- Pillar Filter Buttons -->
-        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar text-xs">
-          <button onclick="setCatalogFilter('ALL')" class="cat-filter-btn active-cat-filter px-3 py-1.5 rounded-lg font-bold border transition shrink-0 bg-slate-700 text-white border-slate-600" data-pillar="ALL">Tutti</button>
-          <button onclick="setCatalogFilter('TAGLIO')" class="cat-filter-btn px-3 py-1.5 rounded-lg font-bold border transition shrink-0 bg-snow-900 text-slate-300 border-slate-700" data-pillar="TAGLIO">Taglio</button>
-          <button onclick="setCatalogFilter('FULMINE')" class="cat-filter-btn px-3 py-1.5 rounded-lg font-bold border transition shrink-0 bg-snow-900 text-slate-300 border-slate-700" data-pillar="FULMINE">Fulmine</button>
-          <button onclick="setCatalogFilter('TRENO')" class="cat-filter-btn px-3 py-1.5 rounded-lg font-bold border transition shrink-0 bg-snow-900 text-slate-300 border-slate-700" data-pillar="TRENO">Treno</button>
-          <button onclick="setCatalogFilter('EXCALIBUR')" class="cat-filter-btn px-3 py-1.5 rounded-lg font-bold border transition shrink-0 bg-snow-900 text-slate-300 border-slate-700" data-pillar="EXCALIBUR">Excalibur</button>
+        <!-- Pillar Filters -->
+        <div class="flex items-center gap-1.5 overflow-x-auto text-xs pb-0.5">
+          <button onclick="setArchivePillarFilter('ALL')" class="arch-pill-btn active-arch-filter px-3 py-1 rounded-lg font-bold border shrink-0 bg-slate-800 text-white border-slate-800 dark:bg-slate-700 dark:border-slate-600" data-pillar="ALL">Tutti</button>
+          <button onclick="setArchivePillarFilter('TAGLIO')" class="arch-pill-btn px-3 py-1 rounded-lg font-medium border shrink-0 bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800" data-pillar="TAGLIO">Taglio</button>
+          <button onclick="setArchivePillarFilter('FULMINE')" class="arch-pill-btn px-3 py-1 rounded-lg font-medium border shrink-0 bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800" data-pillar="FULMINE">Fulmine</button>
+          <button onclick="setArchivePillarFilter('TRENO')" class="arch-pill-btn px-3 py-1 rounded-lg font-medium border shrink-0 bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800" data-pillar="TRENO">Treno</button>
+          <button onclick="setArchivePillarFilter('EXCALIBUR')" class="arch-pill-btn px-3 py-1 rounded-lg font-medium border shrink-0 bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800" data-pillar="EXCALIBUR">Excalibur</button>
         </div>
       </div>
 
       <!-- Feed Container -->
-      <div id="catalogContainer" class="space-y-3">
+      <div id="archiveFeed" class="space-y-3">
         <!-- Rendered dynamically -->
       </div>
+
     </section>
 
-    <!-- ================= TAB 3: DASHBOARD STATISTICHE & DATASET EXPORT ================= -->
-    <section id="tab-analytics" class="space-y-4 hidden">
-      <div class="flex items-center justify-between">
+    <!-- ================= TAB 3: IDEE IN PISTA (NUOVA SEZIONE) ================= -->
+    <section id="tab-ideas" class="space-y-4 hidden">
+      
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2.5">
         <div>
-          <h2 class="font-display font-black text-lg text-white flex items-center gap-2">
-            <i class="fa-solid fa-brain text-purple-400"></i> AI Correlation & Dataset Metrics
-          </h2>
-          <p class="text-xs text-slate-400">Frequenze statistiche e matrice probabilistica $P(\text{Causa} \mid \text{Effetto})$</p>
+          <h1 class="font-display font-extrabold text-base sm:text-lg text-slate-900 dark:text-white">Idee in Pista</h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Biblioteca di spunti pratici e sensazioni da testare sul campo</p>
+        </div>
+        <button onclick="openNewIdeaModal()" class="bg-slate-900 dark:bg-sky-500 text-white dark:text-slate-950 text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+          <i class="fa-solid fa-lightbulb"></i> Nuova Idea
+        </button>
+      </div>
+
+      <!-- Focus Filter -->
+      <div class="flex items-center gap-1.5 overflow-x-auto text-xs pb-1" id="ideasPillarFilter">
+        <button onclick="filterIdeas('ALL')" class="idea-filter-btn px-3 py-1 rounded-lg font-bold border shrink-0 bg-slate-800 text-white border-slate-800 dark:bg-slate-700 dark:border-slate-600" data-focus="ALL">Tutti i Pilastri</button>
+        <button onclick="filterIdeas('TAGLIO')" class="idea-filter-btn px-3 py-1 rounded-lg font-medium border shrink-0 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800" data-focus="TAGLIO">Taglio</button>
+        <button onclick="filterIdeas('FULMINE')" class="idea-filter-btn px-3 py-1 rounded-lg font-medium border shrink-0 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800" data-focus="FULMINE">Fulmine</button>
+        <button onclick="filterIdeas('TRENO')" class="idea-filter-btn px-3 py-1 rounded-lg font-medium border shrink-0 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800" data-focus="TRENO">Treno</button>
+        <button onclick="filterIdeas('EXCALIBUR')" class="idea-filter-btn px-3 py-1 rounded-lg font-medium border shrink-0 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800" data-focus="EXCALIBUR">Excalibur</button>
+      </div>
+
+      <!-- Ideas Cards List -->
+      <div id="ideasContainer" class="space-y-3">
+        <!-- Rendered dynamically -->
+      </div>
+
+    </section>
+
+    <!-- ================= TAB 4: DIARIO DEL CAMP ================= -->
+    <section id="tab-debrief" class="space-y-4 hidden">
+      
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2.5">
+        <div>
+          <h1 class="font-display font-extrabold text-base sm:text-lg text-slate-900 dark:text-white">Diario del Camp</h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Debriefing serale, condizioni e topic affrontati</p>
         </div>
       </div>
 
-      <!-- KPI Summary Cards -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-        <div class="bg-snow-850 border border-slate-800 p-3 rounded-2xl">
-          <span class="text-[10px] font-bold uppercase text-slate-400 block">Totale Record</span>
-          <span id="statTotalObservations" class="font-display font-black text-2xl text-cyan-400">0</span>
-          <span class="text-[10px] text-slate-500 block">Casi archiviati</span>
-        </div>
-        <div class="bg-snow-850 border border-slate-800 p-3 rounded-2xl">
-          <span class="text-[10px] font-bold uppercase text-slate-400 block">Effetti Unici</span>
-          <span id="statUniqueEffects" class="font-display font-black text-2xl text-rose-400">0</span>
-          <span class="text-[10px] text-slate-500 block">Sintomi visivi</span>
-        </div>
-        <div class="bg-snow-850 border border-slate-800 p-3 rounded-2xl">
-          <span class="text-[10px] font-bold uppercase text-slate-400 block">Cause 20/80</span>
-          <span id="statUniqueCauses" class="font-display font-black text-2xl text-amber-400">0</span>
-          <span class="text-[10px] text-slate-500 block">Radici biomeccaniche</span>
-        </div>
-        <div class="bg-snow-850 border border-slate-800 p-3 rounded-2xl">
-          <span class="text-[10px] font-bold uppercase text-slate-400 block">Coach Coinvolti</span>
-          <span id="statActiveCoaches" class="font-display font-black text-2xl text-emerald-400">0</span>
-          <span class="text-[10px] text-slate-500 block">Autori dataset</span>
-        </div>
-      </div>
-
-      <!-- EXPORT ACTIONS FOR AI TRAINING (JSON & CSV) -->
-      <div class="bg-gradient-to-r from-purple-950/60 to-snow-850 border-2 border-purple-500/40 p-4 rounded-3xl space-y-3">
-        <div class="flex items-center justify-between">
-          <div>
-            <h3 class="font-display font-black text-sm text-purple-300 uppercase tracking-wide flex items-center gap-1.5">
-              <i class="fa-solid fa-file-export"></i> Esportazione Dataset per Machine Learning
-            </h3>
-            <p class="text-[11px] text-slate-300">File formattati per pipeline di training (input: Effetto/Condizioni -> output: Causa/Cue/Drill).</p>
-          </div>
-          <span class="text-xs font-mono font-bold text-purple-400">ML Ready</span>
+      <!-- Add Debrief Form -->
+      <form id="debriefForm" onsubmit="handleDebriefSubmit(event)" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm space-y-3">
+        
+        <div class="flex items-center justify-between text-xs text-slate-500 pb-2 border-b border-slate-100 dark:border-slate-800">
+          <span class="font-bold text-slate-700 dark:text-slate-300">Nuova Voce Debriefing</span>
+          <span>Autore: <strong id="debriefAuthorDisplay" class="text-slate-900 dark:text-white">Stefano</strong></span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          <button onclick="exportDatasetJSON()" class="h-12 bg-purple-600 hover:bg-purple-500 text-white font-black text-xs rounded-xl flex items-center justify-center gap-2 shadow-lg transition">
-            <i class="fa-solid fa-code text-sm"></i> Scarica JSON (Strutturato AI)
-          </button>
-          <button onclick="exportDatasetCSV()" class="h-12 bg-snow-800 hover:bg-snow-700 border border-purple-400/50 text-purple-200 font-black text-xs rounded-xl flex items-center justify-center gap-2 transition">
-            <i class="fa-solid fa-file-csv text-sm"></i> Scarica CSV (Tabellare ML)
-          </button>
+          <div>
+            <label class="block text-[10px] font-semibold uppercase text-slate-500 mb-1">Località & Pista</label>
+            <input type="text" id="debLocation" required placeholder="Es. Cervinia - Ventina"
+              class="w-full h-10 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-sky-500">
+          </div>
+          <div>
+            <label class="block text-[10px] font-semibold uppercase text-slate-500 mb-1">Meteo & Condizioni Neve</label>
+            <input type="text" id="debConditions" required placeholder="Es. -3°C, Sole, Barrata al mattino"
+              class="w-full h-10 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-sky-500">
+          </div>
         </div>
-      </div>
 
-      <!-- TOP CORRELATIONS MATRIX -->
-      <div class="bg-snow-850 border border-slate-800 rounded-3xl p-4 space-y-3">
-        <div class="flex items-center justify-between">
-          <h3 class="font-display font-black text-xs uppercase tracking-wider text-white flex items-center gap-1.5">
-            <i class="fa-solid fa-chart-pie text-cyan-400"></i> Correlazioni $P(\text{Causa} \mid \text{Effetto})$ Rilevate
-          </h3>
-          <span class="text-[10px] text-slate-400 font-mono">Top Matches</span>
+        <!-- Dynamic Topic Selection with "Nuovo Topic" option -->
+        <div>
+          <label class="block text-[10px] font-semibold uppercase text-slate-500 mb-1">Topic del Giorno</label>
+          <div class="flex gap-2">
+            <select id="debTopicSelect" onchange="onTopicSelectChange(this.value)" class="flex-1 h-10 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-sky-500">
+              <!-- populated dynamically -->
+            </select>
+          </div>
+          <div id="newTopicInputWrap" class="mt-2 hidden">
+            <input type="text" id="debNewTopicInput" placeholder="Digita il nome del nuovo topic da salvare..."
+              class="w-full h-10 bg-slate-50 dark:bg-slate-950 border border-sky-400 rounded-xl px-3 text-xs text-slate-900 dark:text-white focus:outline-none">
+          </div>
         </div>
-        <div id="correlationsContainer" class="space-y-2.5">
-          <!-- Rendered dynamically -->
-        </div>
-      </div>
 
-      <!-- TOP 5 CAUSES PER PILLAR -->
-      <div class="bg-snow-850 border border-slate-800 rounded-3xl p-4 space-y-3">
-        <h3 class="font-display font-black text-xs uppercase tracking-wider text-white flex items-center gap-1.5">
-          <i class="fa-solid fa-ranking-star text-amber-400"></i> Cause Più Frequenti per Pilastro
-        </h3>
-        <div id="pillarStatsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <!-- Rendered dynamically -->
+        <div>
+          <label class="block text-[10px] font-semibold uppercase text-slate-500 mb-1">Riflessioni e Conclusioni dello Staff</label>
+          <textarea id="debNotes" rows="3" required placeholder="Cosa abbiamo riscontrato oggi durante la video-analisi? Quale sensazione ha funzionato meglio?"
+            class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-sky-500"></textarea>
         </div>
-      </div>
 
-      <!-- DATA MANAGEMENT BUTTONS -->
-      <div class="pt-2 flex items-center justify-between border-t border-slate-800/80">
-        <button onclick="loadSampleDataConfirm()" class="text-xs font-bold text-cyan-400 hover:text-cyan-300">
-          <i class="fa-solid fa-rotate-left"></i> Ricarica Dataset Iniziale di Esempio
+        <button type="submit" class="w-full h-11 bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-sky-300 border border-slate-700 text-xs font-bold uppercase rounded-xl transition">
+          Salva nel Diario
         </button>
-        <button onclick="clearAllDataConfirm()" class="text-xs font-bold text-rose-400 hover:text-rose-300">
-          <i class="fa-solid fa-trash-can"></i> Azzera Dataset Locale
-        </button>
+      </form>
+
+      <!-- Debriefs History -->
+      <div id="debriefFeed" class="space-y-3">
+        <!-- Rendered dynamically -->
       </div>
 
     </section>
 
-    <!-- ================= TAB 4: DIARIO TECNICO & TOPIC DEL CAMP ================= -->
-    <section id="tab-debrief" class="space-y-4 hidden">
-      <div class="flex items-center justify-between">
+    <!-- ================= TAB 5: AI DATASET (ADMIN ONLY) ================= -->
+    <section id="tab-admin-ai" class="space-y-4 hidden">
+      
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2.5">
         <div>
-          <h2 class="font-display font-black text-lg text-white flex items-center gap-2">
-            <i class="fa-solid fa-book-open text-amber-400"></i> Diario Tecnico & Debriefing Camp
-          </h2>
-          <p class="text-xs text-slate-400">Note di fine giornata, condizioni del pendio e topic discussi dallo staff.</p>
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+            <h1 class="font-display font-extrabold text-base sm:text-lg text-slate-900 dark:text-white">Area Riservata Admin: AI Dataset</h1>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Analisi statistiche frequenze e download dataset per training modello</p>
+        </div>
+        <span class="text-[10px] font-mono bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/30 px-2 py-0.5 rounded font-bold">ACCESSO ADMIN</span>
+      </div>
+
+      <!-- Quick Stats KPI -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl shadow-sm">
+          <span class="text-[10px] font-bold uppercase text-slate-400 block">Campioni Totali</span>
+          <span id="aiStatTotal" class="font-display font-black text-xl text-slate-900 dark:text-white">0</span>
+        </div>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl shadow-sm">
+          <span class="text-[10px] font-bold uppercase text-slate-400 block">Sintomi Mappati</span>
+          <span id="aiStatSymptoms" class="font-display font-black text-xl text-sky-600 dark:text-sky-400">0</span>
+        </div>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl shadow-sm">
+          <span class="text-[10px] font-bold uppercase text-slate-400 block">Cause Distinte</span>
+          <span id="aiStatCauses" class="font-display font-black text-xl text-amber-600 dark:text-amber-400">0</span>
+        </div>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl shadow-sm">
+          <span class="text-[10px] font-bold uppercase text-slate-400 block">Coach Attivi</span>
+          <span id="aiStatCoaches" class="font-display font-black text-xl text-emerald-600 dark:text-emerald-400">0</span>
         </div>
       </div>
 
-      <!-- Add New Debrief Note Form -->
-      <form id="debriefForm" onsubmit="handleDebriefSubmit(event)" class="bg-snow-850 border-2 border-slate-700 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-          <span class="text-xs font-black text-amber-400 uppercase tracking-wider flex items-center gap-1">
-            <i class="fa-solid fa-pen-fancy"></i> Registrazione Debrief Giornaliero
-          </span>
-          <span class="text-xs text-slate-400 font-medium">Autore: <strong id="debriefAuthorLabel" class="text-white">Coach Stefano</strong></span>
+      <!-- Export Panel -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl space-y-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">Esporta Dataset di Addestramento</h3>
+        <p class="text-xs text-slate-500">I file contengono tutte le tuple (Effetto, Causa, Focus, Drill, Condizioni, Pilastro) formattate per reti neurali.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <button onclick="exportAIJson()" class="h-10 bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition">
+            <i class="fa-solid fa-code"></i> Scarica JSON Strutturato
+          </button>
+          <button onclick="exportAICsv()" class="h-10 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300 hover:bg-slate-100 text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition">
+            <i class="fa-solid fa-file-csv"></i> Scarica CSV Tabellare
+          </button>
         </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-          <div>
-            <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Località / Pista</label>
-            <input type="text" id="debriefLocation" required placeholder="Es. Cervinia - Ventina" 
-              class="w-full h-10 bg-snow-900 border border-slate-700 rounded-xl px-3 text-xs font-bold text-white focus:outline-none focus:border-amber-400">
-          </div>
-          <div>
-            <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Meteo & Neve</label>
-            <input type="text" id="debriefConditions" required placeholder="Es. -4°C, Sole, Barrata dura mattino" 
-              class="w-full h-10 bg-snow-900 border border-slate-700 rounded-xl px-3 text-xs font-bold text-white focus:outline-none focus:border-amber-400">
-          </div>
-          <div>
-            <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Focus Principale</label>
-            <select id="debriefFocusPillar" class="w-full h-10 bg-snow-900 border border-slate-700 rounded-xl px-2.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400">
-              <option value="TAGLIO">Taglio / Coltello</option>
-              <option value="FULMINE">Fulmine</option>
-              <option value="TRENO">Treno</option>
-              <option value="EXCALIBUR">Excalibur</option>
-              <option value="Misto / 20-80">Metodologia Globale 20/80</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Topic Affrontato nel Camp</label>
-          <input type="text" id="debriefTopic" required placeholder="Es. Lavoro sulla presa di spigolo passiva senza contrazione tibiale..." 
-            class="w-full h-10 bg-snow-900 border border-slate-700 rounded-xl px-3 text-xs font-bold text-white focus:outline-none focus:border-amber-400">
-        </div>
-
-        <div>
-          <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Riflessioni & Intuizioni Biomeccaniche dei Coach</label>
-          <textarea id="debriefNotes" rows="3" required placeholder="Cosa è emerso dalla videoanalisi? Quale sensazione ha sbloccato la maggior parte degli atleti oggi?" 
-            class="w-full bg-snow-900 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"></textarea>
-        </div>
-
-        <button type="submit" class="w-full h-12 bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-glow-fulmine transition">
-          <i class="fa-solid fa-floppy-disk"></i> Salva Debriefing di Giornata
-        </button>
-      </form>
-
-      <!-- Debriefs Log Feed -->
-      <div id="debriefFeedContainer" class="space-y-3">
-        <!-- Rendered dynamically -->
       </div>
+
+      <!-- Correlations Matrix -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl space-y-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">Matrice di Correlazione Rilevata</h3>
+        <div id="aiCorrelationsList" class="space-y-2">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
     </section>
 
   </main>
 
-  <!-- ================= FAST GLOVE-FRIENDLY BOTTOM NAV BAR ================= -->
-  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-snow-900/95 backdrop-blur-md border-t border-slate-800 pb-safe shadow-2xl">
-    <div class="grid grid-cols-4 max-w-5xl mx-auto h-16">
+  <!-- ================= BOTTOM NAVIGATION ================= -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 pb-safe shadow-lg">
+    <div id="bottomNavGrid" class="grid grid-cols-4 max-w-4xl mx-auto h-15">
       
-      <!-- Nav 1: Rileva -->
-      <button onclick="switchTab('tab-observe')" id="nav-observe" class="nav-btn active-nav flex flex-col items-center justify-center text-cyan-400">
-        <i class="fa-solid fa-stopwatch-20 text-lg mb-1"></i>
-        <span class="text-[10px] font-black uppercase tracking-wider">Rileva</span>
+      <!-- Nav 1: Aggiungi Analisi -->
+      <button onclick="switchTab('tab-add')" id="bNav-add" class="bottom-nav-item active-nav flex flex-col items-center justify-center text-slate-900 dark:text-sky-400 font-bold transition">
+        <i class="fa-solid fa-circle-plus text-base mb-0.5"></i>
+        <span class="text-[10px] tracking-tight">Analisi</span>
       </button>
 
-      <!-- Nav 2: Listino -->
-      <button onclick="switchTab('tab-catalog')" id="nav-catalog" class="nav-btn flex flex-col items-center justify-center text-slate-400">
-        <i class="fa-solid fa-list-check text-lg mb-1"></i>
-        <span class="text-[10px] font-black uppercase tracking-wider">Listino</span>
+      <!-- Nav 2: Archivio -->
+      <button onclick="switchTab('tab-archive')" id="bNav-archive" class="bottom-nav-item flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 font-medium transition">
+        <i class="fa-solid fa-box-archive text-base mb-0.5"></i>
+        <span class="text-[10px] tracking-tight">Archivio</span>
       </button>
 
-      <!-- Nav 3: AI Dataset -->
-      <button onclick="switchTab('tab-analytics')" id="nav-analytics" class="nav-btn flex flex-col items-center justify-center text-slate-400">
-        <i class="fa-solid fa-brain text-lg mb-1"></i>
-        <span class="text-[10px] font-black uppercase tracking-wider">AI Dataset</span>
+      <!-- Nav 3: Idee in Pista -->
+      <button onclick="switchTab('tab-ideas')" id="bNav-ideas" class="bottom-nav-item flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 font-medium transition">
+        <i class="fa-solid fa-lightbulb text-base mb-0.5"></i>
+        <span class="text-[10px] tracking-tight">Idee</span>
       </button>
 
-      <!-- Nav 4: Diario Camp -->
-      <button onclick="switchTab('tab-debrief')" id="nav-debrief" class="nav-btn flex flex-col items-center justify-center text-slate-400">
-        <i class="fa-solid fa-book-open text-lg mb-1"></i>
-        <span class="text-[10px] font-black uppercase tracking-wider">Diario</span>
+      <!-- Nav 4: Diario -->
+      <button onclick="switchTab('tab-debrief')" id="bNav-debrief" class="bottom-nav-item flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 font-medium transition">
+        <i class="fa-solid fa-book-open text-base mb-0.5"></i>
+        <span class="text-[10px] tracking-tight">Diario</span>
+      </button>
+
+      <!-- Nav 5: AI Dataset (Rendered only if Admin) -->
+      <button onclick="switchTab('tab-admin-ai')" id="bNav-admin-ai" class="bottom-nav-item hidden flex flex-col items-center justify-center text-rose-500 dark:text-rose-400 font-bold transition">
+        <i class="fa-solid fa-brain text-base mb-0.5"></i>
+        <span class="text-[10px] tracking-tight">AI Data</span>
       </button>
 
     </div>
   </nav>
 
-  <!-- ================= JAVASCRIPT LOGIC & ENGINE ================= -->
+  <!-- ================= MODAL: GESTIONE COACH (SOLO ADMIN) ================= -->
+  <div id="coachModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 max-w-sm w-full space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+        <h3 class="font-display font-bold text-sm text-slate-900 dark:text-white">Gestione Staff Coach</h3>
+        <button onclick="closeCoachManagerModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="space-y-2">
+        <label class="text-[10px] font-bold uppercase text-slate-400">Aggiungi Nuovo Coach</label>
+        <div class="flex gap-2">
+          <input type="text" id="newCoachNameInput" placeholder="Nome Coach (es. Marco)" 
+            class="flex-1 h-10 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 text-xs text-slate-900 dark:text-white focus:outline-none">
+          <button onclick="addNewCoachFromModal()" class="bg-sky-500 text-slate-950 font-bold px-3 text-xs rounded-xl">Aggiungi</button>
+        </div>
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-bold uppercase text-slate-400">Coach Attivi nel Team</label>
+        <ul id="coachRosterList" class="space-y-1 max-h-48 overflow-y-auto text-xs">
+          <!-- Populated dynamically -->
+        </ul>
+      </div>
+
+      <p class="text-[10px] text-slate-400">Nota: Ogni coach può cancellare solo le proprie osservazioni. L'Admin ha permessi completi di supervisione.</p>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: NUOVA IDEA IN PISTA ================= -->
+  <div id="ideaModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 max-w-md w-full space-y-3.5 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+        <h3 class="font-display font-bold text-sm text-slate-900 dark:text-white flex items-center gap-1.5">
+          <i class="fa-solid fa-lightbulb text-amber-500"></i> Nuova Idea da Provare in Pista
+        </h3>
+        <button onclick="closeNewIdeaModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="space-y-2 text-xs">
+        <div>
+          <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Pilastro di Riferimento</label>
+          <select id="ideaFormPillar" class="w-full h-10 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 text-slate-900 dark:text-white">
+            <option value="TAGLIO">Taglio / Coltello</option>
+            <option value="FULMINE">Fulmine</option>
+            <option value="TRENO">Treno</option>
+            <option value="EXCALIBUR">Excalibur</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Titolo dell'Idea / Focus</label>
+          <input type="text" id="ideaFormTitle" placeholder="Es. Deformazione a bassissima velocità su pendenza media" 
+            class="w-full h-10 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 text-slate-900 dark:text-white">
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Di cosa si tratta (Concetto Biomeccanico)</label>
+          <textarea id="ideaFormConcept" rows="2" placeholder="Spiega brevemente il principio da testare..." 
+            class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-white"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Come applicarlo in pista (Sensazione / Esecuzione)</label>
+          <textarea id="ideaFormAction" rows="2" placeholder="Cosa deve sentire l'allievo sotto i piedi o nel corpo..." 
+            class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-white"></textarea>
+        </div>
+      </div>
+
+      <button onclick="saveNewIdea()" class="w-full h-11 bg-slate-900 dark:bg-sky-500 text-white dark:text-slate-950 font-bold text-xs uppercase rounded-xl transition">
+        Salva Idea nella Biblioteca
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT APPLICATION CORE ================= -->
   <script>
     /* =========================================================================
-       1. CORE INITIAL DATASET (8 RIGOROUS SKI BIOMECHANICS CASES)
+       1. DATA STRUCTURES & DEFAULT SEED DATA
        ========================================================================= */
 
-    const INITIAL_OBSERVATIONS = [
-      // TAGLIO / COLTELLO (2)
+    const DEFAULT_COACHES = [
+      { id: "c-admin", name: "Stefano", role: "ADMIN" },
+      { id: "c-riccardo", name: "Riccardo", role: "COACH" },
+      { id: "c-federico", name: "Federico", role: "COACH" },
+      { id: "c-alessandro", name: "Alessandro", role: "COACH" },
+      { id: "c-lorenzo", name: "Lorenzo", role: "COACH" },
+      { id: "c-matteo", name: "Matteo", role: "COACH" }
+    ];
+
+    const DEFAULT_TOPICS = [
+      "Deformazione passiva dello sci vs spinta attiva",
+      "Assetto sagittale e chiusura simmetrica di caviglia",
+      "Pazienza a inizio curva: seguire i binari senza anticipo",
+      "Solidità di Excalibur su terreno barrato ripido",
+      "Rilascio graduale delle pressioni a fine curva"
+    ];
+
+    const DEFAULT_ANALYSES = [
       {
-        id: "NS-TAGLIO-001",
+        id: "AN-TAGLIO-001",
         pillar: "TAGLIO",
         effect: "Sci esterno che scivola via a centro curva",
-        cause: "Spinta muscolare attiva con la gamba esterna anziché appoggio rilassato; crea una forza perpendicolare che rompe la presa della lamina.",
+        cause: "Spinta muscolare attiva con la gamba esterna anziché appoggio; rompe la deformazione progressiva dello sci.",
         cue: "Non spingere: appoggiati",
-        drill: "Scivolamento a spazzaneve aperto su pendenza moderata sentendo solo il peso naturale del corpo che deforma lo sci esterno.",
-        snow: "Neve Dura / Barrata / Ghiaccio",
-        radius: "Arco Medio (Conduzione)",
-        coach: "Stefano",
+        drill: "Scivolamento su pendenza moderata sentendo solo il peso naturale che flette l'attrezzo.",
+        snow: "Dura / Barrata / Ghiaccio",
+        radius: "Arco Medio",
+        author: "Stefano",
         timestamp: "2026-10-26T09:30:00.000Z"
       },
       {
-        id: "NS-TAGLIO-002",
+        id: "AN-TAGLIO-002",
         pillar: "TAGLIO",
         effect: "Spigolata frettolosa e ribaltamento caviglie",
-        cause: "Lo sciatore cerca angolazione forzando l'inversione di caviglia prima che il baricentro si sia spostato all'interno del nuovo arco.",
+        cause: "Inversione forzata di caviglia prima che il bacino si sia spostato all'interno del nuovo arco.",
         cue: "Prima il corpo, poi lo sci",
-        drill: "Curva a bassa velocità mantenendo i piedi paralleli e lasciando che sia solo la traslazione del bacino a generare l'inclinazione delle lamine.",
-        snow: "Neve Compatta da Pista",
-        radius: "Arco Medio (Conduzione)",
-        coach: "Riccardo",
+        drill: "Curve a bassa velocità lasciando che sia solo la traslazione del centro di massa a creare spigolo.",
+        snow: "Compatta da pista",
+        radius: "Arco Medio",
+        author: "Riccardo",
         timestamp: "2026-10-26T10:45:00.000Z"
       },
-
-      // FULMINE (2)
       {
-        id: "NS-FULMINE-001",
+        id: "AN-FULMINE-001",
         pillar: "FULMINE",
         effect: "Punta interna che diverge a V / Forbice",
-        cause: "Spinta tibiale eccessiva sulla linguetta con tallone scarico; impedisce alla caviglia interna di chiudersi simmetricamente in dorsiflessione.",
+        cause: "Pressione tibiale eccessiva con tallone scarico; impedisce alla caviglia interna di chiudersi simmetricamente.",
         cue: "Senti il tallone scendere",
-        drill: "Sciata a curve ampie con scarponi leggermente sganciati sul gambetto per ritrovare l'appoggio su tutta la pianta del piede.",
-        snow: "Neve Compatta da Pista",
-        radius: "Arco Ampio (Gigante)",
-        coach: "Federico",
+        drill: "Curve ad arco ampio con scarponi sganciati sul gambetto per ritrovare l'appoggio su tutta la pianta.",
+        snow: "Compatta da pista",
+        radius: "Arco Ampio / Gigante",
+        author: "Federico",
         timestamp: "2026-10-27T11:15:00.000Z"
       },
       {
-        id: "NS-FULMINE-002",
+        id: "AN-FULMINE-002",
         pillar: "FULMINE",
-        effect: "Arretramento a inizio curva con blocco dell'anca",
-        cause: "Estensione frettolosa verso l'alto a fine curva invece di mantenere le articolazioni cariche e sbloccare la flessione dell'anca verso la nuova curva.",
+        effect: "Arretramento a inizio curva con anca bloccata",
+        cause: "Estensione verso l'alto a fine curva invece di mantenere le articolazioni cariche e sbloccate in avanti.",
         cue: "Rimani basso e morbido",
-        drill: "Curva mantenendo le mani sempre appoggiate sulle ginocchia per verificare visivamente e propriocettivamente l'assetto compatto.",
-        snow: "Neve Trasformata / Pappa",
-        radius: "Arco Medio (Conduzione)",
-        coach: "Stefano",
+        drill: "Sciata a curve medie tenendo le mani sempre a contatto con le ginocchia.",
+        snow: "Pappa / Primaverile",
+        radius: "Arco Medio",
+        author: "Stefano",
         timestamp: "2026-10-27T14:20:00.000Z"
       },
-
-      // TRENO (2)
       {
-        id: "NS-TRENO-001",
+        id: "AN-TRENO-001",
         pillar: "TRENO",
         effect: "Fretta a inizio curva con anticipo di spalla",
-        cause: "Rotazione attiva anticipata del tronco per provocare la curva prima che la punta dello sci abbia iniziato a tagliare la traiettoria rotonda.",
+        cause: "Rotazione attiva del tronco per provocare la curva prima che la spatola abbia iniziato a tagliare.",
         cue: "Pazienza: aspetta i binari",
-        drill: "Curva tenendo i bastoncini orizzontali davanti al petto paralleli agli sci, aspettando che il treno inizi prima di inclinare.",
-        snow: "Neve Compatta da Pista",
-        radius: "Arco Medio (Conduzione)",
-        coach: "Alessandro",
+        drill: "Bastoncini tenuti orizzontali davanti al petto paralleli agli sci, aspettando che il treno inizi da solo.",
+        snow: "Compatta da pista",
+        radius: "Arco Medio",
+        author: "Alessandro",
         timestamp: "2026-10-28T09:50:00.000Z"
       },
       {
-        id: "NS-TRENO-002",
+        id: "AN-TRENO-002",
         pillar: "TRENO",
         effect: "Spazio laterale eccessivo tra gli sci a fine curva",
-        cause: "Mancato richiamo della gamba interna lungo la traiettoria rotonda; la gamba interna resta a palo e allarga il raggio di uscita.",
-        cue: "Gambe unite come binari",
-        drill: "Sciata su terreno facile mantenendo una distanza costante di 15-20 cm tra i due scarponi lungo tutto l'arco.",
-        snow: "Neve Compatta da Pista",
-        radius: "Arco Medio (Conduzione)",
-        coach: "Lorenzo",
+        cause: "Mancato richiamo della gamba interna lungo la traiettoria rotonda; la gamba interna resta a palo e allarga il raggio.",
+        cue: "Gambe parallele come binari",
+        drill: "Sciata su terreno facile mantenendo una distanza costante di 15-20 cm tra i due scarponi per tutta la curva.",
+        snow: "Compatta da pista",
+        radius: "Arco Medio",
+        author: "Lorenzo",
         timestamp: "2026-10-28T11:30:00.000Z"
       },
-
-      // EXCALIBUR (2)
       {
-        id: "NS-EXCALIBUR-001",
+        id: "AN-EXCALIBUR-001",
         pillar: "EXCALIBUR",
         effect: "Spalla a monte che collassa verso la neve",
-        cause: "Tentativo di creare spigolo buttando il busto all'interno; annulla l'angolazione del bacino e scarica completamente lo sci esterno.",
+        cause: "Tentativo errato di creare inclinazione buttando il busto all'interno; annulla l'angolazione e scarica l'esterno.",
         cue: "Busto fiero come Excalibur",
         drill: "Discesa impugnando un solo bastoncino verticale con due mani come una spada dritta davanti allo sterno.",
-        snow: "Neve Dura / Barrata / Ghiaccio",
-        radius: "Arco Medio (Conduzione)",
-        coach: "Stefano",
+        snow: "Dura / Barrata / Ghiaccio",
+        radius: "Arco Medio",
+        author: "Stefano",
         timestamp: "2026-10-29T10:10:00.000Z"
       },
       {
-        id: "NS-EXCALIBUR-002",
+        id: "AN-EXCALIBUR-002",
         pillar: "EXCALIBUR",
         effect: "Busto che oscilla e sbanda nel cambio",
-        cause: "Mancanza di compattezza del core e della muscolatura dorsale nella transizione; la spada oscilla invece di rimanere solida nel terreno.",
+        cause: "Mancanza di compattezza del core e dei dorsali nella transizione tra le due curve.",
         cue: "Core compatto e fermo",
-        drill: "Curve ritmate con le mani posizionate sulle creste iliache sentendo che la parte alta del corpo rimane immobile rispetto alle gambe.",
-        snow: "Pendenza Elevata / Ripido",
-        radius: "Arco Corto (Cortoraggio)",
-        coach: "Matteo",
+        drill: "Curve ritmate a cortoraggio con le mani salde sulle creste iliache verificando l'immobilità del tronco.",
+        snow: "Pendenza elevata / Muro",
+        radius: "Cortoraggio",
+        author: "Matteo",
         timestamp: "2026-10-29T14:40:00.000Z"
       }
     ];
 
-    const INITIAL_DEBRIEFS = [
+    const DEFAULT_IDEAS = [
       {
-        id: "DEB-001",
-        date: "2026-10-27",
-        coach: "Stefano",
-        location: "Cervinia - Pista Ventina",
-        conditions: "-3°C, Sole, Neve barrata dura nel primo tratto, poi compatta",
-        focusPillar: "TAGLIO",
-        topic: "Deformazione passiva dello sci vs forzatura muscolare",
-        notes: "Nel debriefing video abbiamo evidenziato come l'80% degli errori sul duro derivi dalla spinta muscolare della gamba esterna. Appena l'atleta smette di spingere e lascia lavorare la sciancratura, lo sci aggancia immediatamente."
+        id: "IDEA-01",
+        pillar: "TAGLIO",
+        title: "Deformazione passiva su bassa velocità",
+        concept: "Verificare se l'allievo comprende che lo sci gira da solo per sciancratura quando inclinato, senza richiedere spinte muscolari.",
+        action: "Far percorrere una diagonale su pendenza media inclinando gradualmente le caviglie senza ruotare le spalle fino a completare l'inversione.",
+        author: "Stefano",
+        date: "2026-10-25"
       },
       {
-        id: "DEB-002",
+        id: "IDEA-02",
+        pillar: "FULMINE",
+        title: "Scarico del gambetto e chiusura caviglie",
+        concept: "Eliminare l'abitudine diffusa di forzare il ginocchio in avanti contro la linguetta, che provoca lo scarico del tallone.",
+        action: "Chiedere allo sciatore di 'schiacciare una moneta sotto il tallone' per tutto l'arco di curva.",
+        author: "Riccardo",
+        date: "2026-10-26"
+      },
+      {
+        id: "IDEA-03",
+        pillar: "TRENO",
+        title: "Attesa della spatola prima dell'inclinazione",
+        concept: "Ritardare l'inclinazione corporea finché lo sci esterno non ha preso contatto e cominciato a disegnare la traiettoria.",
+        action: "Contare mentalmente 'uno-due' a inizio curva prima di concedere l'angolazione al bacino.",
+        author: "Federico",
+        date: "2026-10-27"
+      },
+      {
+        id: "IDEA-04",
+        pillar: "EXCALIBUR",
+        title: "La spada verticale sul pendio ripido",
+        concept: "Mantenere il piano frontale del tronco perpendicolare all'orizzonte o leggermente orientato a valle, mai inclinato a monte.",
+        action: "Fissare con lo sguardo un punto fermo a valle (es. campanile o pilone) mantenendo le spalle costantemente allineate.",
+        author: "Stefano",
+        date: "2026-10-28"
+      }
+    ];
+
+    const DEFAULT_DEBRIEFS = [
+      {
+        id: "DEB-01",
         date: "2026-10-28",
-        coach: "Riccardo",
-        location: "Cervinia - Plateau Rosa",
-        conditions: "-6°C, Vento leggero, Neve invernale asciutta perfetta",
-        focusPillar: "FULMINE",
-        topic: "Assetto sagittale e chiusura delle caviglie nel raggio medio",
-        notes: "Il focus di oggi sul 'sentirsi sul tallone' ha eliminato l'apertura a V della punta interna in 4 allievi su 5. Da inserire stabilmente come primo cue per chi tende a sovraccaricare la linguetta."
+        author: "Stefano",
+        location: "Cervinia - Pista Ventina",
+        conditions: "-4°C, Sole, Barrata dura mattino",
+        topic: "Deformazione passiva dello sci vs spinta attiva",
+        notes: "Dalla videoanalisi è chiarissimo: tutti coloro che hanno smesso di spingere muscolarmente hanno raddoppiato la tenuta dello sci esterno sul duro."
       }
     ];
 
     /* =========================================================================
-       2. PERSISTENCE & STATE MANAGEMENT
+       2. LOCAL STORAGE GETTERS & SETTERS
        ========================================================================= */
 
-    let currentActiveCoach = "Stefano";
-    let activeCatalogPillar = "ALL";
-
-    function getObservations() {
-      const stored = localStorage.getItem("ns_ai_observations");
-      if (!stored) {
-        localStorage.setItem("ns_ai_observations", JSON.stringify(INITIAL_OBSERVATIONS));
-        return INITIAL_OBSERVATIONS;
+    function getStored(key, fallback) {
+      const data = localStorage.getItem(key);
+      if (!data) {
+        localStorage.setItem(key, JSON.stringify(fallback));
+        return fallback;
       }
-      try {
-        return JSON.parse(stored);
-      } catch (e) {
-        return INITIAL_OBSERVATIONS;
-      }
+      try { return JSON.parse(data); } catch(e) { return fallback; }
     }
 
-    function saveObservations(list) {
-      localStorage.setItem("ns_ai_observations", JSON.stringify(list));
-      updateGlobalCounters();
-      refreshDatalists();
+    function setStored(key, val) {
+      localStorage.setItem(key, JSON.stringify(val));
     }
 
-    function getDebriefs() {
-      const stored = localStorage.getItem("ns_ai_debriefs");
-      if (!stored) {
-        localStorage.setItem("ns_ai_debriefs", JSON.stringify(INITIAL_DEBRIEFS));
-        return INITIAL_DEBRIEFS;
-      }
-      try {
-        return JSON.parse(stored);
-      } catch (e) {
-        return INITIAL_DEBRIEFS;
-      }
-    }
+    let coaches = getStored("ns_coaches", DEFAULT_COACHES);
+    let topics = getStored("ns_topics", DEFAULT_TOPICS);
+    let analyses = getStored("ns_analyses", DEFAULT_ANALYSES);
+    let ideas = getStored("ns_ideas", DEFAULT_IDEAS);
+    let debriefs = getStored("ns_debriefs", DEFAULT_DEBRIEFS);
 
-    function saveDebriefs(list) {
-      localStorage.setItem("ns_ai_debriefs", JSON.stringify(list));
-    }
+    // Active User / Session
+    let activeUser = coaches[0]; // Default Stefano (Admin)
+    let activeArchivePillar = "ALL";
+    let activeIdeaFilter = "ALL";
 
     /* =========================================================================
-       3. INITIALIZATION & APP BOOT
+       3. INITIALIZATION & THEME HANDLING
        ========================================================================= */
 
     window.addEventListener("DOMContentLoaded", () => {
-      // Restore active coach
-      const savedCoach = localStorage.getItem("ns_ai_coach") || "Stefano";
-      currentActiveCoach = savedCoach;
-      document.getElementById("activeCoachSelect").value = savedCoach;
-      document.getElementById("debriefAuthorLabel").innerText = `Coach ${currentActiveCoach}`;
+      // 1. Theme init (defaults to Light for outdoor snow clarity, or system preference)
+      const savedTheme = localStorage.getItem("ns_theme") || "light";
+      applyTheme(savedTheme);
 
-      // Date label
-      const now = new Date();
-      document.getElementById("liveTimestampLabel").innerText = now.toLocaleDateString("it-IT", {
-        weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit"
+      // 2. User init
+      const savedUserId = localStorage.getItem("ns_active_user_id");
+      const matched = coaches.find(c => c.id === savedUserId);
+      if (matched) activeUser = matched;
+      populateUserSelector();
+      applyUserPermissions();
+
+      // 3. Date
+      document.getElementById("currentDateLabel").innerText = new Date().toLocaleDateString("it-IT", {
+        weekday: "short", day: "numeric", month: "short"
       });
 
-      // Default Pillar
-      selectPillar("TAGLIO");
+      // 4. Form defaults
+      setFormPillar("TAGLIO");
+      populateTopicSelect();
+      refreshFormDatalists();
 
-      // Render Everything
-      updateGlobalCounters();
-      refreshDatalists();
-      renderCatalog();
-      renderAnalytics();
+      // 5. Initial views
+      renderArchive();
+      renderIdeas();
       renderDebriefFeed();
+      renderAIAnalytics();
     });
 
-    function onCoachChange(val) {
-      currentActiveCoach = val;
-      localStorage.setItem("ns_ai_coach", val);
-      document.getElementById("debriefAuthorLabel").innerText = `Coach ${currentActiveCoach}`;
-      showToast(`Coach selezionato: ${currentActiveCoach}`);
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const target = isDark ? "light" : "dark";
+      applyTheme(target);
+      localStorage.setItem("ns_theme", target);
     }
 
-    function updateGlobalCounters() {
-      const obs = getObservations();
-      document.getElementById("topBarRecordCount").innerText = obs.length;
+    function applyTheme(theme) {
+      const icon = document.getElementById("themeIcon");
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
+        if (icon) icon.className = "fa-solid fa-sun text-sm text-amber-400";
+      } else {
+        document.documentElement.classList.remove("dark");
+        if (icon) icon.className = "fa-solid fa-moon text-sm text-slate-600";
+      }
     }
 
     /* =========================================================================
-       4. TAB NAVIGATION
+       4. USER MANAGEMENT & PERMISSIONS (ADMIN VS COACH)
+       ========================================================================= */
+
+    function populateUserSelector() {
+      const select = document.getElementById("userSelector");
+      select.innerHTML = coaches.map(c => 
+        `<option value="${c.id}" ${c.id === activeUser.id ? "selected" : ""}>Coach ${c.name} ${c.role === "ADMIN" ? "★" : ""}</option>`
+      ).join("");
+    }
+
+    function onUserSelectChange(userId) {
+      const selected = coaches.find(c => c.id === userId);
+      if (selected) {
+        activeUser = selected;
+        localStorage.setItem("ns_active_user_id", activeUser.id);
+        applyUserPermissions();
+        renderArchive(); // Re-render to update delete buttons based on permission
+        renderDebriefFeed();
+        showToast(`Profilo attivo: Coach ${activeUser.name} (${activeUser.role})`);
+      }
+    }
+
+    function applyUserPermissions() {
+      const roleBadge = document.getElementById("roleBadge");
+      const adminNavBtn = document.getElementById("bNav-admin-ai");
+      const coachManageBtn = document.getElementById("coachManageBtn");
+      const debAuthor = document.getElementById("debriefAuthorDisplay");
+      const bottomNavGrid = document.getElementById("bottomNavGrid");
+
+      if (debAuthor) debAuthor.innerText = activeUser.name;
+
+      if (activeUser.role === "ADMIN") {
+        roleBadge.innerText = "ADMIN";
+        roleBadge.className = "bg-rose-500/10 text-rose-600 dark:text-rose-400 text-[10px] font-mono font-bold px-1.5 py-0.5 rounded border border-rose-500/30";
+        adminNavBtn.classList.remove("hidden");
+        coachManageBtn.classList.remove("hidden");
+        bottomNavGrid.className = "grid grid-cols-5 max-w-4xl mx-auto h-15";
+      } else {
+        roleBadge.innerText = "COACH";
+        roleBadge.className = "bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-mono font-bold px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-700";
+        adminNavBtn.classList.add("hidden");
+        coachManageBtn.classList.add("hidden");
+        bottomNavGrid.className = "grid grid-cols-4 max-w-4xl mx-auto h-15";
+
+        // If coach was on admin tab, switch away
+        const adminTab = document.getElementById("tab-admin-ai");
+        if (!adminTab.classList.contains("hidden")) {
+          switchTab("tab-add");
+        }
+      }
+    }
+
+    function openCoachManagerModal() {
+      if (activeUser.role !== "ADMIN") {
+        showToast("Accesso consentito solo all'Admin");
+        return;
+      }
+      renderCoachRoster();
+      document.getElementById("coachModal").classList.remove("hidden");
+    }
+
+    function closeCoachManagerModal() {
+      document.getElementById("coachModal").classList.add("hidden");
+    }
+
+    function renderCoachRoster() {
+      const list = document.getElementById("coachRosterList");
+      list.innerHTML = coaches.map(c => `
+        <li class="flex items-center justify-between p-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+          <span class="font-bold text-slate-900 dark:text-white">Coach ${c.name} ${c.role === "ADMIN" ? '<span class="text-[10px] text-rose-500 font-mono">(Admin)</span>' : ''}</span>
+          ${c.role !== "ADMIN" ? `
+            <button onclick="removeCoach('${c.id}')" class="text-rose-500 hover:text-rose-700 px-2 py-1 text-xs">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          ` : '<span class="text-[10px] text-slate-400">Principale</span>'}
+        </li>
+      `).join("");
+    }
+
+    function addNewCoachFromModal() {
+      const input = document.getElementById("newCoachNameInput");
+      const name = input.value.trim();
+      if (!name) return;
+
+      const newId = "c-" + name.toLowerCase().replace(/\s+/g, "");
+      if (coaches.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+        showToast("Coach già presente");
+        return;
+      }
+
+      coaches.push({ id: newId, name, role: "COACH" });
+      setStored("ns_coaches", coaches);
+      input.value = "";
+      renderCoachRoster();
+      populateUserSelector();
+      showToast(`Coach ${name} aggiunto allo staff`);
+    }
+
+    function removeCoach(coachId) {
+      if (confirm("Vuoi davvero rimuovere questo coach dallo staff?")) {
+        coaches = coaches.filter(c => c.id !== coachId);
+        setStored("ns_coaches", coaches);
+        if (activeUser.id === coachId) activeUser = coaches[0];
+        renderCoachRoster();
+        populateUserSelector();
+        applyUserPermissions();
+        showToast("Coach rimosso");
+      }
+    }
+
+    /* =========================================================================
+       5. TAB NAVIGATION
        ========================================================================= */
 
     function switchTab(tabId) {
-      const tabIds = ["tab-observe", "tab-catalog", "tab-analytics", "tab-debrief"];
-      tabIds.forEach(id => {
+      const tabs = ["tab-add", "tab-archive", "tab-ideas", "tab-debrief", "tab-admin-ai"];
+      tabs.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add("hidden");
       });
 
-      const activeTabEl = document.getElementById(tabId);
-      if (activeTabEl) activeTabEl.classList.remove("hidden");
+      const target = document.getElementById(tabId);
+      if (target) target.classList.remove("hidden");
 
-      // Update Nav Buttons
-      document.querySelectorAll(".nav-btn").forEach(btn => {
-        btn.classList.remove("text-cyan-400", "text-amber-400", "text-emerald-400", "text-purple-400");
-        btn.classList.add("text-slate-400");
+      // Reset Nav button colors
+      document.querySelectorAll(".bottom-nav-item").forEach(btn => {
+        btn.classList.remove("text-slate-900", "dark:text-sky-400", "font-bold");
+        btn.classList.add("text-slate-400", "dark:text-slate-500", "font-medium");
       });
 
-      const navMap = {
-        "tab-observe": { id: "nav-observe", color: "text-cyan-400" },
-        "tab-catalog": { id: "nav-catalog", color: "text-cyan-400" },
-        "tab-analytics": { id: "nav-analytics", color: "text-purple-400" },
-        "tab-debrief": { id: "nav-debrief", color: "text-amber-400" }
+      const navBtnMap = {
+        "tab-add": "bNav-add",
+        "tab-archive": "bNav-archive",
+        "tab-ideas": "bNav-ideas",
+        "tab-debrief": "bNav-debrief",
+        "tab-admin-ai": "bNav-admin-ai"
       };
 
-      const targetNav = navMap[tabId];
-      if (targetNav) {
-        const btnEl = document.getElementById(targetNav.id);
-        if (btnEl) {
-          btnEl.classList.remove("text-slate-400");
-          btnEl.classList.add(targetNav.color);
-        }
+      const activeNavBtn = document.getElementById(navBtnMap[tabId]);
+      if (activeNavBtn) {
+        activeNavBtn.classList.remove("text-slate-400", "dark:text-slate-500", "font-medium");
+        activeNavBtn.classList.add("text-slate-900", "dark:text-sky-400", "font-bold");
       }
 
       window.scrollTo({ top: 0, behavior: "smooth" });
 
-      if (tabId === "tab-catalog") renderCatalog();
-      if (tabId === "tab-analytics") renderAnalytics();
+      if (tabId === "tab-archive") renderArchive();
+      if (tabId === "tab-ideas") renderIdeas();
       if (tabId === "tab-debrief") renderDebriefFeed();
+      if (tabId === "tab-admin-ai") renderAIAnalytics();
     }
 
     /* =========================================================================
-       5. PILLAR SELECTOR & COLOR SYSTEM
+       6. FORM: WORKFLOW "AGGIUNGI ANALISI"
        ========================================================================= */
 
-    function selectPillar(pillar) {
-      document.getElementById("selectedPillarInput").value = pillar;
+    function setFormPillar(pillar) {
+      document.getElementById("formSelectedPillar").value = pillar;
 
-      const btnMap = {
-        TAGLIO: { id: "pillBtn-TAGLIO", activeClass: "border-cyan-400 bg-cyan-950/70 text-cyan-300 shadow-glow-taglio scale-[1.02]" },
-        FULMINE: { id: "pillBtn-FULMINE", activeClass: "border-amber-400 bg-amber-950/70 text-amber-300 shadow-glow-fulmine scale-[1.02]" },
-        TRENO: { id: "pillBtn-TRENO", activeClass: "border-emerald-400 bg-emerald-950/70 text-emerald-300 shadow-glow-treno scale-[1.02]" },
-        EXCALIBUR: { id: "pillBtn-EXCALIBUR", activeClass: "border-purple-400 bg-purple-950/70 text-purple-300 shadow-glow-excalibur scale-[1.02]" }
-      };
-
-      Object.keys(btnMap).forEach(key => {
-        const btn = document.getElementById(btnMap[key].id);
+      const pillars = ["TAGLIO", "FULMINE", "TRENO", "EXCALIBUR"];
+      pillars.forEach(p => {
+        const btn = document.getElementById("fPill-" + p);
         if (btn) {
-          btn.className = "pillar-selector h-15 py-3 px-2 rounded-2xl border-2 font-display font-black text-xs sm:text-sm flex flex-col items-center justify-center transition-all bg-snow-900 border-slate-700 text-slate-300 active:scale-95";
+          if (p === pillar) {
+            btn.className = "pillar-btn h-13 py-2 px-2 rounded-xl border-2 font-display font-bold text-xs flex flex-col items-center justify-center transition bg-slate-900 text-white border-slate-900 dark:bg-sky-500 dark:text-slate-950 dark:border-sky-400 shadow-sm";
+          } else {
+            btn.className = "pillar-btn h-13 py-2 px-2 rounded-xl border font-display font-bold text-xs flex flex-col items-center justify-center transition bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-800 text-slate-700 dark:text-slate-300";
+          }
         }
       });
+    }
 
-      const activeConfig = btnMap[pillar];
-      if (activeConfig) {
-        const activeBtn = document.getElementById(activeConfig.id);
-        if (activeBtn) {
-          activeBtn.className = `pillar-selector h-15 py-3 px-2 rounded-2xl border-2 font-display font-black text-xs sm:text-sm flex flex-col items-center justify-center transition-all ${activeConfig.activeClass}`;
-        }
-      }
-
-      // Update submit button theme
-      const submitBtn = document.getElementById("saveObservationBtn");
-      if (pillar === "TAGLIO") {
-        submitBtn.className = "w-full h-14 bg-gradient-to-r from-cyan-400 via-sky-500 to-emerald-400 text-slate-950 font-black text-sm uppercase tracking-wider rounded-2xl shadow-glow-taglio flex items-center justify-center gap-2 transition-all active:scale-[0.99]";
-      } else if (pillar === "FULMINE") {
-        submitBtn.className = "w-full h-14 bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-400 text-slate-950 font-black text-sm uppercase tracking-wider rounded-2xl shadow-glow-fulmine flex items-center justify-center gap-2 transition-all active:scale-[0.99]";
-      } else if (pillar === "TRENO") {
-        submitBtn.className = "w-full h-14 bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-400 text-slate-950 font-black text-sm uppercase tracking-wider rounded-2xl shadow-glow-treno flex items-center justify-center gap-2 transition-all active:scale-[0.99]";
-      } else if (pillar === "EXCALIBUR") {
-        submitBtn.className = "w-full h-14 bg-gradient-to-r from-purple-400 via-fuchsia-500 to-indigo-400 text-slate-950 font-black text-sm uppercase tracking-wider rounded-2xl shadow-glow-excalibur flex items-center justify-center gap-2 transition-all active:scale-[0.99]";
+    function limitWords(input) {
+      const words = input.value.trim().split(/\s+/).filter(Boolean);
+      const label = document.getElementById("wordCountLabel");
+      label.innerText = `${words.length}/5 parole`;
+      if (words.length > 5) {
+        label.className = "text-[10px] font-mono text-rose-500 font-bold";
+      } else {
+        label.className = "text-[10px] font-mono text-slate-400";
       }
     }
 
-    /* =========================================================================
-       6. SMART RECOGNITION & AUTOCOMPLETE SYSTEM
-       ========================================================================= */
-
-    function refreshDatalists() {
-      const obs = getObservations();
-      const effectList = document.getElementById("knownEffectsList");
-      const causeList = document.getElementById("knownCausesList");
-
-      const uniqueEffects = [...new Set(obs.map(o => o.effect.trim()))];
-      const uniqueCauses = [...new Set(obs.map(o => o.cause.trim()))];
-
-      effectList.innerHTML = uniqueEffects.map(e => `<option value="${escapeHTML(e)}"></option>`).join("");
-      causeList.innerHTML = uniqueCauses.map(c => `<option value="${escapeHTML(c)}"></option>`).join("");
-    }
-
-    function checkExistingEffect(text) {
+    function checkExistingSymptom(text) {
       const clean = text.trim().toLowerCase();
-      const badge = document.getElementById("effectFreqBadge");
-      const hint = document.getElementById("causeCorrelationHint");
-
+      const badge = document.getElementById("seenCountBadge");
       if (!clean) {
         badge.classList.add("hidden");
-        hint.classList.add("hidden");
         return;
       }
 
-      const obs = getObservations();
-      const matched = obs.filter(o => o.effect.trim().toLowerCase() === clean);
-
-      if (matched.length > 0) {
-        badge.innerText = `Osservato già ${matched.length} volta/e`;
+      const count = analyses.filter(a => a.effect.toLowerCase().trim() === clean).length;
+      if (count > 0) {
+        badge.innerText = `Già registrato ${count} volta/e`;
         badge.classList.remove("hidden");
-
-        // Calculate leading cause
-        const causeFreq = {};
-        matched.forEach(m => {
-          causeFreq[m.cause] = (causeFreq[m.cause] || 0) + 1;
-        });
-
-        let topCause = "";
-        let topCount = 0;
-        for (const [c, count] of Object.entries(causeFreq)) {
-          if (count > topCount) {
-            topCount = count;
-            topCause = c;
-          }
-        }
-
-        const pct = Math.round((topCount / matched.length) * 100);
-        hint.innerText = `AI Hint: Nel ${pct}% dei casi la causa è: "${topCause.slice(0, 35)}..."`;
-        hint.classList.remove("hidden");
       } else {
         badge.classList.add("hidden");
-        hint.classList.add("hidden");
       }
     }
 
-    function validateCueLength(input) {
-      const words = input.value.trim().split(/\s+/).filter(Boolean);
-      const countEl = document.getElementById("cueWordCount");
-      countEl.innerText = `${words.length}/5 parole`;
+    function refreshFormDatalists() {
+      const effectsDL = document.getElementById("effectsDatalist");
+      const causesDL = document.getElementById("causesDatalist");
 
-      if (words.length > 5) {
-        countEl.className = "text-[10px] text-rose-400 font-mono font-black animate-pulse";
-      } else {
-        countEl.className = "text-[10px] text-slate-400 font-mono";
-      }
+      const uniqueEffects = [...new Set(analyses.map(a => a.effect.trim()))];
+      const uniqueCauses = [...new Set(analyses.map(a => a.cause.trim()))];
+
+      effectsDL.innerHTML = uniqueEffects.map(e => `<option value="${escapeHTML(e)}"></option>`).join("");
+      causesDL.innerHTML = uniqueCauses.map(c => `<option value="${escapeHTML(c)}"></option>`).join("");
     }
 
-    /* =========================================================================
-       7. RECORD SUBMISSION
-       ========================================================================= */
-
-    function handleObservationSubmit(e) {
+    function handleAnalysisSubmit(e) {
       e.preventDefault();
 
-      const pillar = document.getElementById("selectedPillarInput").value;
-      const effect = document.getElementById("obsEffect").value.trim();
-      const cause = document.getElementById("obsCause").value.trim();
-      const cue = document.getElementById("obsCue").value.trim();
-      const drill = document.getElementById("obsDrill").value.trim();
-      const snow = document.getElementById("obsSnowType").value;
-      const radius = document.getElementById("obsTurnRadius").value;
+      const effect = document.getElementById("fieldEffect").value.trim();
+      const cause = document.getElementById("fieldCause").value.trim();
+      const cue = document.getElementById("fieldCue").value.trim();
+      const drill = document.getElementById("fieldDrill").value.trim();
+      const pillar = document.getElementById("formSelectedPillar").value;
+      const snow = document.getElementById("fieldSnow").value;
+      const radius = document.getElementById("fieldRadius").value;
 
       if (!effect || !cause || !cue || !drill) {
-        showToast("Compila tutti i campi richiesti!");
+        showToast("Compila tutte le 4 frasi biomeccaniche!");
         return;
       }
 
       const newRecord = {
-        id: "NS-" + pillar + "-" + Date.now().toString().slice(-5),
+        id: "AN-" + pillar + "-" + Date.now().toString().slice(-5),
         pillar,
         effect,
         cause,
@@ -904,117 +1042,113 @@
         drill,
         snow,
         radius,
-        coach: currentActiveCoach,
+        author: activeUser.name,
         timestamp: new Date().toISOString()
       };
 
-      const obs = getObservations();
-      obs.unshift(newRecord);
-      saveObservations(obs);
+      analyses.unshift(newRecord);
+      setStored("ns_analyses", analyses);
 
-      // Reset Form fields except selections
-      document.getElementById("obsEffect").value = "";
-      document.getElementById("obsCause").value = "";
-      document.getElementById("obsCue").value = "";
-      document.getElementById("obsDrill").value = "";
-      document.getElementById("effectFreqBadge").classList.add("hidden");
-      document.getElementById("causeCorrelationHint").classList.add("hidden");
-      document.getElementById("cueWordCount").innerText = "0/5 parole";
+      // Clean inputs
+      document.getElementById("fieldEffect").value = "";
+      document.getElementById("fieldCause").value = "";
+      document.getElementById("fieldCue").value = "";
+      document.getElementById("fieldDrill").value = "";
+      document.getElementById("seenCountBadge").classList.add("hidden");
+      document.getElementById("wordCountLabel").innerText = "Max 5 parole";
 
-      showToast(`Nuova osservazione salvata su pilastro ${pillar}!`);
+      refreshFormDatalists();
+      showToast("Analisi registrata con successo!");
+      switchTab("tab-archive");
     }
 
     /* =========================================================================
-       8. CATALOG VIEW & FILTERING
+       7. TAB: ARCHIVIO (EX LISTINO) WITH AUTHOR-ONLY DELETION
        ========================================================================= */
 
-    function setCatalogFilter(p) {
-      activeCatalogPillar = p;
-      document.querySelectorAll(".cat-filter-btn").forEach(btn => {
+    function setArchivePillarFilter(p) {
+      activeArchivePillar = p;
+      document.querySelectorAll(".arch-pill-btn").forEach(btn => {
         if (btn.getAttribute("data-pillar") === p) {
-          btn.className = "cat-filter-btn px-3 py-1.5 rounded-lg font-bold border transition shrink-0 bg-slate-700 text-white border-slate-500";
+          btn.className = "arch-pill-btn active-arch-filter px-3 py-1 rounded-lg font-bold border shrink-0 bg-slate-800 text-white border-slate-800 dark:bg-slate-700 dark:border-slate-600";
         } else {
-          btn.className = "cat-filter-btn px-3 py-1.5 rounded-lg font-bold border transition shrink-0 bg-snow-900 text-slate-300 border-slate-700";
+          btn.className = "arch-pill-btn px-3 py-1 rounded-lg font-medium border shrink-0 bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800";
         }
       });
-      renderCatalog();
+      renderArchive();
     }
 
-    function renderCatalog() {
-      const container = document.getElementById("catalogContainer");
-      const search = (document.getElementById("catalogSearchInput")?.value || "").toLowerCase().trim();
-      const obs = getObservations();
+    function renderArchive() {
+      const container = document.getElementById("archiveFeed");
+      const search = (document.getElementById("archiveSearch")?.value || "").toLowerCase().trim();
 
-      const filtered = obs.filter(item => {
-        const matchesPillar = activeCatalogPillar === "ALL" || item.pillar === activeCatalogPillar;
+      const filtered = analyses.filter(item => {
+        const matchesPillar = activeArchivePillar === "ALL" || item.pillar === activeArchivePillar;
         const matchesSearch = !search ||
           item.effect.toLowerCase().includes(search) ||
           item.cause.toLowerCase().includes(search) ||
           item.cue.toLowerCase().includes(search) ||
           item.drill.toLowerCase().includes(search) ||
-          item.coach.toLowerCase().includes(search);
+          item.author.toLowerCase().includes(search);
 
         return matchesPillar && matchesSearch;
       });
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div class="text-center py-10 bg-snow-850 rounded-2xl border border-slate-800">
-            <i class="fa-solid fa-filter-circle-xmark text-slate-500 text-2xl mb-2"></i>
-            <p class="text-xs text-slate-400 font-bold">Nessuna osservazione trovata con questi parametri.</p>
+          <div class="text-center py-10 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <p class="text-xs text-slate-500 font-medium">Nessuna analisi corrisponde ai criteri impostati.</p>
           </div>
         `;
         return;
       }
 
-      const pillarTheme = {
-        TAGLIO: { badge: "bg-cyan-500/20 text-cyan-300 border-cyan-400/40", border: "border-l-cyan-400" },
-        FULMINE: { badge: "bg-amber-400/20 text-amber-300 border-amber-400/40", border: "border-l-amber-400" },
-        TRENO: { badge: "bg-emerald-500/20 text-emerald-300 border-emerald-400/40", border: "border-l-emerald-400" },
-        EXCALIBUR: { badge: "bg-purple-500/20 text-purple-300 border-purple-400/40", border: "border-l-purple-400" }
-      };
-
       container.innerHTML = filtered.map(item => {
-        const theme = pillarTheme[item.pillar] || pillarTheme.TAGLIO;
-        const dateObj = new Date(item.timestamp);
-        const dateFormatted = isNaN(dateObj.getTime()) ? "Data recente" : dateObj.toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", year: "2-digit" });
+        // PERMISSION RULE: Only author OR admin can delete
+        const canDelete = (activeUser.role === "ADMIN") || (item.author === activeUser.name);
+        const dateStr = new Date(item.timestamp).toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit" });
 
         return `
-          <div class="bg-snow-850 border border-slate-800/90 rounded-2xl p-4 space-y-3 transition border-l-4 ${theme.border}">
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 space-y-2.5 shadow-sm">
             
-            <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
               <div class="flex items-center gap-2">
-                <span class="text-[10px] font-black px-2 py-0.5 rounded border uppercase tracking-wider ${theme.badge}">
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 uppercase border border-slate-300 dark:border-slate-700">
                   ${item.pillar}
                 </span>
-                <span class="text-[11px] text-slate-400 font-medium">✍️ Coach ${escapeHTML(item.coach)}</span>
+                <span class="text-xs text-slate-500">Coach <strong>${escapeHTML(item.author)}</strong></span>
               </div>
-              <span class="text-[10px] font-mono text-slate-400">${dateFormatted} • ${escapeHTML(item.snow.split(" ")[0])}</span>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-mono text-slate-400">${dateStr} • ${escapeHTML(item.snow)}</span>
+                ${canDelete ? `
+                  <button onclick="deleteAnalysis('${item.id}')" title="Cancella la tua osservazione" class="text-slate-400 hover:text-rose-500 p-1 text-xs">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                ` : ''}
+              </div>
             </div>
 
-            <!-- Effect & Cause Grid -->
-            <div class="space-y-2">
-              <div>
-                <span class="text-[10px] font-black uppercase text-rose-400 block mb-0.5">Cosa Vedo (Effetto):</span>
-                <p class="text-sm font-bold text-white">${escapeHTML(item.effect)}</p>
-              </div>
+            <!-- Effect -->
+            <div>
+              <span class="text-[10px] font-bold uppercase text-slate-400 block mb-0.5">Cosa vedo:</span>
+              <p class="text-sm font-bold text-slate-900 dark:text-white">${escapeHTML(item.effect)}</p>
+            </div>
 
-              <div class="bg-snow-900/90 p-2.5 rounded-xl border border-slate-800">
-                <span class="text-[10px] font-black uppercase text-amber-400 block mb-0.5">Perché Biomeccanico (20/80):</span>
-                <p class="text-xs text-slate-300 leading-relaxed font-medium">${escapeHTML(item.cause)}</p>
-              </div>
+            <!-- Cause -->
+            <div class="bg-slate-50 dark:bg-slate-950 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs">
+              <span class="text-[10px] font-bold uppercase text-slate-500 block mb-0.5">Causa Biomeccanica:</span>
+              <p class="text-slate-700 dark:text-slate-300">${escapeHTML(item.cause)}</p>
             </div>
 
             <!-- Cue & Drill -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 text-xs">
-              <div class="bg-cyan-950/40 border border-cyan-500/30 p-2.5 rounded-xl">
-                <span class="text-[9px] font-black uppercase text-cyan-400 block mb-0.5">Suggerimento (Cue):</span>
-                <p class="font-display font-black text-cyan-200">"${escapeHTML(item.cue)}"</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-0.5">
+              <div class="p-2.5 rounded-xl bg-sky-50 dark:bg-sky-950/40 border border-sky-100 dark:border-sky-900/40">
+                <span class="text-[9px] font-bold uppercase text-sky-700 dark:text-sky-400 block mb-0.5">Focus in pista:</span>
+                <p class="font-bold text-sky-900 dark:text-sky-200">"${escapeHTML(item.cue)}"</p>
               </div>
-
-              <div class="bg-emerald-950/40 border border-emerald-500/30 p-2.5 rounded-xl">
-                <span class="text-[9px] font-black uppercase text-emerald-400 block mb-0.5">Proposta in Pista:</span>
-                <p class="text-slate-300 font-medium">${escapeHTML(item.drill)}</p>
+              <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                <span class="text-[9px] font-bold uppercase text-slate-500 block mb-0.5">Esercizio:</span>
+                <p class="text-slate-700 dark:text-slate-300 font-medium">${escapeHTML(item.drill)}</p>
               </div>
             </div>
 
@@ -1023,48 +1157,287 @@
       }).join("");
     }
 
-    /* =========================================================================
-       9. AI ANALYTICS & STATISTICAL ENGINE
-       ========================================================================= */
+    function deleteAnalysis(id) {
+      const target = analyses.find(a => a.id === id);
+      if (!target) return;
 
-    function renderAnalytics() {
-      const obs = getObservations();
-
-      // Counts
-      document.getElementById("statTotalObservations").innerText = obs.length;
-      
-      const uniqueEffects = new Set(obs.map(o => o.effect.trim().toLowerCase()));
-      document.getElementById("statUniqueEffects").innerText = uniqueEffects.size;
-
-      const uniqueCauses = new Set(obs.map(o => o.cause.trim().toLowerCase()));
-      document.getElementById("statUniqueCauses").innerText = uniqueCauses.size;
-
-      const coaches = new Set(obs.map(o => o.coach));
-      document.getElementById("statActiveCoaches").innerText = coaches.size;
-
-      // Probability matrix: P(Causa | Effetto)
-      renderCorrelationMatrix(obs);
-
-      // Top causes per pillar
-      renderPillarStats(obs);
-    }
-
-    function renderCorrelationMatrix(obs) {
-      const container = document.getElementById("correlationsContainer");
-      if (obs.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500 py-3">Dati insufficienti.</p>`;
+      if (activeUser.role !== "ADMIN" && target.author !== activeUser.name) {
+        showToast("Non puoi cancellare l'analisi di un altro coach!");
         return;
       }
 
+      if (confirm("Vuoi davvero cancellare questa analisi dall'archivio?")) {
+        analyses = analyses.filter(a => a.id !== id);
+        setStored("ns_analyses", analyses);
+        renderArchive();
+        refreshFormDatalists();
+        showToast("Analisi cancellata");
+      }
+    }
+
+    /* =========================================================================
+       8. TAB: IDEE IN PISTA (CONSULTAZIONE E AGGIUNTA SUL CAMPO)
+       ========================================================================= */
+
+    function filterIdeas(focus) {
+      activeIdeaFilter = focus;
+      document.querySelectorAll(".idea-filter-btn").forEach(btn => {
+        if (btn.getAttribute("data-focus") === focus) {
+          btn.className = "idea-filter-btn px-3 py-1 rounded-lg font-bold border shrink-0 bg-slate-800 text-white border-slate-800 dark:bg-slate-700 dark:border-slate-600";
+        } else {
+          btn.className = "idea-filter-btn px-3 py-1 rounded-lg font-medium border shrink-0 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800";
+        }
+      });
+      renderIdeas();
+    }
+
+    function renderIdeas() {
+      const container = document.getElementById("ideasContainer");
+      const filtered = ideas.filter(i => activeIdeaFilter === "ALL" || i.pillar === activeIdeaFilter);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-500 py-6 text-center">Nessuna idea registrata per questo pilastro.</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => {
+        const canDelete = (activeUser.role === "ADMIN") || (item.author === activeUser.name);
+
+        return `
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 space-y-3 shadow-sm">
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 uppercase">
+                ${item.pillar}
+              </span>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] text-slate-400 font-mono">Coach ${escapeHTML(item.author)}</span>
+                ${canDelete ? `
+                  <button onclick="deleteIdea('${item.id}')" title="Cancella la tua idea" class="text-slate-400 hover:text-rose-500 p-1 text-xs">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white">${escapeHTML(item.title)}</h3>
+            </div>
+
+            <div class="space-y-2 text-xs">
+              <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                <strong class="text-slate-500 block text-[10px] uppercase">Di cosa si tratta:</strong>
+                <p class="text-slate-700 dark:text-slate-300 mt-0.5">${escapeHTML(item.concept)}</p>
+              </div>
+
+              <div class="p-2.5 rounded-xl bg-sky-50 dark:bg-sky-950/30 border border-sky-100 dark:border-sky-900/30">
+                <strong class="text-sky-700 dark:text-sky-400 block text-[10px] uppercase">Come applicarlo in pista:</strong>
+                <p class="text-sky-900 dark:text-sky-200 font-medium mt-0.5">${escapeHTML(item.action)}</p>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function openNewIdeaModal() {
+      document.getElementById("ideaModal").classList.remove("hidden");
+    }
+
+    function closeNewIdeaModal() {
+      document.getElementById("ideaModal").classList.add("hidden");
+    }
+
+    function saveNewIdea() {
+      const pillar = document.getElementById("ideaFormPillar").value;
+      const title = document.getElementById("ideaFormTitle").value.trim();
+      const concept = document.getElementById("ideaFormConcept").value.trim();
+      const action = document.getElementById("ideaFormAction").value.trim();
+
+      if (!title || !concept || !action) {
+        showToast("Compila tutti i campi dell'idea!");
+        return;
+      }
+
+      ideas.unshift({
+        id: "IDEA-" + Date.now().toString().slice(-4),
+        pillar,
+        title,
+        concept,
+        action,
+        author: activeUser.name,
+        date: new Date().toISOString().slice(0, 10)
+      });
+
+      setStored("ns_ideas", ideas);
+      document.getElementById("ideaFormTitle").value = "";
+      document.getElementById("ideaFormConcept").value = "";
+      document.getElementById("ideaFormAction").value = "";
+
+      closeNewIdeaModal();
+      renderIdeas();
+      showToast("Idea salvata nella biblioteca!");
+    }
+
+    function deleteIdea(id) {
+      const target = ideas.find(i => i.id === id);
+      if (!target) return;
+      if (activeUser.role !== "ADMIN" && target.author !== activeUser.name) {
+        showToast("Non puoi cancellare l'idea inserita da un altro coach!");
+        return;
+      }
+      if (confirm("Vuoi cancellare questa idea?")) {
+        ideas = ideas.filter(i => i.id !== id);
+        setStored("ns_ideas", ideas);
+        renderIdeas();
+        showToast("Idea eliminata");
+      }
+    }
+
+    /* =========================================================================
+       9. TAB: DIARIO DEL CAMP & TOPICS
+       ========================================================================= */
+
+    function populateTopicSelect() {
+      const select = document.getElementById("debTopicSelect");
+      select.innerHTML = topics.map(t => `<option value="${escapeHTML(t)}">${escapeHTML(t)}</option>`).join("") +
+        `<option value="__NEW__">➕ Crea un Nuovo Topic...</option>`;
+    }
+
+    function onTopicSelectChange(val) {
+      const wrap = document.getElementById("newTopicInputWrap");
+      if (val === "__NEW__") {
+        wrap.classList.remove("hidden");
+        document.getElementById("debNewTopicInput").focus();
+      } else {
+        wrap.classList.add("hidden");
+      }
+    }
+
+    function handleDebriefSubmit(e) {
+      e.preventDefault();
+
+      const location = document.getElementById("debLocation").value.trim();
+      const conditions = document.getElementById("debConditions").value.trim();
+      const notes = document.getElementById("debNotes").value.trim();
+
+      const topicSelect = document.getElementById("debTopicSelect").value;
+      let finalTopic = topicSelect;
+
+      if (topicSelect === "__NEW__") {
+        const custom = document.getElementById("debNewTopicInput").value.trim();
+        if (!custom) {
+          showToast("Inserisci il nome del nuovo topic!");
+          return;
+        }
+        finalTopic = custom;
+        if (!topics.includes(finalTopic)) {
+          topics.push(finalTopic);
+          setStored("ns_topics", topics);
+          populateTopicSelect();
+        }
+      }
+
+      if (!location || !conditions || !notes) {
+        showToast("Compila tutti i campi richiesti!");
+        return;
+      }
+
+      const newDebrief = {
+        id: "DEB-" + Date.now().toString().slice(-4),
+        date: new Date().toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric" }),
+        author: activeUser.name,
+        location,
+        conditions,
+        topic: finalTopic,
+        notes
+      };
+
+      debriefs.unshift(newDebrief);
+      setStored("ns_debriefs", debriefs);
+
+      document.getElementById("debLocation").value = "";
+      document.getElementById("debConditions").value = "";
+      document.getElementById("debNotes").value = "";
+      document.getElementById("newTopicInputWrap").classList.add("hidden");
+      populateTopicSelect();
+
+      renderDebriefFeed();
+      showToast("Nota del diario salvata!");
+    }
+
+    function renderDebriefFeed() {
+      const container = document.getElementById("debriefFeed");
+      if (debriefs.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-500 py-6 text-center">Nessuna voce presente nel diario.</p>`;
+        return;
+      }
+
+      container.innerHTML = debriefs.map(d => {
+        const canDelete = (activeUser.role === "ADMIN") || (d.author === activeUser.name);
+
+        return `
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 space-y-2 shadow-sm">
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+              <span class="text-xs font-bold text-slate-900 dark:text-white">📍 ${escapeHTML(d.location)}</span>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] text-slate-400 font-mono">${d.date} • Coach ${escapeHTML(d.author)}</span>
+                ${canDelete ? `
+                  <button onclick="deleteDebrief('${d.id}')" title="Cancella la tua nota" class="text-slate-400 hover:text-rose-500 p-1 text-xs">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+
+            <div class="text-xs">
+              <span class="text-[10px] text-slate-400">Condizioni: ${escapeHTML(d.conditions)}</span>
+              <h4 class="font-bold text-sky-700 dark:text-sky-300 mt-0.5">${escapeHTML(d.topic)}</h4>
+            </div>
+
+            <div class="bg-slate-50 dark:bg-slate-950 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+              ${escapeHTML(d.notes)}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function deleteDebrief(id) {
+      const target = debriefs.find(d => d.id === id);
+      if (!target) return;
+      if (activeUser.role !== "ADMIN" && target.author !== activeUser.name) {
+        showToast("Non puoi cancellare il diario inserito da un altro coach!");
+        return;
+      }
+      if (confirm("Vuoi cancellare questa voce dal diario?")) {
+        debriefs = debriefs.filter(d => d.id !== id);
+        setStored("ns_debriefs", debriefs);
+        renderDebriefFeed();
+        showToast("Voce cancellata");
+      }
+    }
+
+    /* =========================================================================
+       10. TAB: AI DATASET & ANALYTICS (ADMIN RESERVED)
+       ========================================================================= */
+
+    function renderAIAnalytics() {
+      if (activeUser.role !== "ADMIN") return;
+
+      document.getElementById("aiStatTotal").innerText = analyses.length;
+      document.getElementById("aiStatSymptoms").innerText = new Set(analyses.map(a => a.effect.trim().toLowerCase())).size;
+      document.getElementById("aiStatCauses").innerText = new Set(analyses.map(a => a.cause.trim().toLowerCase())).size;
+      document.getElementById("aiStatCoaches").innerText = new Set(analyses.map(a => a.author)).size;
+
       // Group by effect
+      const container = document.getElementById("aiCorrelationsList");
       const effectMap = {};
-      obs.forEach(item => {
+      analyses.forEach(item => {
         const eff = item.effect.trim();
         if (!effectMap[eff]) effectMap[eff] = [];
         effectMap[eff].push(item.cause.trim());
       });
 
-      // Compute leading causes
       const matrix = [];
       for (const [effect, causes] of Object.entries(effectMap)) {
         const total = causes.length;
@@ -1074,264 +1447,73 @@
         let topCause = "";
         let topCount = 0;
         for (const [c, n] of Object.entries(counts)) {
-          if (n > topCount) {
-            topCount = n;
-            topCause = c;
-          }
+          if (n > topCount) { topCount = n; topCause = c; }
         }
 
         const probability = Math.round((topCount / total) * 100);
         matrix.push({ effect, topCause, probability, total, topCount });
       }
 
-      // Sort by total occurrences
       matrix.sort((a, b) => b.total - a.total);
 
       container.innerHTML = matrix.slice(0, 5).map(m => `
-        <div class="bg-snow-900 border border-slate-800 rounded-xl p-3">
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-xs font-bold text-white">${escapeHTML(m.effect)}</span>
-            <span class="text-xs font-mono font-black text-cyan-400 bg-cyan-950/80 border border-cyan-500/40 px-2 py-0.5 rounded">
-              ${m.probability}% correlazione
-            </span>
+        <div class="bg-slate-50 dark:bg-slate-950 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs">
+          <div class="flex items-center justify-between font-bold mb-1">
+            <span class="text-slate-900 dark:text-white">${escapeHTML(m.effect)}</span>
+            <span class="font-mono text-sky-600 dark:text-sky-400">${m.probability}% correlato</span>
           </div>
-          <p class="text-[11px] text-amber-300/90 font-medium leading-relaxed">
-            ➔ <strong>Causa primaria:</strong> ${escapeHTML(m.topCause)}
-          </p>
-          <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
-            <div class="bg-gradient-to-r from-cyan-400 to-purple-500 h-full rounded-full" style="width: ${m.probability}%"></div>
-          </div>
-          <span class="text-[9px] font-mono text-slate-500 mt-1 block">Campione: ${m.topCount} su ${m.total} casi rilevati</span>
+          <p class="text-[11px] text-slate-600 dark:text-slate-400">➔ Causa primaria: ${escapeHTML(m.topCause)}</p>
+          <span class="text-[9px] font-mono text-slate-400 mt-1 block">Rilevazioni: ${m.topCount} su ${m.total} campioni</span>
         </div>
       `).join("");
     }
 
-    function renderPillarStats(obs) {
-      const container = document.getElementById("pillarStatsContainer");
-      const pillars = ["TAGLIO", "FULMINE", "TRENO", "EXCALIBUR"];
-
-      const pillarTheme = {
-        TAGLIO: { color: "text-cyan-400", title: "Taglio / Coltello" },
-        FULMINE: { color: "text-amber-400", title: "Fulmine" },
-        TRENO: { color: "text-emerald-400", title: "Treno" },
-        EXCALIBUR: { color: "text-purple-400", title: "Excalibur" }
-      };
-
-      container.innerHTML = pillars.map(p => {
-        const pObs = obs.filter(o => o.pillar === p);
-        const causesCount = {};
-        pObs.forEach(o => { causesCount[o.cause] = (causesCount[o.cause] || 0) + 1; });
-
-        const sortedCauses = Object.entries(causesCount).sort((a, b) => b[1] - a[1]);
-
-        return `
-          <div class="bg-snow-900 p-3 rounded-2xl border border-slate-800 space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-black uppercase tracking-wider ${pillarTheme[p].color}">
-                ${pillarTheme[p].title}
-              </span>
-              <span class="text-[10px] font-mono text-slate-400">${pObs.length} osservazioni</span>
-            </div>
-
-            ${sortedCauses.length === 0 ? '<p class="text-[11px] text-slate-500">Nessun dato registrato</p>' : `
-              <ul class="space-y-1.5">
-                ${sortedCauses.slice(0, 3).map(([cause, count]) => `
-                  <li class="text-[11px] text-slate-300 flex items-start justify-between gap-2 border-b border-slate-800/60 pb-1">
-                    <span class="truncate">• ${escapeHTML(cause)}</span>
-                    <span class="font-mono font-bold text-white shrink-0">${count}x</span>
-                  </li>
-                `).join("")}
-              </ul>
-            `}
-          </div>
-        `;
-      }).join("");
+    function exportAIJson() {
+      if (activeUser.role !== "ADMIN") return;
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(analyses, null, 2));
+      const a = document.createElement("a");
+      a.href = dataStr;
+      a.download = `natural_skiing_ai_dataset_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      showToast("File JSON scaricato");
     }
 
-    /* =========================================================================
-       10. MACHINE LEARNING DATASET EXPORT (JSON & CSV)
-       ========================================================================= */
-
-    function exportDatasetJSON() {
-      const obs = getObservations();
-      const exportObject = {
-        dataset_name: "NATURAL_SKIING_BIOMECHANICS_DATASET",
-        created_at: new Date().toISOString(),
-        version: "2.1.0-AI-READY",
-        pillars: ["TAGLIO", "FULMINE", "TRENO", "EXCALIBUR"],
-        features: ["effect", "snow_type", "turn_radius"],
-        targets: ["root_cause_20_80", "coach_cue", "field_drill"],
-        total_samples: obs.length,
-        samples: obs.map(o => ({
-          sample_id: o.id,
-          pillar: o.pillar,
-          effect_visual_symptom: o.effect,
-          root_cause_biomechanical: o.cause,
-          cue_synthesized: o.cue,
-          drill_on_slope: o.drill,
-          snow_condition: o.snow,
-          turn_radius: o.radius,
-          recorded_by_coach: o.coach,
-          timestamp_iso: o.timestamp
-        }))
-      };
-
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObject, null, 2));
-      const downloadAnchor = document.createElement("a");
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `natural_skiing_ai_dataset_${new Date().toISOString().slice(0,10)}.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-
-      showToast("Dataset JSON generato e scaricato!");
-    }
-
-    function exportDatasetCSV() {
-      const obs = getObservations();
-      const headers = ["id", "pillar", "effect_symptom", "root_cause_20_80", "cue", "drill", "snow_type", "radius", "coach", "timestamp"];
-      
-      const rows = obs.map(o => [
-        o.id,
-        o.pillar,
-        `"${o.effect.replace(/"/g, '""')}"`,
-        `"${o.cause.replace(/"/g, '""')}"`,
-        `"${o.cue.replace(/"/g, '""')}"`,
-        `"${o.drill.replace(/"/g, '""')}"`,
-        `"${o.snow.replace(/"/g, '""')}"`,
-        `"${o.radius.replace(/"/g, '""')}"`,
-        o.coach,
-        o.timestamp
+    function exportAICsv() {
+      if (activeUser.role !== "ADMIN") return;
+      const headers = ["id", "pillar", "effect_symptom", "cause", "cue", "drill", "snow", "radius", "author", "timestamp"];
+      const rows = analyses.map(a => [
+        a.id, a.pillar,
+        `"${a.effect.replace(/"/g, '""')}"`,
+        `"${a.cause.replace(/"/g, '""')}"`,
+        `"${a.cue.replace(/"/g, '""')}"`,
+        `"${a.drill.replace(/"/g, '""')}"`,
+        `"${a.snow.replace(/"/g, '""')}"`,
+        `"${a.radius.replace(/"/g, '""')}"`,
+        a.author, a.timestamp
       ]);
-
-      const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
-      const encodedUri = encodeURI(csvContent);
-      const downloadAnchor = document.createElement("a");
-      downloadAnchor.setAttribute("href", encodedUri);
-      downloadAnchor.setAttribute("download", `natural_skiing_ai_dataset_${new Date().toISOString().slice(0,10)}.csv`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-
-      showToast("Dataset CSV generato e scaricato!");
-    }
-
-    function loadSampleDataConfirm() {
-      if (confirm("Vuoi ricaricare il dataset biomeccanico originale di esempio Natural Skiing? I dati attuali verranno integrati.")) {
-        localStorage.setItem("ns_ai_observations", JSON.stringify(INITIAL_OBSERVATIONS));
-        localStorage.setItem("ns_ai_debriefs", JSON.stringify(INITIAL_DEBRIEFS));
-        updateGlobalCounters();
-        refreshDatalists();
-        renderCatalog();
-        renderAnalytics();
-        renderDebriefFeed();
-        showToast("Dataset originale ricaricato con successo!");
-      }
-    }
-
-    function clearAllDataConfirm() {
-      if (confirm("Attenzione: vuoi davvero cancellare tutte le osservazioni memorizzate in locale sul dispositivo?")) {
-        localStorage.removeItem("ns_ai_observations");
-        updateGlobalCounters();
-        refreshDatalists();
-        renderCatalog();
-        renderAnalytics();
-        showToast("Dataset locale azzerato.");
-      }
+      const csv = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+      const a = document.createElement("a");
+      a.href = encodeURI(csv);
+      a.download = `natural_skiing_ai_dataset_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      showToast("File CSV scaricato");
     }
 
     /* =========================================================================
-       11. DIARIO TECNICO & DEBRIEFING CAMP
-       ========================================================================= */
-
-    function handleDebriefSubmit(e) {
-      e.preventDefault();
-
-      const location = document.getElementById("debriefLocation").value.trim();
-      const conditions = document.getElementById("debriefConditions").value.trim();
-      const focusPillar = document.getElementById("debriefFocusPillar").value;
-      const topic = document.getElementById("debriefTopic").value.trim();
-      const notes = document.getElementById("debriefNotes").value.trim();
-
-      if (!location || !conditions || !topic || !notes) {
-        showToast("Compila tutti i campi del debriefing!");
-        return;
-      }
-
-      const newDebrief = {
-        id: "DEB-" + Date.now().toString().slice(-4),
-        date: new Date().toISOString().slice(0, 10),
-        coach: currentActiveCoach,
-        location,
-        conditions,
-        focusPillar,
-        topic,
-        notes
-      };
-
-      const debriefs = getDebriefs();
-      debriefs.unshift(newDebrief);
-      saveDebriefs(debriefs);
-
-      document.getElementById("debriefLocation").value = "";
-      document.getElementById("debriefConditions").value = "";
-      document.getElementById("debriefTopic").value = "";
-      document.getElementById("debriefNotes").value = "";
-
-      renderDebriefFeed();
-      showToast("Debriefing di giornata archiviato!");
-    }
-
-    function renderDebriefFeed() {
-      const container = document.getElementById("debriefFeedContainer");
-      const debriefs = getDebriefs();
-
-      if (debriefs.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500 py-4 text-center">Nessun debriefing salvato per questo camp.</p>`;
-        return;
-      }
-
-      container.innerHTML = debriefs.map(d => `
-        <div class="bg-snow-850 border border-slate-800 rounded-3xl p-4 space-y-2.5">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] font-black px-2 py-0.5 rounded bg-amber-400/20 text-amber-300 border border-amber-400/40 uppercase">
-                ${d.focusPillar}
-              </span>
-              <span class="text-xs font-bold text-white">📍 ${escapeHTML(d.location)}</span>
-            </div>
-            <span class="text-[11px] font-mono text-slate-400 font-semibold">${d.date} • Coach ${escapeHTML(d.coach)}</span>
-          </div>
-
-          <div>
-            <span class="text-[10px] font-mono text-slate-400">Condizioni: ${escapeHTML(d.conditions)}</span>
-            <h4 class="text-sm font-black text-white mt-0.5">${escapeHTML(d.topic)}</h4>
-          </div>
-
-          <div class="bg-snow-900/90 p-3 rounded-2xl border border-slate-800">
-            <span class="text-[10px] font-black uppercase text-amber-400 block mb-1">Riflessioni e Takeaway Tecnico:</span>
-            <p class="text-xs text-slate-300 leading-relaxed font-normal">${escapeHTML(d.notes)}</p>
-          </div>
-        </div>
-      `).join("");
-    }
-
-    /* =========================================================================
-       12. HELPERS & NOTIFICATIONS
+       11. UTILITIES
        ========================================================================= */
 
     function showToast(msg) {
       const toast = document.getElementById("toastNotification");
-      const msgEl = document.getElementById("toastMessage");
-      msgEl.innerText = msg;
-
+      const label = document.getElementById("toastMessage");
+      label.innerText = msg;
       toast.classList.remove("opacity-0", "pointer-events-none", "-translate-y-4");
       toast.classList.add("opacity-100", "translate-y-0");
 
       setTimeout(() => {
         toast.classList.add("opacity-0", "pointer-events-none", "-translate-y-4");
         toast.classList.remove("opacity-100", "translate-y-0");
-      }, 2400);
+      }, 2200);
     }
 
     function escapeHTML(str) {
