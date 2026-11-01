@@ -782,25 +782,23 @@
     }
 
     // --- GESTIONE COACH (SOLO ADMIN) ---
-    function openCoachManager() {
-      if (currentUser.role !== 'admin') return;
-      renderCoachManagerList();
-      document.getElementById('modalStaff').classList.remove('hidden');
-      document.getElementById('modalStaff').classList.add('flex');
-    }
-
-    function chiudiCoachManager() {
-      document.getElementById('modalStaff').classList.add('hidden');
-      document.getElementById('modalStaff').classList.remove('flex');
+    function getCoachName(c) {
+      if (!c) return '';
+      return typeof c === 'object' ? (c.name || c.nome || JSON.stringify(c)) : String(c);
     }
 
     function renderCoachManagerList() {
       const cont = document.getElementById('listaCoachManager');
-      cont.innerHTML = coaches.map(c => `
+      if (!cont) return;
+
+      // Normalizza la lista per assicurarsi che siano tutte stringhe
+      coaches = coaches.map(c => getCoachName(c)).filter(Boolean);
+
+      cont.innerHTML = coaches.map(nome => `
         <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800 text-xs font-semibold border border-slate-200 dark:border-slate-700">
-          <span class="text-slate-900 dark:text-white font-bold">${c} ${c === "Stefano" ? '<span class="text-amber-500 font-black ml-1">(Admin)</span>' : ''}</span>
-          ${c !== "Stefano" ? `
-            <button type="button" onclick="rimuoviCoach('${c}')" class="min-touch px-3 py-1.5 rounded-lg bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 font-bold hover:bg-rose-100 active:scale-95 transition-transform">
+          <span class="text-slate-900 dark:text-white font-bold">${nome} ${nome === "Stefano" ? '<span class="text-amber-500 font-black ml-1">(Admin)</span>' : ''}</span>
+          ${nome !== "Stefano" ? `
+            <button type="button" onclick="rimuoviCoach('${nome}')" class="min-touch px-3 py-1.5 rounded-lg bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 font-bold hover:bg-rose-100 active:scale-95 transition-transform">
               Rimuovi ✕
             </button>
           ` : '<span class="text-slate-400 text-[10px]">Titolare</span>'}
@@ -808,23 +806,27 @@
       `).join('');
     }
 
-    function aggiungiCoach() {
-      const nome = document.getElementById('nuovoCoachNome').value.trim();
-      if (nome && !coaches.includes(nome)) {
-        coaches.push(nome);
-        localStorage.setItem('ns_coaches', JSON.stringify(coaches));
-        document.getElementById('nuovoCoachNome').value = "";
-        renderCoachManagerList();
-        populateCoachDropdowns();
-      }
-    }
-
-    function rimuoviCoach(nome) {
-      // Rimozione immediata senza blocco confirm del browser
-      coaches = coaches.filter(c => c !== nome);
+    function rimuoviCoach(nomeDaEliminare) {
+      // Normalizza e filtra
+      coaches = coaches.map(c => getCoachName(c)).filter(c => c !== nomeDaEliminare);
       localStorage.setItem('ns_coaches', JSON.stringify(coaches));
       renderCoachManagerList();
       populateCoachDropdowns();
+    }
+
+    function aggiungiCoach() {
+      const input = document.getElementById('nuovoCoachNome');
+      const nome = input.value.trim();
+      if (nome) {
+        coaches = coaches.map(c => getCoachName(c));
+        if (!coaches.includes(nome)) {
+          coaches.push(nome);
+          localStorage.setItem('ns_coaches', JSON.stringify(coaches));
+          input.value = "";
+          renderCoachManagerList();
+          populateCoachDropdowns();
+        }
+      }
     }
 
     // --- STATISTICHE & EXPORT DATASET ---
