@@ -781,24 +781,33 @@
       }
     }
 
-    // --- GESTIONE COACH (SOLO ADMIN) ---
-    function getCoachName(c) {
-      if (!c) return '';
-      return typeof c === 'object' ? (c.name || c.nome || JSON.stringify(c)) : String(c);
+    // --- GESTIONE COACH ROBUSTA BASATA SU INDICE ---
+    function pulisciNomeCoach(item) {
+      if (!item) return '';
+      if (typeof item === 'object') {
+        return item.name || item.nome || item.coach || '';
+      }
+      const str = String(item).trim();
+      return (str === '[object Object]' || str === '') ? '' : str;
     }
 
     function renderCoachManagerList() {
       const cont = document.getElementById('listaCoachManager');
       if (!cont) return;
 
-      // Normalizza la lista per assicurarsi che siano tutte stringhe
-      coaches = coaches.map(c => getCoachName(c)).filter(Boolean);
+      // Pulisce l'array da eventuali oggetti corrotti o residui
+      coaches = coaches.map(pulisciNomeCoach).filter(Boolean);
+      if (!coaches.includes("Stefano")) {
+        coaches.unshift("Stefano");
+      }
 
-      cont.innerHTML = coaches.map(nome => `
+      cont.innerHTML = coaches.map((nome, idx) => `
         <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800 text-xs font-semibold border border-slate-200 dark:border-slate-700">
-          <span class="text-slate-900 dark:text-white font-bold">${nome} ${nome === "Stefano" ? '<span class="text-amber-500 font-black ml-1">(Admin)</span>' : ''}</span>
+          <span class="text-slate-900 dark:text-white font-bold">
+            ${nome} ${nome === "Stefano" ? '<span class="text-amber-500 font-black ml-1">(Admin)</span>' : ''}
+          </span>
           ${nome !== "Stefano" ? `
-            <button type="button" onclick="rimuoviCoach('${nome}')" class="min-touch px-3 py-1.5 rounded-lg bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 font-bold hover:bg-rose-100 active:scale-95 transition-transform">
+            <button type="button" onclick="rimuoviCoachPerIndice(${idx})" class="min-touch px-3 py-1.5 rounded-lg bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 font-bold hover:bg-rose-100 active:scale-95 transition-transform">
               Rimuovi ✕
             </button>
           ` : '<span class="text-slate-400 text-[10px]">Titolare</span>'}
@@ -806,27 +815,32 @@
       `).join('');
     }
 
-    function rimuoviCoach(nomeDaEliminare) {
-      // Normalizza e filtra
-      coaches = coaches.map(c => getCoachName(c)).filter(c => c !== nomeDaEliminare);
-      localStorage.setItem('ns_coaches', JSON.stringify(coaches));
-      renderCoachManagerList();
-      populateCoachDropdowns();
+    function rimuoviCoachPerIndice(index) {
+      if (index >= 0 && index < coaches.length) {
+        coaches.splice(index, 1);
+        localStorage.setItem('ns_coaches', JSON.stringify(coaches));
+        renderCoachManagerList();
+        populateCoachDropdowns();
+      }
     }
 
     function aggiungiCoach() {
       const input = document.getElementById('nuovoCoachNome');
-      const nome = input.value.trim();
-      if (nome) {
-        coaches = coaches.map(c => getCoachName(c));
-        if (!coaches.includes(nome)) {
-          coaches.push(nome);
-          localStorage.setItem('ns_coaches', JSON.stringify(coaches));
-          input.value = "";
-          renderCoachManagerList();
-          populateCoachDropdowns();
-        }
+      const nome = pulisciNomeCoach(input.value);
+      if (nome && !coaches.includes(nome)) {
+        coaches.push(nome);
+        localStorage.setItem('ns_coaches', JSON.stringify(coaches));
+        input.value = "";
+        renderCoachManagerList();
+        populateCoachDropdowns();
       }
+    }
+
+    function populateCoachDropdowns() {
+      const selLogin = document.getElementById('loginCoachSelect');
+      if (!selLogin) return;
+      coaches = coaches.map(pulisciNomeCoach).filter(Boolean);
+      selLogin.innerHTML = coaches.filter(c => c !== "Stefano").map(c => `<option value="${c}">${c}</option>`).join('');
     }
 
     // --- STATISTICHE & EXPORT DATASET ---
