@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="it" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>NATURAL SKIING — AI Biomechanics & Field Dataset</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            snow: {
+              950: '#040711',
+              900: '#080e1a',
+              850: '#0e172a',
+              800: '#15223c',
+              700: '#1f3358',
+            },
+            pillar: {
+              taglio: '#00f2fe',
+              fulmine: '#ffb703',
+              treno: '#10b981',
+              excalibur: '#a855f7',
+            }
+          },
+          boxShadow: {
+            'glow-taglio': '0 0 24px -4px rgba(0, 242, 254, 0.45)',
+            'glow-fulmine': '0 0 24px -4px rgba(255, 183, 3, 0.45)',
+            'glow-treno': '0 0 24px -4px rgba(16, 185, 129, 0.45)',
+            'glow-excalibur': '0 0 24px -4px rgba(168, 85, 247, 0.45)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .pb-safe { padding-bottom: env(safe-area-inset-bottom, 16px); }
+    .pt-safe { padding-top: env(safe-area-inset-top, 16px); }
+    button, input, select, textarea { touch-action: manipulation; }
+    .high-contrast-panel {
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(180deg, rgba(14, 23, 42, 0.98) 0%, rgba(8, 14, 26, 0.99) 100%);
+    }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #040711; }
+    ::-webkit-scrollbar-thumb { background: #1f3358; border-radius: 6px; }
+  </style>
+</head>
+
+<body class="h-full flex flex-col font-sans select-none antialiased bg-snow-950 text-slate-100 overflow-hidden">
+
+  <!-- ================= TOP BAR (COACH & ACTIVE STATUS) ================= -->
+  <header class="pt-safe bg-snow-900 border-b border-slate-800/90 px-4 py-2.5 shrink-0 z-30 shadow-xl">
+    <div class="flex items-center justify-between gap-3 max-w-5xl mx-auto">
+      
+      <!-- Brand & Internal Tag -->
+      <div class="flex items-center space-x-2.5">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-amber-400 to-purple-600 p-[2px] flex items-center justify-center shadow-lg">
+          <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+            <i class="fa-solid fa-person-skiing text-cyan-400 text-lg"></i>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center space-x-1.5">
+            <span class="font-display font-black text-sm tracking-wide uppercase bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-sky-300 to-white">NATURAL SKIING</span>
+            <span class="bg-rose-500/20 text-rose-400 border border-rose-500/40 text-[9px] font-black px-1.5 py-0.5 rounded tracking-widest uppercase">INTERNAL AI</span>
+          </div>
+          <p class="text-[11px] text-slate-400 font-semibold">ENJOYSKI PRO CAMPS • Field Dataset Engine</p>
+        </div>
+      </div>
+
+      <!-- Coach Selector & Dataset Quick Counter -->
+      <div class="flex items-center space-x-2">
+        <div class="bg-snow-800 border-2 border-slate-700/80 rounded-xl px-2.5 py-1.5 flex items-center">
+          <i class="fa-solid fa-id-badge text-amber-400 text-xs mr-2"></i>
+          <select id="activeCoachSelect" onchange="onCoachChange(this.value)" class="bg-transparent text-xs font-bold text-white focus:outline-none cursor-pointer">
+            <option value="Stefano" class="bg-slate-900">Coach Stefano</option>
+            <option value="Riccardo" class="bg-slate-900">Coach Riccardo</option>
+            <option value="Federico" class="bg-slate-900">Coach Federico</option>
+            <option value="Alessandro" class="bg-slate-900">Coach Alessandro</option>
+            <option value="Lorenzo" class="bg-slate-900">Coach Lorenzo</option>
+            <option value="Matteo" class="bg-slate-900">Coach Matteo</option>
+            <option value="Altro" class="bg-slate-900">Coach Guest / Altro</option>
+          </select>
+        </div>
+
+        <div class="bg-snow-800 border border-slate-700 rounded-xl px-2.5 py-1.5 hidden sm:flex items-center space-x-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-[11px] font-mono font-bold text-slate-300"><span id="topBarRecordCount">0</span> campioni</span>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= SUB-NOTIFICATION TOAST ================= -->
+  <div id="toastNotification" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4">
+    <div class="bg-emerald-500 text-slate-950 font-black px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow-2xl flex items-center space-x-2 border border-emerald-300">
+      <i class="fa-solid fa-check-double text-base"></i>
+      <span id="toastMessage">Osservazione salvata nel dataset AI!</span>
+    </div>
+  </div>
+
+  <!-- ================= MAIN VIEWPORT (SCROLLABLE) ================= -->
+  <main class="flex-1 overflow-y-auto px-3 sm:px-5 py-4 max-w-5xl w-full mx-auto pb-28">
+
+    <!-- ================= TAB 1: MOTORE DI OSSERVAZIONE BIOMECCANICA ================= -->
+    <section id="tab-observe" class="space-y-4 block">
+      
+      <!-- Alpine Header Card -->
+      <div class="bg-gradient-to-r from-snow-850 via-snow-900 to-snow-800 p-4 rounded-2xl border border-slate-700/80 shadow-lg">
+        <div class="flex items-center justify-between mb-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+            <h2 class="font-display font-black text-sm uppercase tracking-wider text-cyan-300">Rilevamento in Pista / Seggiovia</h2>
+          </div>
+          <span class="text-[11px] font-mono text-slate-400 font-semibold" id="liveTimestampLabel">Oggi</span>
+        </div>
+        <p class="text-xs text-slate-300">Archivia in 20 secondi la casistica reale. Alimenta il modello per l'analisi video automatica.</p>
+      </div>
+
+      <!-- MAIN OBSERVATION FORM -->
+      <form id="observationForm" onsubmit="handleObservationSubmit(event)" class="bg-snow-850 border-2 border-slate-700 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-4">
+        
+        <!-- STEP 1: PILASTRO BIOMECCANICO (4 BIG BUTTONS) -->
+        <div>
+          <label class="block text-[11px] font-black uppercase tracking-wider text-slate-300 mb-2 flex items-center justify-between">
+            <span>1. Pilastro Fondamentale (Natural Skiing)</span>
+            <span class="text-slate-400 font-normal">Obbligatorio</span>
+          </label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            
+            <button type="button" onclick="selectPillar('TAGLIO')" id="pillBtn-TAGLIO" 
+              class="pillar-selector h-15 py-3 px-2 rounded-2xl border-2 font-display font-black text-xs sm:text-sm flex flex-col items-center justify-center transition-all bg-snow-900 border-slate-700 text-slate-300 active:scale-95">
+              <span class="text-cyan-400 text-base mb-0.5"><i class="fa-solid fa-shapes"></i></span>
+              <span class="tracking-wide">TAGLIO</span>
+              <span class="text-[9px] font-sans font-normal opacity-70">Spigolo / Vincolo</span>
+            </button>
+
+            <button type="button" onclick="selectPillar('FULMINE')" id="pillBtn-FULMINE" 
+              class="pillar-selector h-15 py-3 px-2 rounded-2xl border-2 font-display font-black text-xs sm:text-sm flex flex-col items-center justify-center transition-all bg-snow-900 border-slate-700 text-slate-300 active:scale-95">
+              <span class="text-amber-400 text-base mb-0.5"><i class="fa-solid fa-bolt"></i></span>
+              <span class="tracking-wide">FULMINE</span>
+              <span class="text-[9px] font-sans font-normal opacity-70">Sagittale / Angoli</span>
+            </button>
+
+            <button type="button" onclick="selectPillar('TRENO')" id="pillBtn-TRENO" 
+              class="pillar-selector h-15 py-3 px-2 rounded-2xl border-2 font-display font-black text-xs sm:text-sm flex flex-col items-center justify-center transition-all bg-snow-900 border-slate-700 text-slate-300 active:scale-95">
+              <span class="text-emerald-400 text-base mb-0.5"><i class="fa-solid fa-arrows-split-up-and-left"></i></span>
+              <span class="tracking-wide">TRENO</span>
+              <span class="text-[9px] font-sans font-normal opacity-70">Traiettoria / Binari</span>
+            </button>
+
+            <button type="button" onclick="selectPillar('EXCALIBUR')" id="pillBtn-EXCALIBUR" 
+              class="pillar-selector h-15 py-3 px-2 rounded-2xl border-2 font-display font-black text-xs sm:text-sm flex flex-col items-center justify-center transition-all bg-snow-900 border-slate-700 text-slate-300 active:scale-95">
+              <span class="text-purple-400 text-base mb-0.5"><i class="fa-solid fa-shield-halved"></i></span>
+              <span class="tracking-wide">EXCALIBUR</span>
+              <span class="text-[9px] font-sans font-normal opacity-70">Busto / Stabilità</span>
+            </button>
+
+          </div>
+          <input type="hidden" id="selectedPillarInput" required value="TAGLIO">
+        </div>
+
+        <!-- CONDITONS ROW (SNOW & SLOPE) -->
+        <div class="grid grid-cols-2 gap-2.5 pt-1">
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Fondo Neve</label>
+            <select id="obsSnowType" class="w-full h-11 bg-snow-900 border border-slate-700 rounded-xl px-3 text-xs font-bold text-white focus:outline-none focus:border-cyan-400">
+              <option value="Neve Compatta da Pista">❄️ Neve Compatta da Pista</option>
+              <option value="Neve Dura / Barrata / Ghiaccio">🧊 Dura / Barrata / Ghiaccio</option>
+              <option value="Neve Trasformata / Pappa">☀️ Pappa / Primaverile</option>
+              <option value="Neve Fresca / Riportata">🌨️ Fresca / Riportata</option>
+              <option value="Pendenza Elevata / Ripido">⚠️ Ripido / Muro</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Raggio di Curva</label>
+            <select id="obsTurnRadius" class="w-full h-11 bg-snow-900 border border-slate-700 rounded-xl px-3 text-xs font-bold text-white focus:outline-none focus:border-cyan-400">
+              <option value="Arco Medio (Conduzione)">Arco Medio (Conduzione)</option>
+              <option value="Arco Ampio (Gigante)">Arco Ampio (Velocità)</option>
+              <option value="Arco Corto (Cortoraggio)">Arco Corto (Rapidità)</option>
+              <option value="Esercizio a Bassa Velocità">Drill a Bassa Velocità</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- STEP 2: COSA VEDO (EFFETTO VISIVO) CON AUTOCOMPLETAMENTO E STATS -->
+        <div class="space-y-1">
+          <div class="flex items-center justify-between">
+            <label class="block text-[11px] font-black uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-eye"></i> 2. COSA VEDO (Effetto Visivo / Sintomo Esterno)
+            </label>
+            <span id="effectFreqBadge" class="hidden text-[10px] bg-rose-500/20 text-rose-300 border border-rose-500/40 px-2 py-0.5 rounded font-mono font-bold">
+              Osservato già 0 volte
+            </span>
+          </div>
+          
+          <input type="text" id="obsEffect" list="knownEffectsList" required 
+            oninput="checkExistingEffect(this.value)"
+            placeholder="Es. Sci esterno che scivola via / Busto che anticipa la curva..." 
+            class="w-full h-13 bg-snow-900 border-2 border-slate-700 focus:border-rose-400 rounded-2xl px-4 text-sm font-bold text-white placeholder-slate-500 focus:outline-none transition">
+          <datalist id="knownEffectsList"></datalist>
+          <p class="text-[10px] text-slate-400">Digita o seleziona: il motore raggruppa le diciture uguali per calcolare la frequenza esatta per l'AI.</p>
+        </div>
+
+        <!-- STEP 3: PERCHÉ? (CAUSA BIOMECCANICA 20/80) -->
+        <div class="space-y-1">
+          <div class="flex items-center justify-between">
+            <label class="block text-[11px] font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-dna"></i> 3. PERCHÉ? (Causa Biomeccanica Reale • Fattore 20/80)
+            </label>
+            <span id="causeCorrelationHint" class="hidden text-[10px] bg-amber-400/20 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded font-mono font-bold"></span>
+          </div>
+          
+          <textarea id="obsCause" list="knownCausesList" rows="2" required 
+            placeholder="Es. Spinta attiva muscolare con la gamba esterna anziché appoggio rilassato; blocca la caviglia ed impedisce la deformazione dello sci." 
+            class="w-full bg-snow-900 border-2 border-slate-700 focus:border-amber-400 rounded-2xl p-3 text-xs sm:text-sm font-medium text-white placeholder-slate-500 focus:outline-none transition"></textarea>
+          <datalist id="knownCausesList"></datalist>
+        </div>
+
+        <!-- STEP 4: SUGGERIMENTO CUE (MAX 4-5 PAROLE) -->
+        <div class="space-y-1">
+          <div class="flex items-center justify-between">
+            <label class="block text-[11px] font-black uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-bullhorn"></i> 4. SUGGERIMENTO (Cue sul campo • Max 4-5 parole)
+            </label>
+            <span class="text-[10px] text-slate-400 font-mono" id="cueWordCount">0/5 parole</span>
+          </div>
+          <input type="text" id="obsCue" required 
+            oninput="validateCueLength(this)"
+            placeholder='Es. "Non spingere: appoggiati"' 
+            class="w-full h-12 bg-snow-900 border-2 border-slate-700 focus:border-cyan-400 rounded-2xl px-4 text-sm font-black text-cyan-300 placeholder-slate-500 focus:outline-none transition">
+        </div>
+
+        <!-- STEP 5: PROPOSTA IN PISTA (DRILL CON GLI SCI) -->
+        <div class="space-y-1">
+          <label class="block text-[11px] font-black uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-person-skiing"></i> 5. PROPOSTA (Compito / Esercizio Pratico in Pista)
+          </label>
+          <input type="text" id="obsDrill" required 
+            placeholder="Es. Curva a raggio naturale sollevando leggermente la coda dello sci interno a centro curva." 
+            class="w-full h-12 bg-snow-900 border-2 border-slate-700 focus:border-emerald-400 rounded-2xl px-4 text-xs sm:text-sm font-bold text-white placeholder-slate-500 focus:outline-none transition">
+        </div>
+
+        <!-- SUBMIT BUTTON (LARGE GLOVE-FRIENDLY TOUCH) -->
+        <div class="pt-2">
+          <button type="submit" id="saveObservationBtn" 
+            class="w-full h-14 bg-gradient-to-r from-cyan-400 via-sky-500 to-emerald-400 active:scale-[0.99] text-slate-950 font-black text-sm uppercase tracking-wider rounded-2xl shadow-glow-taglio flex items-center justify-center gap-2 transition-all">
+            <i class="fa-solid fa-database text-base"></i> Archivia nel Dataset AI
+          </button>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- ================= TAB 2: LISTINO OSSERVAZIONI & RICERCA ================= -->
+    <section id="tab-catalog" class="space-y-4 hidden">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+          <h2 class="font-display font-black text-lg text-white">Listino Correzioni & Frequenze</h2>
+          <p class="text-xs text-slate-400">Tutte le casistiche reali registrate dai coach sul campo.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="switchTab('tab-observe')" class="bg-cyan-500 text-slate-950 font-black text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-md">
+            <i class="fa-solid fa-plus"></i> Nuova
+          </button>
+        </div>
+      </div>
+
+      <!-- Search & Filters -->
+      <div class="bg-snow-850 p-3 rounded-2xl border border-slate-800 space-y-2.5">
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+          <input type="text" id="catalogSearchInput" oninput="renderCatalog()" placeholder="Cerca sintomo, causa, cue o autore..." 
+            class="w-full h-11 bg-snow-900 border border-slate-700 rounded-xl pl-10 pr-4 text-xs font-bold text-white focus:outline-none focus:border-cyan-400">
+        </div>
+
+        <!-- Pillar Filter Buttons -->
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar text-xs">
+          <button onclick="setCatalogFilter('ALL')" class="cat-filter-btn active-cat-filter px-3 py-1.5 rounded-lg font-bold border transition shrink-0 bg-slate-700 text-white border-slate-600" data-pillar="ALL">Tutti</button>
+          <button onclick="setCatalogFilter('TAGLIO')" class="cat-filter-btn px-3 py-1.5 rounded-lg font-bold border transition shrink-0 bg-snow-900 text-slate-300 border-slate-700" data-pillar="TAGLIO">Taglio</button>
+          <button onclick="setCatalogFilter('FULMINE')" class="cat-filter-btn px-3 py-1.5 rounded-lg font-bold border transition shrink-0 bg-snow-900 text-slate-300 border-slate-700" data-pillar="FULMINE">Fulmine</button>
+          <button onclick="setCatalogFilter('TRENO')" class="cat-filter-btn px-3 py-1.5 rounded-lg font-bold border transition shrink-0 bg-snow-900 text-slate-300 border-slate-700" data-pillar="TRENO">Treno</button>
+          <button onclick="setCatalogFilter('EXCALIBUR')" class="cat-filter-btn px-3 py-1.5 rounded-lg font-bold border transition shrink-0 bg-snow-900 text-slate-300 border-slate-700" data-pillar="EXCALIBUR">Excalibur</button>
+        </div>
+      </div>
+
+      <!-- Feed Container -->
+      <div id="catalogContainer" class="space-y-3">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- ================= TAB 3: DASHBOARD STATISTICHE & DATASET EXPORT ================= -->
+    <section id="tab-analytics" class="space-y-4 hidden">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="font-display font-black text-lg text-white flex items-center gap-2">
+            <i class="fa-solid fa-brain text-purple-400"></i> AI Correlation & Dataset Metrics
+          </h2>
+          <p class="text-xs text-slate-400">Frequenze statistiche e matrice probabilistica $P(\text{Causa} \mid \text{Effetto})$</p>
+        </div>
+      </div>
+
+      <!-- KPI Summary Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+        <div class="bg-snow-850 border border-slate-800 p-3 rounded-2xl">
+          <span class="text-[10px] font-bold uppercase text-slate-400 block">Totale Record</span>
+          <span id="statTotalObservations" class="font-display font-black text-2xl text-cyan-400">0</span>
+          <span class="text-[10px] text-slate-500 block">Casi archiviati</span>
+        </div>
+        <div class="bg-snow-850 border border-slate-800 p-3 rounded-2xl">
+          <span class="text-[10px] font-bold uppercase text-slate-400 block">Effetti Unici</span>
+          <span id="statUniqueEffects" class="font-display font-black text-2xl text-rose-400">0</span>
+          <span class="text-[10px] text-slate-500 block">Sintomi visivi</span>
+        </div>
+        <div class="bg-snow-850 border border-slate-800 p-3 rounded-2xl">
+          <span class="text-[10px] font-bold uppercase text-slate-400 block">Cause 20/80</span>
+          <span id="statUniqueCauses" class="font-display font-black text-2xl text-amber-400">0</span>
+          <span class="text-[10px] text-slate-500 block">Radici biomeccaniche</span>
+        </div>
+        <div class="bg-snow-850 border border-slate-800 p-3 rounded-2xl">
+          <span class="text-[10px] font-bold uppercase text-slate-400 block">Coach Coinvolti</span>
+          <span id="statActiveCoaches" class="font-display font-black text-2xl text-emerald-400">0</span>
+          <span class="text-[10px] text-slate-500 block">Autori dataset</span>
+        </div>
+      </div>
+
+      <!-- EXPORT ACTIONS FOR AI TRAINING (JSON & CSV) -->
+      <div class="bg-gradient-to-r from-purple-950/60 to-snow-850 border-2 border-purple-500/40 p-4 rounded-3xl space-y-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-display font-black text-sm text-purple-300 uppercase tracking-wide flex items-center gap-1.5">
+              <i class="fa-solid fa-file-export"></i> Esportazione Dataset per Machine Learning
+            </h3>
+            <p class="text-[11px] text-slate-300">File formattati per pipeline di training (input: Effetto/Condizioni -> output: Causa/Cue/Drill).</p>
+          </div>
+          <span class="text-xs font-mono font-bold text-purple-400">ML Ready</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <button onclick="exportDatasetJSON()" class="h-12 bg-purple-600 hover:bg-purple-500 text-white font-black text-xs rounded-xl flex items-center justify-center gap-2 shadow-lg transition">
+            <i class="fa-solid fa-code text-sm"></i> Scarica JSON (Strutturato AI)
+          </button>
+          <button onclick="exportDatasetCSV()" class="h-12 bg-snow-800 hover:bg-snow-700 border border-purple-400/50 text-purple-200 font-black text-xs rounded-xl flex items-center justify-center gap-2 transition">
+            <i class="fa-solid fa-file-csv text-sm"></i> Scarica CSV (Tabellare ML)
+          </button>
+        </div>
+      </div>
+
+      <!-- TOP CORRELATIONS MATRIX -->
+      <div class="bg-snow-850 border border-slate-800 rounded-3xl p-4 space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="font-display font-black text-xs uppercase tracking-wider text-white flex items-center gap-1.5">
+            <i class="fa-solid fa-chart-pie text-cyan-400"></i> Correlazioni $P(\text{Causa} \mid \text{Effetto})$ Rilevate
+          </h3>
+          <span class="text-[10px] text-slate-400 font-mono">Top Matches</span>
+        </div>
+        <div id="correlationsContainer" class="space-y-2.5">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- TOP 5 CAUSES PER PILLAR -->
+      <div class="bg-snow-850 border border-slate-800 rounded-3xl p-4 space-y-3">
+        <h3 class="font-display font-black text-xs uppercase tracking-wider text-white flex items-center gap-1.5">
+          <i class="fa-solid fa-ranking-star text-amber-400"></i> Cause Più Frequenti per Pilastro
+        </h3>
+        <div id="pillarStatsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- DATA MANAGEMENT BUTTONS -->
+      <div class="pt-2 flex items-center justify-between border-t border-slate-800/80">
+        <button onclick="loadSampleDataConfirm()" class="text-xs font-bold text-cyan-400 hover:text-cyan-300">
+          <i class="fa-solid fa-rotate-left"></i> Ricarica Dataset Iniziale di Esempio
+        </button>
+        <button onclick="clearAllDataConfirm()" class="text-xs font-bold text-rose-400 hover:text-rose-300">
+          <i class="fa-solid fa-trash-can"></i> Azzera Dataset Locale
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ================= TAB 4: DIARIO TECNICO & TOPIC DEL CAMP ================= -->
+    <section id="tab-debrief" class="space-y-4 hidden">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="font-display font-black text-lg text-white flex items-center gap-2">
+            <i class="fa-solid fa-book-open text-amber-400"></i> Diario Tecnico & Debriefing Camp
+          </h2>
+          <p class="text-xs text-slate-400">Note di fine giornata, condizioni del pendio e topic discussi dallo staff.</p>
+        </div>
+      </div>
+
+      <!-- Add New Debrief Note Form -->
+      <form id="debriefForm" onsubmit="handleDebriefSubmit(event)" class="bg-snow-850 border-2 border-slate-700 rounded-3xl p-4 sm:p-5 shadow-xl space-y-3">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+          <span class="text-xs font-black text-amber-400 uppercase tracking-wider flex items-center gap-1">
+            <i class="fa-solid fa-pen-fancy"></i> Registrazione Debrief Giornaliero
+          </span>
+          <span class="text-xs text-slate-400 font-medium">Autore: <strong id="debriefAuthorLabel" class="text-white">Coach Stefano</strong></span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <div>
+            <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Località / Pista</label>
+            <input type="text" id="debriefLocation" required placeholder="Es. Cervinia - Ventina" 
+              class="w-full h-10 bg-snow-900 border border-slate-700 rounded-xl px-3 text-xs font-bold text-white focus:outline-none focus:border-amber-400">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Meteo & Neve</label>
+            <input type="text" id="debriefConditions" required placeholder="Es. -4°C, Sole, Barrata dura mattino" 
+              class="w-full h-10 bg-snow-900 border border-slate-700 rounded-xl px-3 text-xs font-bold text-white focus:outline-none focus:border-amber-400">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Focus Principale</label>
+            <select id="debriefFocusPillar" class="w-full h-10 bg-snow-900 border border-slate-700 rounded-xl px-2.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400">
+              <option value="TAGLIO">Taglio / Coltello</option>
+              <option value="FULMINE">Fulmine</option>
+              <option value="TRENO">Treno</option>
+              <option value="EXCALIBUR">Excalibur</option>
+              <option value="Misto / 20-80">Metodologia Globale 20/80</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Topic Affrontato nel Camp</label>
+          <input type="text" id="debriefTopic" required placeholder="Es. Lavoro sulla presa di spigolo passiva senza contrazione tibiale..." 
+            class="w-full h-10 bg-snow-900 border border-slate-700 rounded-xl px-3 text-xs font-bold text-white focus:outline-none focus:border-amber-400">
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Riflessioni & Intuizioni Biomeccaniche dei Coach</label>
+          <textarea id="debriefNotes" rows="3" required placeholder="Cosa è emerso dalla videoanalisi? Quale sensazione ha sbloccato la maggior parte degli atleti oggi?" 
+            class="w-full bg-snow-900 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"></textarea>
+        </div>
+
+        <button type="submit" class="w-full h-12 bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-glow-fulmine transition">
+          <i class="fa-solid fa-floppy-disk"></i> Salva Debriefing di Giornata
+        </button>
+      </form>
+
+      <!-- Debriefs Log Feed -->
+      <div id="debriefFeedContainer" class="space-y-3">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FAST GLOVE-FRIENDLY BOTTOM NAV BAR ================= -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-snow-900/95 backdrop-blur-md border-t border-slate-800 pb-safe shadow-2xl">
+    <div class="grid grid-cols-4 max-w-5xl mx-auto h-16">
+      
+      <!-- Nav 1: Rileva -->
+      <button onclick="switchTab('tab-observe')" id="nav-observe" class="nav-btn active-nav flex flex-col items-center justify-center text-cyan-400">
+        <i class="fa-solid fa-stopwatch-20 text-lg mb-1"></i>
+        <span class="text-[10px] font-black uppercase tracking-wider">Rileva</span>
+      </button>
+
+      <!-- Nav 2: Listino -->
+      <button onclick="switchTab('tab-catalog')" id="nav-catalog" class="nav-btn flex flex-col items-center justify-center text-slate-400">
+        <i class="fa-solid fa-list-check text-lg mb-1"></i>
+        <span class="text-[10px] font-black uppercase tracking-wider">Listino</span>
+      </button>
+
+      <!-- Nav 3: AI Dataset -->
+      <button onclick="switchTab('tab-analytics')" id="nav-analytics" class="nav-btn flex flex-col items-center justify-center text-slate-400">
+        <i class="fa-solid fa-brain text-lg mb-1"></i>
+        <span class="text-[10px] font-black uppercase tracking-wider">AI Dataset</span>
+      </button>
+
+      <!-- Nav 4: Diario Camp -->
+      <button onclick="switchTab('tab-debrief')" id="nav-debrief" class="nav-btn flex flex-col items-center justify-center text-slate-400">
+        <i class="fa-solid fa-book-open text-lg mb-1"></i>
+        <span class="text-[10px] font-black uppercase tracking-wider">Diario</span>
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- ================= JAVASCRIPT LOGIC & ENGINE ================= -->
+  <script>
+    /* =========================================================================
+       1. CORE INITIAL DATASET (8 RIGOROUS SKI BIOMECHANICS CASES)
+       ========================================================================= */
+
+    const INITIAL_OBSERVATIONS = [
+      // TAGLIO / COLTELLO (2)
+      {
+        id: "NS-TAGLIO-001",
+        pillar: "TAGLIO",
+        effect: "Sci esterno che scivola via a centro curva",
+        cause: "Spinta muscolare attiva con la gamba esterna anziché appoggio rilassato; crea una forza perpendicolare che rompe la presa della lamina.",
+        cue: "Non spingere: appoggiati",
+        drill: "Scivolamento a spazzaneve aperto su pendenza moderata sentendo solo il peso naturale del corpo che deforma lo sci esterno.",
+        snow: "Neve Dura / Barrata / Ghiaccio",
+        radius: "Arco Medio (Conduzione)",
+        coach: "Stefano",
+        timestamp: "2026-10-26T09:30:00.000Z"
+      },
+      {
+        id: "NS-TAGLIO-002",
+        pillar: "TAGLIO",
+        effect: "Spigolata frettolosa e ribaltamento caviglie",
+        cause: "Lo sciatore cerca angolazione forzando l'inversione di caviglia prima che il baricentro si sia spostato all'interno del nuovo arco.",
+        cue: "Prima il corpo, poi lo sci",
+        drill: "Curva a bassa velocità mantenendo i piedi paralleli e lasciando che sia solo la traslazione del bacino a generare l'inclinazione delle lamine.",
+        snow: "Neve Compatta da Pista",
+        radius: "Arco Medio (Conduzione)",
+        coach: "Riccardo",
+        timestamp: "2026-10-26T10:45:00.000Z"
+      },
+
+      // FULMINE (2)
+      {
+        id: "NS-FULMINE-001",
+        pillar: "FULMINE",
+        effect: "Punta interna che diverge a V / Forbice",
+        cause: "Spinta tibiale eccessiva sulla linguetta con tallone scarico; impedisce alla caviglia interna di chiudersi simmetricamente in dorsiflessione.",
+        cue: "Senti il tallone scendere",
+        drill: "Sciata a curve ampie con scarponi leggermente sganciati sul gambetto per ritrovare l'appoggio su tutta la pianta del piede.",
+        snow: "Neve Compatta da Pista",
+        radius: "Arco Ampio (Gigante)",
+        coach: "Federico",
+        timestamp: "2026-10-27T11:15:00.000Z"
+      },
+      {
+        id: "NS-FULMINE-002",
+        pillar: "FULMINE",
+        effect: "Arretramento a inizio curva con blocco dell'anca",
+        cause: "Estensione frettolosa verso l'alto a fine curva invece di mantenere le articolazioni cariche e sbloccare la flessione dell'anca verso la nuova curva.",
+        cue: "Rimani basso e morbido",
+        drill: "Curva mantenendo le mani sempre appoggiate sulle ginocchia per verificare visivamente e propriocettivamente l'assetto compatto.",
+        snow: "Neve Trasformata / Pappa",
+        radius: "Arco Medio (Conduzione)",
+        coach: "Stefano",
+        timestamp: "2026-10-27T14:20:00.000Z"
+      },
+
+      // TRENO (2)
+      {
+        id: "NS-TRENO-001",
+        pillar: "TRENO",
+        effect: "Fretta a inizio curva con anticipo di spalla",
+        cause: "Rotazione attiva anticipata del tronco per provocare la curva prima che la punta dello sci abbia iniziato a tagliare la traiettoria rotonda.",
+        cue: "Pazienza: aspetta i binari",
+        drill: "Curva tenendo i bastoncini orizzontali davanti al petto paralleli agli sci, aspettando che il treno inizi prima di inclinare.",
+        snow: "Neve Compatta da Pista",
+        radius: "Arco Medio (Conduzione)",
+        coach: "Alessandro",
+        timestamp: "2026-10-28T09:50:00.000Z"
+      },
+      {
+        id: "NS-TRENO-002",
+        pillar: "TRENO",
+        effect: "Spazio laterale eccessivo tra gli sci a fine curva",
+        cause: "Mancato richiamo della gamba interna lungo la traiettoria rotonda; la gamba interna resta a palo e allarga il raggio di uscita.",
+        cue: "Gambe unite come binari",
+        drill: "Sciata su terreno facile mantenendo una distanza costante di 15-20 cm tra i due scarponi lungo tutto l'arco.",
+        snow: "Neve Compatta da Pista",
+        radius: "Arco Medio (Conduzione)",
+        coach: "Lorenzo",
+        timestamp: "2026-10-28T11:30:00.000Z"
+      },
+
+      // EXCALIBUR (2)
+      {
+        id: "NS-EXCALIBUR-001",
+        pillar: "EXCALIBUR",
+        effect: "Spalla a monte che collassa verso la neve",
+        cause: "Tentativo di creare spigolo buttando il busto all'interno; annulla l'angolazione del bacino e scarica completamente lo sci esterno.",
+        cue: "Busto fiero come Excalibur",
+        drill: "Discesa impugnando un solo bastoncino verticale con due mani come una spada dritta davanti allo sterno.",
+        snow: "Neve Dura / Barrata / Ghiaccio",
+        radius: "Arco Medio (Conduzione)",
+        coach: "Stefano",
+        timestamp: "2026-10-29T10:10:00.000Z"
+      },
+      {
+        id: "NS-EXCALIBUR-002",
+        pillar: "EXCALIBUR",
+        effect: "Busto che oscilla e sbanda nel cambio",
+        cause: "Mancanza di compattezza del core e della muscolatura dorsale nella transizione; la spada oscilla invece di rimanere solida nel terreno.",
+        cue: "Core compatto e fermo",
+        drill: "Curve ritmate con le mani posizionate sulle creste iliache sentendo che la parte alta del corpo rimane immobile rispetto alle gambe.",
+        snow: "Pendenza Elevata / Ripido",
+        radius: "Arco Corto (Cortoraggio)",
+        coach: "Matteo",
+        timestamp: "2026-10-29T14:40:00.000Z"
+      }
+    ];
+
+    const INITIAL_DEBRIEFS = [
+      {
+        id: "DEB-001",
+        date: "2026-10-27",
+        coach: "Stefano",
+        location: "Cervinia - Pista Ventina",
+        conditions: "-3°C, Sole, Neve barrata dura nel primo tratto, poi compatta",
+        focusPillar: "TAGLIO",
+        topic: "Deformazione passiva dello sci vs forzatura muscolare",
+        notes: "Nel debriefing video abbiamo evidenziato come l'80% degli errori sul duro derivi dalla spinta muscolare della gamba esterna. Appena l'atleta smette di spingere e lascia lavorare la sciancratura, lo sci aggancia immediatamente."
+      },
+      {
+        id: "DEB-002",
+        date: "2026-10-28",
+        coach: "Riccardo",
+        location: "Cervinia - Plateau Rosa",
+        conditions: "-6°C, Vento leggero, Neve invernale asciutta perfetta",
+        focusPillar: "FULMINE",
+        topic: "Assetto sagittale e chiusura delle caviglie nel raggio medio",
+        notes: "Il focus di oggi sul 'sentirsi sul tallone' ha eliminato l'apertura a V della punta interna in 4 allievi su 5. Da inserire stabilmente come primo cue per chi tende a sovraccaricare la linguetta."
+      }
+    ];
+
+    /* =========================================================================
+       2. PERSISTENCE & STATE MANAGEMENT
+       ========================================================================= */
+
+    let currentActiveCoach = "Stefano";
+    let activeCatalogPillar = "ALL";
+
+    function getObservations() {
+      const stored = localStorage.getItem("ns_ai_observations");
+      if (!stored) {
+        localStorage.setItem("ns_ai_observations", JSON.stringify(INITIAL_OBSERVATIONS));
+        return INITIAL_OBSERVATIONS;
+      }
+      try {
+        return JSON.parse(stored);
+      } catch (e) {
+        return INITIAL_OBSERVATIONS;
+      }
+    }
+
+    function saveObservations(list) {
+      localStorage.setItem("ns_ai_observations", JSON.stringify(list));
+      updateGlobalCounters();
+      refreshDatalists();
+    }
+
+    function getDebriefs() {
+      const stored = localStorage.getItem("ns_ai_debriefs");
+      if (!stored) {
+        localStorage.setItem("ns_ai_debriefs", JSON.stringify(INITIAL_DEBRIEFS));
+        return INITIAL_DEBRIEFS;
+      }
+      try {
+        return JSON.parse(stored);
+      } catch (e) {
+        return INITIAL_DEBRIEFS;
+      }
+    }
+
+    function saveDebriefs(list) {
+      localStorage.setItem("ns_ai_debriefs", JSON.stringify(list));
+    }
+
+    /* =========================================================================
+       3. INITIALIZATION & APP BOOT
+       ========================================================================= */
+
+    window.addEventListener("DOMContentLoaded", () => {
+      // Restore active coach
+      const savedCoach = localStorage.getItem("ns_ai_coach") || "Stefano";
+      currentActiveCoach = savedCoach;
+      document.getElementById("activeCoachSelect").value = savedCoach;
+      document.getElementById("debriefAuthorLabel").innerText = `Coach ${currentActiveCoach}`;
+
+      // Date label
+      const now = new Date();
+      document.getElementById("liveTimestampLabel").innerText = now.toLocaleDateString("it-IT", {
+        weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit"
+      });
+
+      // Default Pillar
+      selectPillar("TAGLIO");
+
+      // Render Everything
+      updateGlobalCounters();
+      refreshDatalists();
+      renderCatalog();
+      renderAnalytics();
+      renderDebriefFeed();
+    });
+
+    function onCoachChange(val) {
+      currentActiveCoach = val;
+      localStorage.setItem("ns_ai_coach", val);
+      document.getElementById("debriefAuthorLabel").innerText = `Coach ${currentActiveCoach}`;
+      showToast(`Coach selezionato: ${currentActiveCoach}`);
+    }
+
+    function updateGlobalCounters() {
+      const obs = getObservations();
+      document.getElementById("topBarRecordCount").innerText = obs.length;
+    }
+
+    /* =========================================================================
+       4. TAB NAVIGATION
+       ========================================================================= */
+
+    function switchTab(tabId) {
+      const tabIds = ["tab-observe", "tab-catalog", "tab-analytics", "tab-debrief"];
+      tabIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add("hidden");
+      });
+
+      const activeTabEl = document.getElementById(tabId);
+      if (activeTabEl) activeTabEl.classList.remove("hidden");
+
+      // Update Nav Buttons
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.classList.remove("text-cyan-400", "text-amber-400", "text-emerald-400", "text-purple-400");
+        btn.classList.add("text-slate-400");
+      });
+
+      const navMap = {
+        "tab-observe": { id: "nav-observe", color: "text-cyan-400" },
+        "tab-catalog": { id: "nav-catalog", color: "text-cyan-400" },
+        "tab-analytics": { id: "nav-analytics", color: "text-purple-400" },
+        "tab-debrief": { id: "nav-debrief", color: "text-amber-400" }
+      };
+
+      const targetNav = navMap[tabId];
+      if (targetNav) {
+        const btnEl = document.getElementById(targetNav.id);
+        if (btnEl) {
+          btnEl.classList.remove("text-slate-400");
+          btnEl.classList.add(targetNav.color);
+        }
+      }
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      if (tabId === "tab-catalog") renderCatalog();
+      if (tabId === "tab-analytics") renderAnalytics();
+      if (tabId === "tab-debrief") renderDebriefFeed();
+    }
+
+    /* =========================================================================
+       5. PILLAR SELECTOR & COLOR SYSTEM
+       ========================================================================= */
+
+    function selectPillar(pillar) {
+      document.getElementById("selectedPillarInput").value = pillar;
+
+      const btnMap = {
+        TAGLIO: { id: "pillBtn-TAGLIO", activeClass: "border-cyan-400 bg-cyan-950/70 text-cyan-300 shadow-glow-taglio scale-[1.02]" },
+        FULMINE: { id: "pillBtn-FULMINE", activeClass: "border-amber-400 bg-amber-950/70 text-amber-300 shadow-glow-fulmine scale-[1.02]" },
+        TRENO: { id: "pillBtn-TRENO", activeClass: "border-emerald-400 bg-emerald-950/70 text-emerald-300 shadow-glow-treno scale-[1.02]" },
+        EXCALIBUR: { id: "pillBtn-EXCALIBUR", activeClass: "border-purple-400 bg-purple-950/70 text-purple-300 shadow-glow-excalibur scale-[1.02]" }
+      };
+
+      Object.keys(btnMap).forEach(key => {
+        const btn = document.getElementById(btnMap[key].id);
+        if (btn) {
+          btn.className = "pillar-selector h-15 py-3 px-2 rounded-2xl border-2 font-display font-black text-xs sm:text-sm flex flex-col items-center justify-center transition-all bg-snow-900 border-slate-700 text-slate-300 active:scale-95";
+        }
+      });
+
+      const activeConfig = btnMap[pillar];
+      if (activeConfig) {
+        const activeBtn = document.getElementById(activeConfig.id);
+        if (activeBtn) {
+          activeBtn.className = `pillar-selector h-15 py-3 px-2 rounded-2xl border-2 font-display font-black text-xs sm:text-sm flex flex-col items-center justify-center transition-all ${activeConfig.activeClass}`;
+        }
+      }
+
+      // Update submit button theme
+      const submitBtn = document.getElementById("saveObservationBtn");
+      if (pillar === "TAGLIO") {
+        submitBtn.className = "w-full h-14 bg-gradient-to-r from-cyan-400 via-sky-500 to-emerald-400 text-slate-950 font-black text-sm uppercase tracking-wider rounded-2xl shadow-glow-taglio flex items-center justify-center gap-2 transition-all active:scale-[0.99]";
+      } else if (pillar === "FULMINE") {
+        submitBtn.className = "w-full h-14 bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-400 text-slate-950 font-black text-sm uppercase tracking-wider rounded-2xl shadow-glow-fulmine flex items-center justify-center gap-2 transition-all active:scale-[0.99]";
+      } else if (pillar === "TRENO") {
+        submitBtn.className = "w-full h-14 bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-400 text-slate-950 font-black text-sm uppercase tracking-wider rounded-2xl shadow-glow-treno flex items-center justify-center gap-2 transition-all active:scale-[0.99]";
+      } else if (pillar === "EXCALIBUR") {
+        submitBtn.className = "w-full h-14 bg-gradient-to-r from-purple-400 via-fuchsia-500 to-indigo-400 text-slate-950 font-black text-sm uppercase tracking-wider rounded-2xl shadow-glow-excalibur flex items-center justify-center gap-2 transition-all active:scale-[0.99]";
+      }
+    }
+
+    /* =========================================================================
+       6. SMART RECOGNITION & AUTOCOMPLETE SYSTEM
+       ========================================================================= */
+
+    function refreshDatalists() {
+      const obs = getObservations();
+      const effectList = document.getElementById("knownEffectsList");
+      const causeList = document.getElementById("knownCausesList");
+
+      const uniqueEffects = [...new Set(obs.map(o => o.effect.trim()))];
+      const uniqueCauses = [...new Set(obs.map(o => o.cause.trim()))];
+
+      effectList.innerHTML = uniqueEffects.map(e => `<option value="${escapeHTML(e)}"></option>`).join("");
+      causeList.innerHTML = uniqueCauses.map(c => `<option value="${escapeHTML(c)}"></option>`).join("");
+    }
+
+    function checkExistingEffect(text) {
+      const clean = text.trim().toLowerCase();
+      const badge = document.getElementById("effectFreqBadge");
+      const hint = document.getElementById("causeCorrelationHint");
+
+      if (!clean) {
+        badge.classList.add("hidden");
+        hint.classList.add("hidden");
+        return;
+      }
+
+      const obs = getObservations();
+      const matched = obs.filter(o => o.effect.trim().toLowerCase() === clean);
+
+      if (matched.length > 0) {
+        badge.innerText = `Osservato già ${matched.length} volta/e`;
+        badge.classList.remove("hidden");
+
+        // Calculate leading cause
+        const causeFreq = {};
+        matched.forEach(m => {
+          causeFreq[m.cause] = (causeFreq[m.cause] || 0) + 1;
+        });
+
+        let topCause = "";
+        let topCount = 0;
+        for (const [c, count] of Object.entries(causeFreq)) {
+          if (count > topCount) {
+            topCount = count;
+            topCause = c;
+          }
+        }
+
+        const pct = Math.round((topCount / matched.length) * 100);
+        hint.innerText = `AI Hint: Nel ${pct}% dei casi la causa è: "${topCause.slice(0, 35)}..."`;
+        hint.classList.remove("hidden");
+      } else {
+        badge.classList.add("hidden");
+        hint.classList.add("hidden");
+      }
+    }
+
+    function validateCueLength(input) {
+      const words = input.value.trim().split(/\s+/).filter(Boolean);
+      const countEl = document.getElementById("cueWordCount");
+      countEl.innerText = `${words.length}/5 parole`;
+
+      if (words.length > 5) {
+        countEl.className = "text-[10px] text-rose-400 font-mono font-black animate-pulse";
+      } else {
+        countEl.className = "text-[10px] text-slate-400 font-mono";
+      }
+    }
+
+    /* =========================================================================
+       7. RECORD SUBMISSION
+       ========================================================================= */
+
+    function handleObservationSubmit(e) {
+      e.preventDefault();
+
+      const pillar = document.getElementById("selectedPillarInput").value;
+      const effect = document.getElementById("obsEffect").value.trim();
+      const cause = document.getElementById("obsCause").value.trim();
+      const cue = document.getElementById("obsCue").value.trim();
+      const drill = document.getElementById("obsDrill").value.trim();
+      const snow = document.getElementById("obsSnowType").value;
+      const radius = document.getElementById("obsTurnRadius").value;
+
+      if (!effect || !cause || !cue || !drill) {
+        showToast("Compila tutti i campi richiesti!");
+        return;
+      }
+
+      const newRecord = {
+        id: "NS-" + pillar + "-" + Date.now().toString().slice(-5),
+        pillar,
+        effect,
+        cause,
+        cue,
+        drill,
+        snow,
+        radius,
+        coach: currentActiveCoach,
+        timestamp: new Date().toISOString()
+      };
+
+      const obs = getObservations();
+      obs.unshift(newRecord);
+      saveObservations(obs);
+
+      // Reset Form fields except selections
+      document.getElementById("obsEffect").value = "";
+      document.getElementById("obsCause").value = "";
+      document.getElementById("obsCue").value = "";
+      document.getElementById("obsDrill").value = "";
+      document.getElementById("effectFreqBadge").classList.add("hidden");
+      document.getElementById("causeCorrelationHint").classList.add("hidden");
+      document.getElementById("cueWordCount").innerText = "0/5 parole";
+
+      showToast(`Nuova osservazione salvata su pilastro ${pillar}!`);
+    }
+
+    /* =========================================================================
+       8. CATALOG VIEW & FILTERING
+       ========================================================================= */
+
+    function setCatalogFilter(p) {
+      activeCatalogPillar = p;
+      document.querySelectorAll(".cat-filter-btn").forEach(btn => {
+        if (btn.getAttribute("data-pillar") === p) {
+          btn.className = "cat-filter-btn px-3 py-1.5 rounded-lg font-bold border transition shrink-0 bg-slate-700 text-white border-slate-500";
+        } else {
+          btn.className = "cat-filter-btn px-3 py-1.5 rounded-lg font-bold border transition shrink-0 bg-snow-900 text-slate-300 border-slate-700";
+        }
+      });
+      renderCatalog();
+    }
+
+    function renderCatalog() {
+      const container = document.getElementById("catalogContainer");
+      const search = (document.getElementById("catalogSearchInput")?.value || "").toLowerCase().trim();
+      const obs = getObservations();
+
+      const filtered = obs.filter(item => {
+        const matchesPillar = activeCatalogPillar === "ALL" || item.pillar === activeCatalogPillar;
+        const matchesSearch = !search ||
+          item.effect.toLowerCase().includes(search) ||
+          item.cause.toLowerCase().includes(search) ||
+          item.cue.toLowerCase().includes(search) ||
+          item.drill.toLowerCase().includes(search) ||
+          item.coach.toLowerCase().includes(search);
+
+        return matchesPillar && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-10 bg-snow-850 rounded-2xl border border-slate-800">
+            <i class="fa-solid fa-filter-circle-xmark text-slate-500 text-2xl mb-2"></i>
+            <p class="text-xs text-slate-400 font-bold">Nessuna osservazione trovata con questi parametri.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const pillarTheme = {
+        TAGLIO: { badge: "bg-cyan-500/20 text-cyan-300 border-cyan-400/40", border: "border-l-cyan-400" },
+        FULMINE: { badge: "bg-amber-400/20 text-amber-300 border-amber-400/40", border: "border-l-amber-400" },
+        TRENO: { badge: "bg-emerald-500/20 text-emerald-300 border-emerald-400/40", border: "border-l-emerald-400" },
+        EXCALIBUR: { badge: "bg-purple-500/20 text-purple-300 border-purple-400/40", border: "border-l-purple-400" }
+      };
+
+      container.innerHTML = filtered.map(item => {
+        const theme = pillarTheme[item.pillar] || pillarTheme.TAGLIO;
+        const dateObj = new Date(item.timestamp);
+        const dateFormatted = isNaN(dateObj.getTime()) ? "Data recente" : dateObj.toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", year: "2-digit" });
+
+        return `
+          <div class="bg-snow-850 border border-slate-800/90 rounded-2xl p-4 space-y-3 transition border-l-4 ${theme.border}">
+            
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-black px-2 py-0.5 rounded border uppercase tracking-wider ${theme.badge}">
+                  ${item.pillar}
+                </span>
+                <span class="text-[11px] text-slate-400 font-medium">✍️ Coach ${escapeHTML(item.coach)}</span>
+              </div>
+              <span class="text-[10px] font-mono text-slate-400">${dateFormatted} • ${escapeHTML(item.snow.split(" ")[0])}</span>
+            </div>
+
+            <!-- Effect & Cause Grid -->
+            <div class="space-y-2">
+              <div>
+                <span class="text-[10px] font-black uppercase text-rose-400 block mb-0.5">Cosa Vedo (Effetto):</span>
+                <p class="text-sm font-bold text-white">${escapeHTML(item.effect)}</p>
+              </div>
+
+              <div class="bg-snow-900/90 p-2.5 rounded-xl border border-slate-800">
+                <span class="text-[10px] font-black uppercase text-amber-400 block mb-0.5">Perché Biomeccanico (20/80):</span>
+                <p class="text-xs text-slate-300 leading-relaxed font-medium">${escapeHTML(item.cause)}</p>
+              </div>
+            </div>
+
+            <!-- Cue & Drill -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 text-xs">
+              <div class="bg-cyan-950/40 border border-cyan-500/30 p-2.5 rounded-xl">
+                <span class="text-[9px] font-black uppercase text-cyan-400 block mb-0.5">Suggerimento (Cue):</span>
+                <p class="font-display font-black text-cyan-200">"${escapeHTML(item.cue)}"</p>
+              </div>
+
+              <div class="bg-emerald-950/40 border border-emerald-500/30 p-2.5 rounded-xl">
+                <span class="text-[9px] font-black uppercase text-emerald-400 block mb-0.5">Proposta in Pista:</span>
+                <p class="text-slate-300 font-medium">${escapeHTML(item.drill)}</p>
+              </div>
+            </div>
+
+          </div>
+        `;
+      }).join("");
+    }
+
+    /* =========================================================================
+       9. AI ANALYTICS & STATISTICAL ENGINE
+       ========================================================================= */
+
+    function renderAnalytics() {
+      const obs = getObservations();
+
+      // Counts
+      document.getElementById("statTotalObservations").innerText = obs.length;
+      
+      const uniqueEffects = new Set(obs.map(o => o.effect.trim().toLowerCase()));
+      document.getElementById("statUniqueEffects").innerText = uniqueEffects.size;
+
+      const uniqueCauses = new Set(obs.map(o => o.cause.trim().toLowerCase()));
+      document.getElementById("statUniqueCauses").innerText = uniqueCauses.size;
+
+      const coaches = new Set(obs.map(o => o.coach));
+      document.getElementById("statActiveCoaches").innerText = coaches.size;
+
+      // Probability matrix: P(Causa | Effetto)
+      renderCorrelationMatrix(obs);
+
+      // Top causes per pillar
+      renderPillarStats(obs);
+    }
+
+    function renderCorrelationMatrix(obs) {
+      const container = document.getElementById("correlationsContainer");
+      if (obs.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-500 py-3">Dati insufficienti.</p>`;
+        return;
+      }
+
+      // Group by effect
+      const effectMap = {};
+      obs.forEach(item => {
+        const eff = item.effect.trim();
+        if (!effectMap[eff]) effectMap[eff] = [];
+        effectMap[eff].push(item.cause.trim());
+      });
+
+      // Compute leading causes
+      const matrix = [];
+      for (const [effect, causes] of Object.entries(effectMap)) {
+        const total = causes.length;
+        const counts = {};
+        causes.forEach(c => { counts[c] = (counts[c] || 0) + 1; });
+
+        let topCause = "";
+        let topCount = 0;
+        for (const [c, n] of Object.entries(counts)) {
+          if (n > topCount) {
+            topCount = n;
+            topCause = c;
+          }
+        }
+
+        const probability = Math.round((topCount / total) * 100);
+        matrix.push({ effect, topCause, probability, total, topCount });
+      }
+
+      // Sort by total occurrences
+      matrix.sort((a, b) => b.total - a.total);
+
+      container.innerHTML = matrix.slice(0, 5).map(m => `
+        <div class="bg-snow-900 border border-slate-800 rounded-xl p-3">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-xs font-bold text-white">${escapeHTML(m.effect)}</span>
+            <span class="text-xs font-mono font-black text-cyan-400 bg-cyan-950/80 border border-cyan-500/40 px-2 py-0.5 rounded">
+              ${m.probability}% correlazione
+            </span>
+          </div>
+          <p class="text-[11px] text-amber-300/90 font-medium leading-relaxed">
+            ➔ <strong>Causa primaria:</strong> ${escapeHTML(m.topCause)}
+          </p>
+          <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+            <div class="bg-gradient-to-r from-cyan-400 to-purple-500 h-full rounded-full" style="width: ${m.probability}%"></div>
+          </div>
+          <span class="text-[9px] font-mono text-slate-500 mt-1 block">Campione: ${m.topCount} su ${m.total} casi rilevati</span>
+        </div>
+      `).join("");
+    }
+
+    function renderPillarStats(obs) {
+      const container = document.getElementById("pillarStatsContainer");
+      const pillars = ["TAGLIO", "FULMINE", "TRENO", "EXCALIBUR"];
+
+      const pillarTheme = {
+        TAGLIO: { color: "text-cyan-400", title: "Taglio / Coltello" },
+        FULMINE: { color: "text-amber-400", title: "Fulmine" },
+        TRENO: { color: "text-emerald-400", title: "Treno" },
+        EXCALIBUR: { color: "text-purple-400", title: "Excalibur" }
+      };
+
+      container.innerHTML = pillars.map(p => {
+        const pObs = obs.filter(o => o.pillar === p);
+        const causesCount = {};
+        pObs.forEach(o => { causesCount[o.cause] = (causesCount[o.cause] || 0) + 1; });
+
+        const sortedCauses = Object.entries(causesCount).sort((a, b) => b[1] - a[1]);
+
+        return `
+          <div class="bg-snow-900 p-3 rounded-2xl border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-black uppercase tracking-wider ${pillarTheme[p].color}">
+                ${pillarTheme[p].title}
+              </span>
+              <span class="text-[10px] font-mono text-slate-400">${pObs.length} osservazioni</span>
+            </div>
+
+            ${sortedCauses.length === 0 ? '<p class="text-[11px] text-slate-500">Nessun dato registrato</p>' : `
+              <ul class="space-y-1.5">
+                ${sortedCauses.slice(0, 3).map(([cause, count]) => `
+                  <li class="text-[11px] text-slate-300 flex items-start justify-between gap-2 border-b border-slate-800/60 pb-1">
+                    <span class="truncate">• ${escapeHTML(cause)}</span>
+                    <span class="font-mono font-bold text-white shrink-0">${count}x</span>
+                  </li>
+                `).join("")}
+              </ul>
+            `}
+          </div>
+        `;
+      }).join("");
+    }
+
+    /* =========================================================================
+       10. MACHINE LEARNING DATASET EXPORT (JSON & CSV)
+       ========================================================================= */
+
+    function exportDatasetJSON() {
+      const obs = getObservations();
+      const exportObject = {
+        dataset_name: "NATURAL_SKIING_BIOMECHANICS_DATASET",
+        created_at: new Date().toISOString(),
+        version: "2.1.0-AI-READY",
+        pillars: ["TAGLIO", "FULMINE", "TRENO", "EXCALIBUR"],
+        features: ["effect", "snow_type", "turn_radius"],
+        targets: ["root_cause_20_80", "coach_cue", "field_drill"],
+        total_samples: obs.length,
+        samples: obs.map(o => ({
+          sample_id: o.id,
+          pillar: o.pillar,
+          effect_visual_symptom: o.effect,
+          root_cause_biomechanical: o.cause,
+          cue_synthesized: o.cue,
+          drill_on_slope: o.drill,
+          snow_condition: o.snow,
+          turn_radius: o.radius,
+          recorded_by_coach: o.coach,
+          timestamp_iso: o.timestamp
+        }))
+      };
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObject, null, 2));
+      const downloadAnchor = document.createElement("a");
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `natural_skiing_ai_dataset_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+
+      showToast("Dataset JSON generato e scaricato!");
+    }
+
+    function exportDatasetCSV() {
+      const obs = getObservations();
+      const headers = ["id", "pillar", "effect_symptom", "root_cause_20_80", "cue", "drill", "snow_type", "radius", "coach", "timestamp"];
+      
+      const rows = obs.map(o => [
+        o.id,
+        o.pillar,
+        `"${o.effect.replace(/"/g, '""')}"`,
+        `"${o.cause.replace(/"/g, '""')}"`,
+        `"${o.cue.replace(/"/g, '""')}"`,
+        `"${o.drill.replace(/"/g, '""')}"`,
+        `"${o.snow.replace(/"/g, '""')}"`,
+        `"${o.radius.replace(/"/g, '""')}"`,
+        o.coach,
+        o.timestamp
+      ]);
+
+      const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const downloadAnchor = document.createElement("a");
+      downloadAnchor.setAttribute("href", encodedUri);
+      downloadAnchor.setAttribute("download", `natural_skiing_ai_dataset_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+
+      showToast("Dataset CSV generato e scaricato!");
+    }
+
+    function loadSampleDataConfirm() {
+      if (confirm("Vuoi ricaricare il dataset biomeccanico originale di esempio Natural Skiing? I dati attuali verranno integrati.")) {
+        localStorage.setItem("ns_ai_observations", JSON.stringify(INITIAL_OBSERVATIONS));
+        localStorage.setItem("ns_ai_debriefs", JSON.stringify(INITIAL_DEBRIEFS));
+        updateGlobalCounters();
+        refreshDatalists();
+        renderCatalog();
+        renderAnalytics();
+        renderDebriefFeed();
+        showToast("Dataset originale ricaricato con successo!");
+      }
+    }
+
+    function clearAllDataConfirm() {
+      if (confirm("Attenzione: vuoi davvero cancellare tutte le osservazioni memorizzate in locale sul dispositivo?")) {
+        localStorage.removeItem("ns_ai_observations");
+        updateGlobalCounters();
+        refreshDatalists();
+        renderCatalog();
+        renderAnalytics();
+        showToast("Dataset locale azzerato.");
+      }
+    }
+
+    /* =========================================================================
+       11. DIARIO TECNICO & DEBRIEFING CAMP
+       ========================================================================= */
+
+    function handleDebriefSubmit(e) {
+      e.preventDefault();
+
+      const location = document.getElementById("debriefLocation").value.trim();
+      const conditions = document.getElementById("debriefConditions").value.trim();
+      const focusPillar = document.getElementById("debriefFocusPillar").value;
+      const topic = document.getElementById("debriefTopic").value.trim();
+      const notes = document.getElementById("debriefNotes").value.trim();
+
+      if (!location || !conditions || !topic || !notes) {
+        showToast("Compila tutti i campi del debriefing!");
+        return;
+      }
+
+      const newDebrief = {
+        id: "DEB-" + Date.now().toString().slice(-4),
+        date: new Date().toISOString().slice(0, 10),
+        coach: currentActiveCoach,
+        location,
+        conditions,
+        focusPillar,
+        topic,
+        notes
+      };
+
+      const debriefs = getDebriefs();
+      debriefs.unshift(newDebrief);
+      saveDebriefs(debriefs);
+
+      document.getElementById("debriefLocation").value = "";
+      document.getElementById("debriefConditions").value = "";
+      document.getElementById("debriefTopic").value = "";
+      document.getElementById("debriefNotes").value = "";
+
+      renderDebriefFeed();
+      showToast("Debriefing di giornata archiviato!");
+    }
+
+    function renderDebriefFeed() {
+      const container = document.getElementById("debriefFeedContainer");
+      const debriefs = getDebriefs();
+
+      if (debriefs.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-500 py-4 text-center">Nessun debriefing salvato per questo camp.</p>`;
+        return;
+      }
+
+      container.innerHTML = debriefs.map(d => `
+        <div class="bg-snow-850 border border-slate-800 rounded-3xl p-4 space-y-2.5">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-black px-2 py-0.5 rounded bg-amber-400/20 text-amber-300 border border-amber-400/40 uppercase">
+                ${d.focusPillar}
+              </span>
+              <span class="text-xs font-bold text-white">📍 ${escapeHTML(d.location)}</span>
+            </div>
+            <span class="text-[11px] font-mono text-slate-400 font-semibold">${d.date} • Coach ${escapeHTML(d.coach)}</span>
+          </div>
+
+          <div>
+            <span class="text-[10px] font-mono text-slate-400">Condizioni: ${escapeHTML(d.conditions)}</span>
+            <h4 class="text-sm font-black text-white mt-0.5">${escapeHTML(d.topic)}</h4>
+          </div>
+
+          <div class="bg-snow-900/90 p-3 rounded-2xl border border-slate-800">
+            <span class="text-[10px] font-black uppercase text-amber-400 block mb-1">Riflessioni e Takeaway Tecnico:</span>
+            <p class="text-xs text-slate-300 leading-relaxed font-normal">${escapeHTML(d.notes)}</p>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    /* =========================================================================
+       12. HELPERS & NOTIFICATIONS
+       ========================================================================= */
+
+    function showToast(msg) {
+      const toast = document.getElementById("toastNotification");
+      const msgEl = document.getElementById("toastMessage");
+      msgEl.innerText = msg;
+
+      toast.classList.remove("opacity-0", "pointer-events-none", "-translate-y-4");
+      toast.classList.add("opacity-100", "translate-y-0");
+
+      setTimeout(() => {
+        toast.classList.add("opacity-0", "pointer-events-none", "-translate-y-4");
+        toast.classList.remove("opacity-100", "translate-y-0");
+      }, 2400);
+    }
+
+    function escapeHTML(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
+
+</body>
+</html>
