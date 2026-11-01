@@ -797,9 +797,13 @@
     function renderCoachManagerList() {
       const cont = document.getElementById('listaCoachManager');
       cont.innerHTML = coaches.map(c => `
-        <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-xs font-semibold">
-          <span>${c} ${c === "Stefano" ? '(Admin)' : ''}</span>
-          ${c !== "Stefano" ? `<button onclick="rimuoviCoach('${c}')" class="text-rose-500 hover:text-rose-700">Rimuovi</button>` : ''}
+        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800 text-xs font-semibold border border-slate-200 dark:border-slate-700">
+          <span class="text-slate-900 dark:text-white font-bold">${c} ${c === "Stefano" ? '<span class="text-amber-500 font-black ml-1">(Admin)</span>' : ''}</span>
+          ${c !== "Stefano" ? `
+            <button type="button" onclick="rimuoviCoach('${c}')" class="min-touch px-3 py-1.5 rounded-lg bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 font-bold hover:bg-rose-100 active:scale-95 transition-transform">
+              Rimuovi ✕
+            </button>
+          ` : '<span class="text-slate-400 text-[10px]">Titolare</span>'}
         </div>
       `).join('');
     }
@@ -816,7 +820,7 @@
     }
 
     function rimuoviCoach(nome) {
-      if (!confirm(`Rimuovere ${nome} dall'elenco coach?`)) return;
+      // Rimozione immediata senza blocco confirm del browser
       coaches = coaches.filter(c => c !== nome);
       localStorage.setItem('ns_coaches', JSON.stringify(coaches));
       renderCoachManagerList();
