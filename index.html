@@ -31,19 +31,10 @@
     }
   </script>
   <style>
-    button, select, input, textarea {
-      touch-action: manipulation;
-    }
-    .min-touch {
-      min-height: 48px;
-    }
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
+    button, select, input, textarea { touch-action: manipulation; }
+    .min-touch { min-height: 48px; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="h-full bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200 font-sans antialiased select-none">
@@ -54,9 +45,7 @@
       
       <div class="w-16 h-16 mx-auto mb-4 bg-sky-500/10 text-sky-500 rounded-2xl flex items-center justify-center">
         <svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m3 21 18-18"/>
-          <path d="m7 21 14-14"/>
-          <path d="M19 3h2v2"/>
+          <path d="m3 21 18-18"/><path d="m7 21 14-14"/><path d="M19 3h2v2"/>
         </svg>
       </div>
 
@@ -77,7 +66,6 @@
         </button>
       </div>
 
-      <!-- Form Login Coach -->
       <div id="formLoginCoach" class="space-y-4 text-left">
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Seleziona Coach</label>
@@ -93,7 +81,6 @@
         </button>
       </div>
 
-      <!-- Form Login Admin -->
       <div id="formLoginAdmin" class="space-y-4 text-left hidden">
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Profilo Titolare</label>
@@ -158,7 +145,7 @@
     </div>
   </header>
 
-  <!-- ================= NAV BAR A SCHEDE ================= -->
+  <!-- ================= NAV BAR A SCHEDE (RIORDINATA) ================= -->
   <nav class="sticky top-[57px] z-30 bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800">
     <div class="max-w-4xl mx-auto flex overflow-x-auto no-scrollbar px-2 py-1 gap-1">
       <button onclick="navigateTab('tabAnalisi')" id="nav-tabAnalisi" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/40 whitespace-nowrap">
@@ -167,11 +154,11 @@
       <button onclick="navigateTab('tabArchivio')" id="nav-tabArchivio" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 whitespace-nowrap">
         Archivio Analisi
       </button>
-      <button onclick="navigateTab('tabIdee')" id="nav-tabIdee" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 whitespace-nowrap">
-        Idee in Pista
-      </button>
       <button onclick="navigateTab('tabDiario')" id="nav-tabDiario" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 whitespace-nowrap">
         Cosa ho fatto oggi
+      </button>
+      <button onclick="navigateTab('tabIdee')" id="nav-tabIdee" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 whitespace-nowrap">
+        Idee in Pista
       </button>
       <button onclick="navigateTab('tabAiDataset')" id="nav-tabAiDataset" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-amber-600 dark:text-amber-400 hover:text-amber-500 whitespace-nowrap hidden">
         AI Dataset 🔒
@@ -186,7 +173,6 @@
     <section id="tabAnalisi" class="tab-content space-y-4">
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm space-y-4">
         
-        <!-- Intestazione dinamica inserimento / modifica -->
         <div class="flex items-center justify-between">
           <h2 id="titoloSezioneAnalisi" class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
             Nuova Scheda di Rilevamento
@@ -213,7 +199,7 @@
           <input type="text" id="inputFocus" placeholder="es. Non spingere: appoggiati" class="w-full min-touch px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
         </div>
 
-        <!-- PILASTRI E ARCHI (SOPRA GLI ESERCIZI) -->
+        <!-- PILASTRI E ARCHI -->
         <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-3">
           <div>
             <div class="flex items-center justify-between mb-1.5">
@@ -222,19 +208,19 @@
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
               <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
-                <input type="checkbox" name="pilastri" value="Taglio" onchange="window.aggiornaEserciziSottoPilastro()" checked class="w-4 h-4 rounded text-sky-600">
+                <input type="checkbox" name="pilastri" value="Taglio" onchange="window.onCambiamentoPilastriArchiAnalisi()" checked class="w-4 h-4 rounded text-sky-600">
                 <span class="text-xs font-bold text-sky-600 dark:text-sky-400">Taglio / Coltello</span>
               </label>
               <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
-                <input type="checkbox" name="pilastri" value="Fulmine" onchange="window.aggiornaEserciziSottoPilastro()" class="w-4 h-4 rounded text-amber-600">
+                <input type="checkbox" name="pilastri" value="Fulmine" onchange="window.onCambiamentoPilastriArchiAnalisi()" class="w-4 h-4 rounded text-amber-600">
                 <span class="text-xs font-bold text-amber-600 dark:text-amber-400">Fulmine</span>
               </label>
               <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
-                <input type="checkbox" name="pilastri" value="Treno" onchange="window.aggiornaEserciziSottoPilastro()" class="w-4 h-4 rounded text-emerald-600">
+                <input type="checkbox" name="pilastri" value="Treno" onchange="window.onCambiamentoPilastriArchiAnalisi()" class="w-4 h-4 rounded text-emerald-600">
                 <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">Treno</span>
               </label>
               <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
-                <input type="checkbox" name="pilastri" value="Excalibur" onchange="window.aggiornaEserciziSottoPilastro()" class="w-4 h-4 rounded text-purple-600">
+                <input type="checkbox" name="pilastri" value="Excalibur" onchange="window.onCambiamentoPilastriArchiAnalisi()" class="w-4 h-4 rounded text-purple-600">
                 <span class="text-xs font-bold text-purple-600 dark:text-purple-400">Excalibur</span>
               </label>
             </div>
@@ -247,25 +233,25 @@
             </div>
             <div class="grid grid-cols-3 gap-2">
               <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
-                <input type="checkbox" name="archi" value="Ampio" class="w-4 h-4 rounded text-sky-600">
+                <input type="checkbox" name="archi" value="Ampio" onchange="window.onCambiamentoPilastriArchiAnalisi()" class="w-4 h-4 rounded text-sky-600">
                 <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Ampio</span>
               </label>
               <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
-                <input type="checkbox" name="archi" value="Medio" checked class="w-4 h-4 rounded text-sky-600">
+                <input type="checkbox" name="archi" value="Medio" onchange="window.onCambiamentoPilastriArchiAnalisi()" checked class="w-4 h-4 rounded text-sky-600">
                 <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Medio</span>
               </label>
               <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
-                <input type="checkbox" name="archi" value="Corto" class="w-4 h-4 rounded text-sky-600">
+                <input type="checkbox" name="archi" value="Corto" onchange="window.onCambiamentoPilastriArchiAnalisi()" class="w-4 h-4 rounded text-sky-600">
                 <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Corto</span>
               </label>
             </div>
           </div>
         </div>
 
-        <!-- 4. ESERCIZI IN PISTA -->
+        <!-- 4. ESERCIZI IN PISTA CONSIGLIATI (AZZERATI PRECARICATI) -->
         <div class="space-y-2.5">
           <div class="flex items-center justify-between">
-            <label class="block text-xs font-bold text-slate-600 dark:text-slate-400">4. Esercizi in pista per i pilastri scelti</label>
+            <label class="block text-xs font-bold text-slate-600 dark:text-slate-400">4. Esercizi in pista consigliati</label>
             <button type="button" onclick="window.salvaNuovoEsercizioFissoPrompt()" class="text-[11px] font-bold text-sky-600 dark:text-sky-400 hover:underline">
               + Salva nuovo esercizio fisso
             </button>
@@ -280,18 +266,11 @@
           </div>
         </div>
 
-        <!-- CONDIZIONI FACOLTATIVE -->
-        <div class="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Condizioni Neve</span>
-            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500">FACOLTATIVO</span>
-          </div>
-          <select id="inputNeve" class="w-full min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium">
-            <option value="">Non specificata</option>
-            <option value="Compatta invernale">Compatta invernale</option>
-            <option value="Dura / Barrata">Dura / Barrata</option>
-            <option value="Pappa primaverile">Pappa primaverile</option>
-            <option value="Neve fresca / mossa">Neve fresca / mossa</option>
+        <!-- 5. TOPIC CONSIGLIATO -->
+        <div class="p-3.5 bg-sky-50/60 dark:bg-sky-950/30 rounded-2xl border border-sky-100 dark:border-sky-900/40 space-y-1.5">
+          <label class="block text-xs font-bold text-sky-800 dark:text-sky-300">5. Topic Consigliato (dalle Idee registrate)</label>
+          <select id="selectTopicConsigliato" class="w-full min-touch px-3 bg-white dark:bg-slate-800 border border-sky-200 dark:border-sky-800 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <option value="">-- Seleziona un topic suggerito --</option>
           </select>
         </div>
 
@@ -302,7 +281,7 @@
       </div>
     </section>
 
-    <!-- 2. ARCHIVIO ANALISI (SCHEDE COMPATTE ESPANDIBILI CON MODIFICA / ELIMINA) -->
+    <!-- 2. ARCHIVIO ANALISI -->
     <section id="tabArchivio" class="tab-content space-y-4 hidden">
       <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
         <button onclick="filtraArchivio('Tutti')" id="btnFiltroArchivio-Tutti" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-950">Tutti</button>
@@ -319,32 +298,7 @@
       </div>
     </section>
 
-    <!-- 3. IDEE IN PISTA (TOPIC CLICCABILI) -->
-    <section id="tabIdee" class="tab-content space-y-4 hidden">
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Topic di Lavoro Affrontati</h2>
-          <p class="text-[11px] text-slate-400">Tocca un topic per filtrare e consultare le giornate in "Cosa ho fatto oggi"</p>
-        </div>
-      </div>
-
-      <!-- Filtri Pilastro + Archi per Idee -->
-      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-        <button onclick="filtraIdee('Tutti')" id="btnFiltroIdee-Tutti" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-950">Tutti</button>
-        <button onclick="filtraIdee('Taglio')" id="btnFiltroIdee-Taglio" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Coltello / Taglio</button>
-        <button onclick="filtraIdee('Fulmine')" id="btnFiltroIdee-Fulmine" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Fulmine</button>
-        <button onclick="filtraIdee('Treno')" id="btnFiltroIdee-Treno" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Treno</button>
-        <button onclick="filtraIdee('Excalibur')" id="btnFiltroIdee-Excalibur" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Excalibur</button>
-        <button onclick="filtraIdee('Ampio')" id="btnFiltroIdee-Ampio" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Ampio</button>
-        <button onclick="filtraIdee('Medio')" id="btnFiltroIdee-Medio" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Medio</button>
-        <button onclick="filtraIdee('Corto')" id="btnFiltroIdee-Corto" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Corto</button>
-      </div>
-
-      <div id="containerIdee" class="space-y-2.5">
-      </div>
-    </section>
-
-    <!-- 4. COSA HO FATTO OGGI -->
+    <!-- 3. COSA HO FATTO OGGI -->
     <section id="tabDiario" class="tab-content space-y-4 hidden">
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm space-y-4">
         <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Cosa ho fatto oggi</h2>
@@ -405,7 +359,7 @@
           </div>
         </div>
 
-        <!-- DETTAGLI AMBIENTE -->
+        <!-- DETTAGLI AMBIENTE: NEVE A TENDINA + AGGIUNGI -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
           <div>
             <label class="block text-[11px] font-bold text-slate-500 mb-1">📍 Luogo</label>
@@ -416,8 +370,17 @@
             <input type="text" id="diarioMeteo" placeholder="es. Sereno, visibilità ottima" class="w-full min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs">
           </div>
           <div>
-            <label class="block text-[11px] font-bold text-slate-500 mb-1">❄️ Condizioni Neve</label>
-            <input type="text" id="diarioNeve" placeholder="es. Compatta al mattino" class="w-full min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs">
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-[11px] font-bold text-slate-500">❄️ Condizioni Neve</label>
+              <button type="button" onclick="window.aggiungiNuovaTipologiaNevePrompt()" class="text-[10px] font-bold text-sky-600 dark:text-sky-400 hover:underline">+ Altro</button>
+            </div>
+            <select id="diarioNeveSelect" class="w-full min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium">
+              <option value="Compatta invernale">Compatta invernale</option>
+              <option value="Dura / Barrata">Dura / Barrata</option>
+              <option value="Pappa primaverile">Pappa primaverile</option>
+              <option value="Neve fresca / mossa">Neve fresca / mossa</option>
+              <option value="Trasformata">Trasformata</option>
+            </select>
           </div>
         </div>
 
@@ -426,7 +389,7 @@
         </button>
       </div>
 
-      <!-- FILTRI DIARIO (FUNZIONANTI E REATTIVI) -->
+      <!-- FILTRI DIARIO -->
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 space-y-2.5">
         <div class="flex items-center justify-between">
           <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Filtra Diario del Camp</span>
@@ -452,7 +415,63 @@
         </div>
       </div>
 
-      <div id="containerDiario" class="space-y-3">
+      <div id="containerDiario" class="space-y-2.5">
+      </div>
+    </section>
+
+    <!-- 4. IDEE IN PISTA (CON VOCALE & CREA TOPIC) -->
+    <section id="tabIdee" class="tab-content space-y-4 hidden">
+      
+      <!-- BOX ASSISTENTE VOCALE IN PISTA -->
+      <div class="bg-gradient-to-r from-sky-600 to-indigo-700 text-white rounded-3xl p-5 shadow-lg space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="p-2 bg-white/10 rounded-xl">🎙️</span>
+            <div>
+              <h3 class="text-sm font-bold uppercase tracking-wide">Audio Cue Coach in Pista</h3>
+              <p class="text-[11px] text-sky-100">Dì il difetto visto al mattino, il motore seleziona il topic consigliato</p>
+            </div>
+          </div>
+          <button id="btnRegistraAudio" onclick="window.toggleAscoltoVocale()" class="min-touch px-4 py-2 bg-white text-sky-700 hover:bg-sky-50 rounded-2xl text-xs font-black shadow transition-all active:scale-95 flex items-center gap-1.5">
+            <span id="dotVocale" class="w-2.5 h-2.5 rounded-full bg-rose-500 hidden animate-ping"></span>
+            <span id="txtBtnVocale">Parla 🎙️</span>
+          </button>
+        </div>
+
+        <div id="boxRispostaVocale" class="hidden p-3 bg-white/10 backdrop-blur-md rounded-2xl text-xs space-y-1">
+          <span class="text-[10px] uppercase font-bold text-sky-200 block">Trascrizione:</span>
+          <p id="testoTrascrittoVocale" class="italic text-white"></p>
+          <div class="pt-2 border-t border-white/20 flex items-center justify-between">
+            <span id="suggerimentoTopicVocale" class="font-bold text-amber-300"></span>
+            <button id="btnVaiATopicSuggerito" class="px-2.5 py-1 bg-white text-slate-900 rounded-lg font-bold text-[10px]">Apri Giornate →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTESTAZIONE + TASTO NUOVO TOPIC SENZA METEO -->
+      <div class="flex items-center justify-between pt-1">
+        <div>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Biblioteca Topic di Lavoro</h2>
+          <p class="text-[11px] text-slate-400">Tocca un topic per filtrare e consultare le sessioni registrate</p>
+        </div>
+        <button onclick="window.apriModalNuovoTopicIdee()" class="min-touch px-3.5 py-2 rounded-2xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold shadow transition-all active:scale-95">
+          + Aggiungi Nuovo Topic
+        </button>
+      </div>
+
+      <!-- Filtri Pilastro + Archi per Idee -->
+      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+        <button onclick="filtraIdee('Tutti')" id="btnFiltroIdee-Tutti" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-950">Tutti</button>
+        <button onclick="filtraIdee('Taglio')" id="btnFiltroIdee-Taglio" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Coltello / Taglio</button>
+        <button onclick="filtraIdee('Fulmine')" id="btnFiltroIdee-Fulmine" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Fulmine</button>
+        <button onclick="filtraIdee('Treno')" id="btnFiltroIdee-Treno" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Treno</button>
+        <button onclick="filtraIdee('Excalibur')" id="btnFiltroIdee-Excalibur" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Excalibur</button>
+        <button onclick="filtraIdee('Ampio')" id="btnFiltroIdee-Ampio" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Ampio</button>
+        <button onclick="filtraIdee('Medio')" id="btnFiltroIdee-Medio" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Medio</button>
+        <button onclick="filtraIdee('Corto')" id="btnFiltroIdee-Corto" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Corto</button>
+      </div>
+
+      <div id="containerIdee" class="space-y-2.5">
       </div>
     </section>
 
@@ -521,6 +540,66 @@
     </div>
   </div>
 
+  <!-- MODAL AGGIUNGI NUOVO TOPIC DA IDEE (SENZA METEO/LUOGO) -->
+  <div id="modalNuovoTopicIdee" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 max-w-md w-full space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase">Nuovo Topic in Biblioteca</h3>
+        <button onclick="window.chiudiModalNuovoTopicIdee()" class="text-slate-400 hover:text-slate-600 text-sm font-bold">✕</button>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Nome Topic</label>
+        <input type="text" id="modalTopicNome" placeholder="es. Appoggio dello stinco in transizione..." class="w-full min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Spiega cosa è e come si fa</label>
+        <textarea id="modalTopicNote" rows="3" placeholder="Spiegazione tecnica e progressione di esecuzione..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs"></textarea>
+      </div>
+
+      <div class="p-3 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-2">
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-400">Pilastri e Archi di riferimento</label>
+        <div class="grid grid-cols-2 gap-2">
+          <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
+            <input type="checkbox" name="modalPilastri" value="Taglio" checked class="w-4 h-4 rounded text-sky-600">
+            <span class="text-xs font-bold text-sky-600">Taglio</span>
+          </label>
+          <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
+            <input type="checkbox" name="modalPilastri" value="Fulmine" class="w-4 h-4 rounded text-amber-600">
+            <span class="text-xs font-bold text-amber-600">Fulmine</span>
+          </label>
+          <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
+            <input type="checkbox" name="modalPilastri" value="Treno" class="w-4 h-4 rounded text-emerald-600">
+            <span class="text-xs font-bold text-emerald-600">Treno</span>
+          </label>
+          <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
+            <input type="checkbox" name="modalPilastri" value="Excalibur" class="w-4 h-4 rounded text-purple-600">
+            <span class="text-xs font-bold text-purple-600">Excalibur</span>
+          </label>
+        </div>
+        <div class="grid grid-cols-3 gap-2 pt-1">
+          <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
+            <input type="checkbox" name="modalArchi" value="Ampio" class="w-4 h-4 rounded text-sky-600">
+            <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Ampio</span>
+          </label>
+          <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
+            <input type="checkbox" name="modalArchi" value="Medio" checked class="w-4 h-4 rounded text-sky-600">
+            <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Medio</span>
+          </label>
+          <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
+            <input type="checkbox" name="modalArchi" value="Corto" class="w-4 h-4 rounded text-sky-600">
+            <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Corto</span>
+          </label>
+        </div>
+      </div>
+
+      <button type="button" onclick="window.salvaNuovoTopicDaModalIdee()" class="w-full min-touch bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-2xl text-xs transition-all active:scale-98">
+        Salva Topic in Archivio
+      </button>
+    </div>
+  </div>
+
   <!-- SCRIPT FIREBASE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
@@ -561,15 +640,6 @@
     const DEFAULT_ADMIN_PASS = "ADMIN_STEFANO";
     const DEFAULT_COACHES = ["Stefano", "Ruben", "Riccardo", "Federico", "Alessandro", "Davide"];
 
-    const ESERCIZI_INIZIALI = [
-      { id: "EX-1", pilastro: "Taglio", nome: "Curva su un solo sci esterno a velocità controllata" },
-      { id: "EX-2", pilastro: "Taglio", nome: "Lavoro di deformazione passiva senza spinte muscolari" },
-      { id: "EX-3", pilastro: "Fulmine", nome: "Sci paralleli sollevando le code dello sci interno" },
-      { id: "EX-4", pilastro: "Fulmine", nome: "Pressione continua sul tallone e caviglia chiusa" },
-      { id: "EX-5", pilastro: "Treno", nome: "Traiettoria a C costante con avanzamento del bacino" },
-      { id: "EX-6", pilastro: "Excalibur", nome: "Spalle parallele al pendio con bastoncini orizzontali" }
-    ];
-
     let currentUser = null;
     let coaches = [...DEFAULT_COACHES];
     let topicsList = [];
@@ -595,18 +665,12 @@
       }
     });
 
-    // 2. Esercizi Fissi
+    // 2. Esercizi Fissi (Inizia vuoto se non inseriti da voi)
     onSnapshot(colEsercizi, (snapshot) => {
       eserciziFissi = [];
       snapshot.forEach(doc => {
         eserciziFissi.push({ id: doc.id, ...doc.data() });
       });
-      if (eserciziFissi.length === 0) {
-        ESERCIZI_INIZIALI.forEach(ex => {
-          setDoc(doc(db, "esercizi_fissi", ex.id), ex);
-        });
-        eserciziFissi = [...ESERCIZI_INIZIALI];
-      }
       window.aggiornaEserciziSottoPilastro();
     });
 
@@ -627,11 +691,13 @@
       snapshot.forEach(doc => {
         diarioList.push({ id: doc.id, ...doc.data() });
       });
+      // ORDINE: sempre per primo l'ultimo aggiunto
       diarioList.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
       
       aggiornaListaTopicDinamici();
       renderDiario();
       renderIdee(filtroIdeeAttivo);
+      window.aggiornaTopicConsigliati();
     });
 
     function aggiornaListaTopicDinamici() {
@@ -643,7 +709,12 @@
       populateTopicsDropdown();
     }
 
-    // --- AGGIUNGI / MODIFICA ANALISI ---
+    // --- AGGIUNGI ANALISI ---
+    window.onCambiamentoPilastriArchiAnalisi = function() {
+      window.aggiornaEserciziSottoPilastro();
+      window.aggiornaTopicConsigliati();
+    };
+
     window.aggiornaEserciziSottoPilastro = function(eserciziGiaSelezionati = []) {
       const cont = document.getElementById('listaEserciziSuggeriti');
       if (!cont) return;
@@ -652,7 +723,7 @@
       const filtrati = eserciziFissi.filter(ex => pilastriChecked.includes(ex.pilastro));
 
       if (filtrati.length === 0) {
-        cont.innerHTML = `<div class="text-[11px] text-slate-400 italic p-2 bg-slate-50 dark:bg-slate-800 rounded-xl">Nessun esercizio fisso per i pilastri selezionati. Puoi aggiungerne uno sopra.</div>`;
+        cont.innerHTML = `<div class="text-[11px] text-slate-400 italic p-2 bg-slate-50 dark:bg-slate-800 rounded-xl">Nessun esercizio fisso presente per i pilastri selezionati. Clicca su "+ Salva nuovo esercizio fisso" per memorizzarne uno.</div>`;
         return;
       }
 
@@ -668,17 +739,50 @@
       }).join('');
     };
 
+    // CORREZIONE TASTO SALVA NUOVO ESERCIZIO FISSO
     window.salvaNuovoEsercizioFissoPrompt = async function() {
-      const nome = prompt("Nome del nuovo esercizio fisso:");
-      if (!nome) return;
+      const nome = prompt("Nome del nuovo esercizio fisso in pista:");
+      if (!nome || !nome.trim()) return;
       const pilastro = prompt("Associa al pilastro (Taglio, Fulmine, Treno, Excalibur):") || "Taglio";
       
       const id = "EX-" + Date.now();
-      await setDoc(doc(db, "esercizi_fissi", id), {
-        pilastro: pilastro.trim(),
-        nome: nome.trim(),
-        creatoDa: currentUser ? currentUser.name : 'Coach'
+      try {
+        await setDoc(doc(db, "esercizi_fissi", id), {
+          pilastro: pilastro.trim(),
+          nome: nome.trim(),
+          creatoDa: currentUser ? currentUser.name : 'Coach',
+          timestamp: Date.now()
+        });
+        alert("Esercizio salvato con successo nella banca esercizi!");
+      } catch(e) {
+        alert("Errore salvataggio esercizio: " + e.message);
+      }
+    };
+
+    // 5. TOPIC CONSIGLIATO DINAMICO
+    window.aggiornaTopicConsigliati = function() {
+      const sel = document.getElementById('selectTopicConsigliato');
+      if (!sel) return;
+
+      const pilastriChecked = Array.from(document.querySelectorAll('input[name="pilastri"]:checked')).map(el => el.value);
+      const archiChecked = Array.from(document.querySelectorAll('input[name="archi"]:checked')).map(el => el.value);
+
+      // Cerca nei topic registrati quelli con almeno un pilastro o arco coincidente
+      const topicSuggeriti = new Set();
+      diarioList.forEach(d => {
+        const pMatch = (d.pilastri || []).some(p => pilastriChecked.includes(p));
+        const aMatch = (d.archi || []).some(a => archiChecked.includes(a));
+        if (pMatch || aMatch) {
+          topicSuggeriti.add(d.topic);
+        }
       });
+
+      const arr = Array.from(topicSuggeriti);
+      if (arr.length === 0) {
+        sel.innerHTML = `<option value="">Nessun topic collegato trovato (seleziona o creane in Idee)</option>` + topicsList.map(t => `<option value="${t}">${t}</option>`).join('');
+      } else {
+        sel.innerHTML = `<option value="">-- Seleziona un topic suggerito --</option>` + arr.map(t => `<option value="${t}">⭐ ${t}</option>`).join('');
+      }
     };
 
     window.salvaNuovaAnalisi = async function() {
@@ -692,13 +796,10 @@
       
       const sceltiPredefiniti = Array.from(document.querySelectorAll('input[name="eserciziScelti"]:checked')).map(el => el.value);
       const libero = document.getElementById('inputEsercizioLibero').value.trim();
+      const topicConsigliato = document.getElementById('selectTopicConsigliato').value;
       
       let listaEserciziTotale = [...sceltiPredefiniti];
-      if (libero) {
-        listaEserciziTotale.push(libero);
-      }
-
-      const neve = document.getElementById('inputNeve').value;
+      if (libero) listaEserciziTotale.push(libero);
 
       if (!sintomo || !causa) {
         alert("Compila 'Cosa vedo in pista' e 'Perché'.");
@@ -710,8 +811,6 @@
       }
 
       const id = editId ? editId : ("NS-" + Date.now());
-      
-      // Recupera coach e data originali se in modifica
       let coachOriginale = currentUser.name;
       let dataOriginale = new Date().toISOString().split('T')[0];
       let timestampOriginale = Date.now();
@@ -732,7 +831,7 @@
         archi: archiChecked,
         esercizi: listaEserciziTotale,
         esercizioLibero: libero,
-        neve: neve || 'Non specificata',
+        topicConsigliato: topicConsigliato || '',
         data: dataOriginale,
         timestamp: timestampOriginale
       };
@@ -754,26 +853,26 @@
       document.getElementById('inputSintomo').value = item.sintomo || '';
       document.getElementById('inputCausa').value = item.causa || '';
       document.getElementById('inputFocus').value = item.focus || '';
-      document.getElementById('inputNeve').value = item.neve === 'Non specificata' ? '' : (item.neve || '');
       document.getElementById('inputEsercizioLibero').value = item.esercizioLibero || '';
 
-      // Imposta Pilastri
       const listP = Array.isArray(item.pilastri) ? item.pilastri : [item.pilastro || 'Taglio'];
       document.querySelectorAll('input[name="pilastri"]').forEach(cb => {
         cb.checked = listP.includes(cb.value);
       });
 
-      // Imposta Archi
       const listA = Array.isArray(item.archi) ? item.archi : (item.raggio ? [item.raggio] : []);
       document.querySelectorAll('input[name="archi"]').forEach(cb => {
         cb.checked = listA.includes(cb.value);
       });
 
-      // Aggiorna e seleziona esercizi
       const listEx = Array.isArray(item.esercizi) ? item.esercizi : (item.esercizio ? [item.esercizio] : []);
       window.aggiornaEserciziSottoPilastro(listEx);
 
-      // Cambia UI in modalità modifica
+      window.aggiornaTopicConsigliati();
+      if (item.topicConsigliato) {
+        document.getElementById('selectTopicConsigliato').value = item.topicConsigliato;
+      }
+
       document.getElementById('titoloSezioneAnalisi').innerText = "Modifica Scheda di Rilevamento";
       document.getElementById('btnSubmitAnalisi').innerText = "Aggiorna Analisi in Archivio";
       document.getElementById('btnAnnullaModifica').classList.remove('hidden');
@@ -788,20 +887,16 @@
       document.getElementById('inputCausa').value = '';
       document.getElementById('inputFocus').value = '';
       document.getElementById('inputEsercizioLibero').value = '';
-      document.getElementById('inputNeve').value = '';
       
-      document.querySelectorAll('input[name="pilastri"]').forEach(cb => {
-        cb.checked = (cb.value === 'Taglio');
-      });
-      document.querySelectorAll('input[name="archi"]').forEach(cb => {
-        cb.checked = (cb.value === 'Medio');
-      });
+      document.querySelectorAll('input[name="pilastri"]').forEach(cb => cb.checked = (cb.value === 'Taglio'));
+      document.querySelectorAll('input[name="archi"]').forEach(cb => cb.checked = (cb.value === 'Medio'));
 
       document.getElementById('titoloSezioneAnalisi').innerText = "Nuova Scheda di Rilevamento";
       document.getElementById('btnSubmitAnalisi').innerText = "Salva Analisi in Archivio";
       document.getElementById('btnAnnullaModifica').classList.add('hidden');
 
       window.aggiornaEserciziSottoPilastro();
+      window.aggiornaTopicConsigliati();
     };
 
     window.eliminaAnalisi = async function(id) {
@@ -840,8 +935,6 @@
 
         return `
           <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden transition-all shadow-sm">
-            
-            <!-- PARTE SEMPRE VISIBILE -->
             <div onclick="window.toggleEspandiScheda('${a.id}')" class="p-3.5 flex items-start justify-between gap-3 cursor-pointer select-none hover:bg-slate-50 dark:hover:bg-slate-800/50">
               <div class="space-y-1.5 flex-1">
                 <div class="flex flex-wrap items-center gap-1.5">
@@ -868,7 +961,6 @@
               </div>
             </div>
 
-            <!-- PARTE ESPANDIBILE CON MODIFICA E CANCELLA -->
             <div id="dettaglio-${a.id}" class="hidden p-4 pt-2 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 space-y-2.5 text-xs">
               <div>
                 <span class="text-[10px] uppercase font-bold text-slate-400 block">Causa biomeccanica reale:</span>
@@ -884,7 +976,7 @@
 
               ${listEsercizi.length > 0 ? `
                 <div>
-                  <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Esercizi in pista proposti:</span>
+                  <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Esercizi in pista consigliati:</span>
                   <ul class="space-y-1">
                     ${listEsercizi.map(ex => `
                       <li class="flex items-start gap-1.5 text-slate-700 dark:text-slate-300">
@@ -896,9 +988,14 @@
                 </div>
               ` : ''}
 
+              ${a.topicConsigliato ? `
+                <div class="text-[11px] font-semibold text-sky-600 dark:text-sky-400">
+                  Topic consigliato: <b>${a.topicConsigliato}</b>
+                </div>
+              ` : ''}
+
               <div class="pt-2.5 flex items-center justify-between text-[11px] text-slate-400 border-t border-slate-200 dark:border-slate-700">
-                <span>❄️ ${a.neve} • Data: ${a.data}</span>
-                
+                <span>Data: ${a.data}</span>
                 ${canManage ? `
                   <div class="flex items-center gap-3">
                     <button type="button" onclick="window.avviaModificaAnalisi('${a.id}')" class="font-bold text-sky-600 dark:text-sky-400 hover:underline">
@@ -911,7 +1008,6 @@
                 ` : ''}
               </div>
             </div>
-
           </div>
         `;
       }).join('');
@@ -926,85 +1022,25 @@
       if (chv) chv.style.transform = isHidden ? "rotate(180deg)" : "rotate(0deg)";
     };
 
-    // --- IDEE IN PISTA ---
-    function renderIdee(filtro = 'Tutti') {
-      filtroIdeeAttivo = filtro;
-      const cont = document.getElementById('containerIdee');
-      if (!cont) return;
-
-      aggiornaBottoniFiltro('btnFiltroIdee', filtro);
-
-      const mappaTopic = {};
-      diarioList.forEach(d => {
-        const t = (d.topic || '').trim();
-        if (!t) return;
-        if (!mappaTopic[t]) {
-          mappaTopic[t] = {
-            topic: t,
-            giornate: 0,
-            pilastri: new Set(),
-            archi: new Set(),
-            ultimaData: d.data
-          };
-        }
-        mappaTopic[t].giornate++;
-        (d.pilastri || []).forEach(p => mappaTopic[t].pilastri.add(p));
-        (d.archi || []).forEach(a => mappaTopic[t].archi.add(a));
-      });
-
-      let lista = Object.values(mappaTopic);
-
-      if (filtro !== 'Tutti') {
-        lista = lista.filter(item => item.pilastri.has(filtro) || item.archi.has(filtro));
+    // --- COSA HO FATTO OGGI (COMPATTI ESPANDIBILI + NEVE A SCELTA) ---
+    window.aggiungiNuovaTipologiaNevePrompt = function() {
+      const nuova = prompt("Nuova tipologia di neve da aggiungere:");
+      if (nuova && nuova.trim()) {
+        const sel = document.getElementById('diarioNeveSelect');
+        const opt = document.createElement('option');
+        opt.value = nuova.trim();
+        opt.innerText = nuova.trim();
+        opt.selected = true;
+        sel.appendChild(opt);
       }
-
-      if (lista.length === 0) {
-        cont.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">Nessun topic affrontato registrato per questo filtro. Registra una nuova giornata in "Cosa ho fatto oggi".</div>`;
-        return;
-      }
-
-      cont.innerHTML = lista.map(item => `
-        <div onclick="window.apriDiarioPerTopic('${item.topic.replace(/'/g, "\\'")}')" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 cursor-pointer hover:border-sky-500 transition-all shadow-sm group">
-          <div class="flex items-center justify-between mb-1.5">
-            <div class="flex flex-wrap gap-1">
-              ${Array.from(item.pilastri).map(p => `
-                <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getPilastroBadgeClass(p)}">
-                  ${p === 'Taglio' ? 'Coltello' : p}
-                </span>
-              `).join('')}
-              ${Array.from(item.archi).map(a => `
-                <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
-                  ${a}
-                </span>
-              `).join('')}
-            </div>
-            <span class="text-[11px] font-bold text-sky-600 dark:text-sky-400 group-hover:underline">
-              Vedi giornate (${item.giornate}) →
-            </span>
-          </div>
-
-          <h3 class="text-sm font-bold text-slate-900 dark:text-white">${item.topic}</h3>
-          <p class="text-[11px] text-slate-400 mt-1">Ultima sessione registrata il ${item.ultimaData}</p>
-        </div>
-      `).join('');
-    }
-
-    window.apriDiarioPerTopic = function(topic) {
-      filtroDiarioTopicAttivo = topic;
-      navigateTab('tabDiario');
-      renderDiario();
-      
-      const elCont = document.getElementById('containerDiario');
-      if (elCont) elCont.scrollIntoView({ behavior: 'smooth' });
     };
 
-    // --- COSA HO FATTO OGGI & FILTRI ATTIVI ---
     window.salvaDiario = async function() {
       let topic = document.getElementById('selectTopicDiario').value.trim();
       const note = document.getElementById('diarioNote').value.trim();
       const luogo = document.getElementById('diarioLuogo').value.trim();
       const meteo = document.getElementById('diarioMeteo').value.trim();
-      const neve = document.getElementById('diarioNeve').value.trim();
+      const neve = document.getElementById('diarioNeveSelect').value;
 
       const pilastriChecked = Array.from(document.querySelectorAll('input[name="diarioPilastri"]:checked')).map(el => el.value);
       const archiChecked = Array.from(document.querySelectorAll('input[name="diarioArchi"]:checked')).map(el => el.value);
@@ -1027,14 +1063,13 @@
         archi: archiChecked,
         luogo: luogo || 'In pista',
         meteo: meteo || 'Non specificato',
-        neve: neve || 'Non specificata',
+        neve: neve || 'Compatta invernale',
         timestamp: Date.now()
       });
 
       document.getElementById('diarioNote').value = "";
       document.getElementById('diarioLuogo').value = "";
       document.getElementById('diarioMeteo').value = "";
-      document.getElementById('diarioNeve').value = "";
     };
 
     window.eliminaDiario = async function(id) {
@@ -1044,7 +1079,7 @@
     };
 
     window.applicaFiltriDiarioManuali = function() {
-      filtroDiarioTopicAttivo = null; // resetta eventuale filtro arrivato da Idee
+      filtroDiarioTopicAttivo = null;
       renderDiario();
     };
 
@@ -1082,38 +1117,38 @@
         const listA = d.archi || [];
 
         return `
-          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 space-y-2.5">
-            <div class="flex items-center justify-between">
-              <div class="space-y-1">
-                <div class="flex flex-wrap gap-1">
-                  ${listP.map(p => `
-                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getPilastroBadgeClass(p)}">
-                      ${p === 'Taglio' ? 'Coltello' : p}
-                    </span>
-                  `).join('')}
-                  ${listA.map(a => `
-                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
-                      ${a}
-                    </span>
-                  `).join('')}
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden transition-all shadow-sm">
+            <div onclick="window.toggleEspandiScheda('${d.id}')" class="p-3.5 flex items-start justify-between gap-3 cursor-pointer select-none hover:bg-slate-50 dark:hover:bg-slate-800/50">
+              <div class="space-y-1.5 flex-1">
+                <div class="flex flex-wrap items-center gap-1">
+                  ${listP.map(p => `<span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getPilastroBadgeClass(p)}">${p === 'Taglio' ? 'Coltello' : p}</span>`).join('')}
+                  ${listA.map(a => `<span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">${a}</span>`).join('')}
                 </div>
-                <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">${d.topic}</h3>
+                <h3 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider">${d.topic}</h3>
               </div>
-              <div class="flex items-center gap-2">
-                <span class="text-[10px] text-slate-400 font-bold">${d.coach} • ${d.data}</span>
-                ${canDelete ? `<button onclick="window.eliminaDiario('${d.id}')" class="text-rose-500 font-bold text-xs px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/40">✕</button>` : ''}
+              <div class="flex items-center gap-2 shrink-0 pt-1">
+                <span class="text-[10px] font-bold text-slate-400">${d.coach} • ${d.data}</span>
+                <span id="chevron-${d.id}" class="text-xs text-slate-400 transition-transform">▼</span>
               </div>
             </div>
 
-            <div>
-              <span class="text-[10px] uppercase font-bold text-slate-400 block">Cosa è e come si fa:</span>
-              <p class="text-xs text-slate-700 dark:text-slate-300 whitespace-pre-line mt-0.5">${d.note}</p>
-            </div>
+            <div id="dettaglio-${d.id}" class="hidden p-4 pt-2 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 space-y-2.5 text-xs">
+              <div>
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">Cosa è e come si fa:</span>
+                <p class="text-xs text-slate-700 dark:text-slate-300 whitespace-pre-line mt-0.5">${d.note}</p>
+              </div>
 
-            <div class="pt-2 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-1 text-[11px] text-slate-500 dark:text-slate-400">
-              <span>📍 <b>Luogo:</b> ${d.luogo || 'In pista'}</span>
-              <span>☀️ <b>Meteo:</b> ${d.meteo || 'Non specificato'}</span>
-              <span>❄️ <b>Neve:</b> ${d.neve || 'Non specificata'}</span>
+              <div class="pt-2 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-1 text-[11px] text-slate-500 dark:text-slate-400">
+                <span>📍 <b>Luogo:</b> ${d.luogo || 'In pista'}</span>
+                <span>☀️ <b>Meteo:</b> ${d.meteo || 'Non specificato'}</span>
+                <span>❄️ <b>Neve:</b> ${d.neve || 'Compatta'}</span>
+              </div>
+
+              ${canDelete ? `
+                <div class="pt-2 border-t border-slate-200 dark:border-slate-700 text-right">
+                  <button onclick="window.eliminaDiario('${d.id}')" class="text-rose-500 font-bold hover:underline">Elimina Voce ✕</button>
+                </div>
+              ` : ''}
             </div>
           </div>
         `;
@@ -1145,10 +1180,194 @@
       if (!sel) return;
       const corrente = sel.value;
       sel.innerHTML = `<option value="">-- Seleziona topic esistente --</option>` + topicsList.map(t => `<option value="${t}">${t}</option>`).join('');
-      if (corrente && topicsList.includes(corrente)) {
-        sel.value = corrente;
-      }
+      if (corrente && topicsList.includes(corrente)) sel.value = corrente;
     }
+
+    // --- IDEE IN PISTA + VOCALE GEMINI + MODAL NUOVO TOPIC ---
+    let recognizer = null;
+    let isListening = false;
+
+    window.toggleAscoltoVocale = function() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("Il riconoscimento vocale richiede Safari (iOS) o Chrome.");
+        return;
+      }
+
+      if (isListening) {
+        recognizer.stop();
+        return;
+      }
+
+      recognizer = new SpeechRecognition();
+      recognizer.lang = 'it-IT';
+      recognizer.continuous = false;
+      recognizer.interimResults = false;
+
+      recognizer.onstart = () => {
+        isListening = true;
+        document.getElementById('dotVocale').classList.remove('hidden');
+        document.getElementById('txtBtnVocale').innerText = "Ti ascolto...";
+      };
+
+      recognizer.onresult = (event) => {
+        const vocaleDettato = event.results[0][0].transcript;
+        elaboraVocaleConGeminiRule(vocaleDettato);
+      };
+
+      recognizer.onerror = () => {
+        fermaAscolto();
+      };
+
+      recognizer.onend = () => {
+        fermaAscolto();
+      };
+
+      recognizer.start();
+    };
+
+    function fermaAscolto() {
+      isListening = false;
+      document.getElementById('dotVocale').classList.add('hidden');
+      document.getElementById('txtBtnVocale').innerText = "Parla 🎙️";
+    }
+
+    function elaboraVocaleConGeminiRule(testo) {
+      document.getElementById('boxRispostaVocale').classList.remove('hidden');
+      document.getElementById('testoTrascrittoVocale').innerText = `"${testo}"`;
+
+      // Analisi semantica istantanea locale tra i topic disponibili
+      let bestMatch = topicsList[0] || "Lavoro di Appoggio Strutturale";
+      let highestScore = 0;
+
+      const parole = testo.toLowerCase().split(/\s+/);
+      topicsList.forEach(t => {
+        let score = 0;
+        parole.forEach(p => {
+          if (p.length > 3 && t.toLowerCase().includes(p)) score += 2;
+        });
+        if (score > highestScore) {
+          highestScore = score;
+          bestMatch = t;
+        }
+      });
+
+      document.getElementById('suggerimentoTopicVocale').innerText = `Consiglio: ${bestMatch}`;
+      document.getElementById('btnVaiATopicSuggerito').onclick = () => {
+        window.apriDiarioPerTopic(bestMatch);
+      };
+    }
+
+    // Modal Nuovo Topic senza meteo/luogo
+    window.apriModalNuovoTopicIdee = function() {
+      document.getElementById('modalTopicNome').value = '';
+      document.getElementById('modalTopicNote').value = '';
+      document.getElementById('modalNuovoTopicIdee').classList.remove('hidden');
+      document.getElementById('modalNuovoTopicIdee').classList.add('flex');
+    };
+
+    window.chiudiModalNuovoTopicIdee = function() {
+      document.getElementById('modalNuovoTopicIdee').classList.add('hidden');
+      document.getElementById('modalNuovoTopicIdee').classList.remove('flex');
+    };
+
+    window.salvaNuovoTopicDaModalIdee = async function() {
+      const nome = document.getElementById('modalTopicNome').value.trim();
+      const note = document.getElementById('modalTopicNote').value.trim();
+      const pilastriChecked = Array.from(document.querySelectorAll('input[name="modalPilastri"]:checked')).map(el => el.value);
+      const archiChecked = Array.from(document.querySelectorAll('input[name="modalArchi"]:checked')).map(el => el.value);
+
+      if (!nome || !note) {
+        alert("Inserisci il nome del topic e la spiegazione.");
+        return;
+      }
+
+      const id = "D-" + Date.now();
+      await setDoc(doc(db, "diario", id), {
+        coach: currentUser.name,
+        data: new Date().toISOString().split('T')[0],
+        topic: nome,
+        note: note,
+        pilastri: pilastriChecked,
+        archi: archiChecked,
+        luogo: 'Biblioteca Topic',
+        meteo: 'Teorico',
+        neve: 'Tutte',
+        timestamp: Date.now()
+      });
+
+      window.chiudiModalNuovoTopicIdee();
+    };
+
+    function renderIdee(filtro = 'Tutti') {
+      filtroIdeeAttivo = filtro;
+      const cont = document.getElementById('containerIdee');
+      if (!cont) return;
+
+      aggiornaBottoniFiltro('btnFiltroIdee', filtro);
+
+      const mappaTopic = {};
+      diarioList.forEach(d => {
+        const t = (d.topic || '').trim();
+        if (!t) return;
+        if (!mappaTopic[t]) {
+          mappaTopic[t] = {
+            topic: t,
+            giornate: 0,
+            pilastri: new Set(),
+            archi: new Set(),
+            ultimaData: d.data
+          };
+        }
+        mappaTopic[t].giornate++;
+        (d.pilastri || []).forEach(p => mappaTopic[t].pilastri.add(p));
+        (d.archi || []).forEach(a => mappaTopic[t].archi.add(a));
+      });
+
+      let lista = Object.values(mappaTopic);
+
+      if (filtro !== 'Tutti') {
+        lista = lista.filter(item => item.pilastri.has(filtro) || item.archi.has(filtro));
+      }
+
+      if (lista.length === 0) {
+        cont.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">Nessun topic affrontato registrato per questo filtro. Clicca "+ Aggiungi Nuovo Topic" sopra per crearlo.</div>`;
+        return;
+      }
+
+      cont.innerHTML = lista.map(item => `
+        <div onclick="window.apriDiarioPerTopic('${item.topic.replace(/'/g, "\\'")}')" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 cursor-pointer hover:border-sky-500 transition-all shadow-sm group">
+          <div class="flex items-center justify-between mb-1.5">
+            <div class="flex flex-wrap gap-1">
+              ${Array.from(item.pilastri).map(p => `
+                <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getPilastroBadgeClass(p)}">
+                  ${p === 'Taglio' ? 'Coltello' : p}
+                </span>
+              `).join('')}
+              ${Array.from(item.archi).map(a => `
+                <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                  ${a}
+                </span>
+              `).join('')}
+            </div>
+            <span class="text-[11px] font-bold text-sky-600 dark:text-sky-400 group-hover:underline">
+              Vedi giornate (${item.giornate}) →
+            </span>
+          </div>
+
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">${item.topic}</h3>
+          <p class="text-[11px] text-slate-400 mt-1">Ultima sessione registrata il ${item.ultimaData}</p>
+        </div>
+      `).join('');
+    }
+
+    window.apriDiarioPerTopic = function(topic) {
+      filtroDiarioTopicAttivo = topic;
+      navigateTab('tabDiario');
+      renderDiario();
+      const elCont = document.getElementById('containerDiario');
+      if (elCont) elCont.scrollIntoView({ behavior: 'smooth' });
+    };
 
     function populateCoachDropdowns() {
       const selLogin = document.getElementById('loginCoachSelect');
@@ -1298,6 +1517,8 @@
       renderIdee(filtroIdeeAttivo);
       renderDiario();
       renderStats();
+      window.aggiornaEserciziSottoPilastro();
+      window.aggiornaTopicConsigliati();
     }
 
     window.navigateTab = function(tabId) {
