@@ -61,7 +61,13 @@
       </div>
 
       <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">NATURAL SKIING</h1>
-      <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-6">Accesso Riservato Staff Tecnico & Coach</p>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-2">Cloud Database Sincronizzato</p>
+      
+      <!-- Indicatore stato Cloud -->
+      <div id="cloudStatusBadge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400 mb-6">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        Firebase Connesso
+      </div>
 
       <div class="grid grid-cols-2 gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl mb-4">
         <button id="tabRoleCoach" onclick="switchLoginRole('coach')" class="py-2.5 rounded-xl font-semibold text-xs tracking-wide bg-white dark:bg-slate-700 shadow-sm text-sky-600 dark:text-sky-400 transition-all">
@@ -77,6 +83,7 @@
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Seleziona Coach</label>
           <select id="loginCoachSelect" class="w-full min-touch px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <!-- Popolato dinamicamente da Firestore -->
           </select>
         </div>
         <div>
@@ -111,7 +118,7 @@
     </div>
   </div>
 
-  <!-- ================= INTESTAZIONE ================= -->
+  <!-- ================= INTESTAZIONE PRINCIPALE ================= -->
   <header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-3">
     <div class="max-w-4xl mx-auto flex items-center justify-between gap-3">
       
@@ -122,7 +129,10 @@
           </svg>
         </div>
         <div>
-          <span class="text-xs font-black tracking-wider uppercase block text-slate-900 dark:text-white">NATURAL SKIING</span>
+          <div class="flex items-center gap-1.5">
+            <span class="text-xs font-black tracking-wider uppercase block text-slate-900 dark:text-white">NATURAL SKIING</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-500" title="Online Sync Attivo"></span>
+          </div>
           <span id="activeCoachBadge" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
             Coach: --
           </span>
@@ -263,13 +273,14 @@
       </div>
 
       <div id="containerArchivio" class="space-y-3">
+        <!-- Schede caricate in tempo reale da Firestore -->
       </div>
     </section>
 
     <!-- 3. IDEE IN PISTA -->
     <section id="tabIdee" class="tab-content space-y-4 hidden">
       <div class="flex items-center justify-between">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Biblioteca Spunti & Topic</h2>
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Biblioteca Spunti & Topic Condivisa</h2>
         <button onclick="apriModalNuovaIdea()" class="min-touch px-3 py-1.5 rounded-xl bg-sky-600 text-white text-xs font-bold shadow-sm">
           + Nuova Idea
         </button>
@@ -320,7 +331,7 @@
         <div class="flex items-center justify-between mb-3">
           <div>
             <h2 class="text-sm font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">Pannello Supervisione AI (Admin)</h2>
-            <p class="text-xs text-slate-500">Statistiche e download dataset per Machine Learning</p>
+            <p class="text-xs text-slate-500">Statistiche e download dataset globale per Machine Learning</p>
           </div>
           <span class="text-xs font-bold px-2 py-1 bg-amber-500 text-slate-950 rounded-lg">Riservato</span>
         </div>
@@ -362,7 +373,7 @@
       </div>
       
       <div class="flex gap-2">
-        <input type="text" id="nuovoCoachNome" placeholder="Nome nuovo coach" class="flex-1 min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">
+        <input type="text" id="nuovoCoachNome" placeholder="Nome nuovo coach (es. Ruben)" class="flex-1 min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">
         <button type="button" onclick="window.aggiungiCoach()" class="min-touch px-4 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold active:scale-95 transition-all">
           Aggiungi
         </button>
@@ -379,95 +390,197 @@
     </div>
   </div>
 
-  <!-- ================= SCRIPT JAVASCRIPT ================= -->
-  <script>
+  <!-- ================= FIREBASE SDK & LOGICA REALTIME ================= -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { 
+      getFirestore, 
+      collection, 
+      doc, 
+      setDoc, 
+      deleteDoc, 
+      onSnapshot, 
+      enableIndexedDbPersistence 
+    } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+    // Configurazione Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDd8FYuLtj4tHoyA2_cqdDD1jpvYzeR3hc",
+      authDomain: "natural-skiing-engine.firebaseapp.com",
+      projectId: "natural-skiing-engine",
+      storageBucket: "natural-skiing-engine.firebasestorage.app",
+      messagingSenderId: "328695045098",
+      appId: "1:328695045098:web:69f5cb2b465630017ab093",
+      measurementId: "G-V8Q34SQD0V"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Abilita persistenza offline per le piste da sci
+    try {
+      enableIndexedDbPersistence(db).catch(err => {
+        console.warn("Offline persistence:", err.code);
+      });
+    } catch(e) {}
+
+    // Riferimenti collezioni
+    const colAnalisi = collection(db, "analisi");
+    const colIdee = collection(db, "idee");
+    const colDiario = collection(db, "diario");
+    const colSettings = collection(db, "settings");
+
     const DEFAULT_COACH_PASS = "COACH2026";
     const DEFAULT_ADMIN_PASS = "ADMIN_STEFANO";
-    const DEFAULT_COACHES = ["Stefano", "Riccardo", "Federico", "Alessandro", "Davide", "Lorenzo"];
+    const DEFAULT_COACHES = ["Stefano", "Ruben", "Riccardo", "Federico", "Alessandro", "Davide"];
 
     let currentUser = null;
-
-    // Pulizia e auto-riparazione
-    function sanitizzaStringa(val) {
-      if (!val) return '';
-      if (typeof val === 'object') return val.name || val.nome || '';
-      let s = String(val).trim();
-      return (s === '[object Object]' || s === '') ? '' : s;
-    }
-
-    function caricaCoachesDaStorage() {
-      let raw = localStorage.getItem('ns_coaches');
-      let arr = [];
-      try {
-        arr = raw ? JSON.parse(raw) : DEFAULT_COACHES;
-      } catch(e) {
-        arr = DEFAULT_COACHES;
-      }
-      if (!Array.isArray(arr)) arr = DEFAULT_COACHES;
-      
-      let puliti = arr.map(sanitizzaStringa).filter(Boolean);
-      if (!puliti.includes("Stefano")) {
-        puliti.unshift("Stefano");
-      }
-      return puliti;
-    }
-
-    let coaches = caricaCoachesDaStorage();
-    localStorage.setItem('ns_coaches', JSON.stringify(coaches));
-
-    let topics = JSON.parse(localStorage.getItem('ns_topics')) || [
+    let coaches = [...DEFAULT_COACHES];
+    let topics = [
       "Deformazione dello sci a basse velocità",
       "Pressione sul tallone e caviglia chiusa (Fulmine)",
       "Traiettoria a C e avanzamento del bacino (Treno)",
       "Spalle parallele al pendio senza collassi (Excalibur)"
     ];
 
-    let analisiList = JSON.parse(localStorage.getItem('ns_analisi')) || [
-      {
-        id: "NS-1",
-        coach: "Stefano",
-        sintomo: "Sci esterno che derapa via a centro curva",
-        causa: "Spinta muscolare attiva con la gamba anziché presa di spigolo in appoggio strutturale",
-        focus: "Non spingere: appoggiati",
-        esercizio: "Curva su un solo sci esterno a velocità controllata",
-        pilastro: "Taglio",
-        neve: "Dura / Barrata",
-        raggio: "Medio (14-18m)",
-        data: "2026-11-01"
-      },
-      {
-        id: "NS-2",
-        coach: "Riccardo",
-        sintomo: "Punta dello sci interno che diverge a V",
-        causa: "Carico arretrato con mancata chiusura articolare della caviglia",
-        focus: "Schiaccia la linguetta",
-        esercizio: "Sci paralleli sollevando alternativamente le code dello sci interno",
-        pilastro: "Fulmine",
-        neve: "Compatta invernale",
-        raggio: "Corto (<13m)",
-        data: "2026-11-01"
-      }
-    ];
+    let analisiList = [];
+    let ideeList = [];
+    let diarioList = [];
 
-    let diarioList = JSON.parse(localStorage.getItem('ns_diario')) || [];
-    let ideeList = JSON.parse(localStorage.getItem('ns_idee')) || [
-      {
-        id: "ID-1",
-        titolo: "Deformazione passiva su basse velocità",
-        pilastro: "Taglio",
-        descrizione: "Far sentire all'atleta che lo sci curva per la sciancratura e l'inclinazione dell'attrezzo, non forzando con i quadricipiti.",
-        cue: "Lascia lavorare la lamina"
-      },
-      {
-        id: "ID-2",
-        titolo: "Moneta sotto il tallone",
-        pilastro: "Fulmine",
-        descrizione: "Evitare di buttarsi avanti solo con le ginocchia. Sentire il tallone ancorato nello scarpone per trasmettere pressione continua.",
-        cue: "Tallone incollato"
-      }
-    ];
+    // --- ASCOLTO TEMPO REALE DA FIRESTORE ---
 
-    // --- FUNZIONI DI GESTIONE STAFF GLOBALI ---
+    // 1. Staff Coach
+    onSnapshot(doc(db, "settings", "staff"), (docSnap) => {
+      if (docSnap.exists() && docSnap.data().list) {
+        coaches = docSnap.data().list;
+      } else {
+        // Se non esiste ancora sul cloud, carichiamo la base con Ruben
+        setDoc(doc(db, "settings", "staff"), { list: DEFAULT_COACHES });
+        coaches = [...DEFAULT_COACHES];
+      }
+      populateCoachDropdowns();
+      if (document.getElementById('modalStaff').classList.contains('flex')) {
+        window.renderCoachManagerList();
+      }
+    });
+
+    // 2. Analisi
+    onSnapshot(colAnalisi, (snapshot) => {
+      analisiList = [];
+      snapshot.forEach(doc => {
+        analisiList.push({ id: doc.id, ...doc.data() });
+      });
+      // Ordina dalla più recente
+      analisiList.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
+      renderArchivio();
+      renderStats();
+    });
+
+    // 3. Idee in Pista
+    onSnapshot(colIdee, (snapshot) => {
+      ideeList = [];
+      snapshot.forEach(doc => {
+        ideeList.push({ id: doc.id, ...doc.data() });
+      });
+      ideeList.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
+      renderIdee();
+    });
+
+    // 4. Diario Camp
+    onSnapshot(colDiario, (snapshot) => {
+      diarioList = [];
+      snapshot.forEach(doc => {
+        diarioList.push({ id: doc.id, ...doc.data() });
+      });
+      diarioList.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
+      renderDiario();
+    });
+
+    // --- FUNZIONI CLOUD ESPOSTE ALLA WINDOW ---
+
+    window.salvaNuovaAnalisi = async function() {
+      const sintomo = document.getElementById('inputSintomo').value.trim();
+      const causa = document.getElementById('inputCausa').value.trim();
+      const focus = document.getElementById('inputFocus').value.trim();
+      const esercizio = document.getElementById('inputEsercizio').value.trim();
+      const pilastro = document.querySelector('input[name="pilastro"]:checked').value;
+      const neve = document.getElementById('inputNeve').value;
+      const raggio = document.getElementById('inputRaggio').value;
+
+      if (!sintomo || !causa) {
+        alert("Inserisci almeno 'Cosa vedo' e 'Perché'.");
+        return;
+      }
+
+      const id = "NS-" + Date.now();
+      const nuova = {
+        coach: currentUser.name,
+        sintomo, causa, focus, esercizio, pilastro, neve, raggio,
+        data: new Date().toISOString().split('T')[0],
+        timestamp: Date.now()
+      };
+
+      try {
+        await setDoc(doc(db, "analisi", id), nuova);
+        document.getElementById('inputSintomo').value = "";
+        document.getElementById('inputCausa').value = "";
+        document.getElementById('inputFocus').value = "";
+        document.getElementById('inputEsercizio').value = "";
+        navigateTab('tabArchivio');
+      } catch (e) {
+        alert("Errore salvataggio: " + e.message);
+      }
+    };
+
+    window.eliminaAnalisi = async function(id) {
+      if (confirm("Vuoi eliminare questa analisi dal cloud?")) {
+        await deleteDoc(doc(db, "analisi", id));
+      }
+    };
+
+    window.apriModalNuovaIdea = async function() {
+      const titolo = prompt("Titolo dell'idea o topic tecnico:");
+      if (!titolo) return;
+      const pilastro = prompt("Pilastro (Taglio, Fulmine, Treno, Excalibur):") || "Taglio";
+      const descrizione = prompt("Descrizione:") || "";
+      const cue = prompt("Frase guida in pista (Cue):") || "";
+
+      const id = "ID-" + Date.now();
+      await setDoc(doc(db, "idee", id), {
+        titolo, pilastro, descrizione, cue,
+        coach: currentUser.name,
+        timestamp: Date.now()
+      });
+    };
+
+    window.salvaDiario = async function() {
+      const topic = document.getElementById('selectTopicDiario').value;
+      const luogo = document.getElementById('diarioLuogo').value.trim();
+      const neve = document.getElementById('diarioNeve').value.trim();
+      const note = document.getElementById('diarioNote').value.trim();
+
+      if (!note) {
+        alert("Inserisci le riflessioni tecniche.");
+        return;
+      }
+
+      const id = "D-" + Date.now();
+      await setDoc(doc(db, "diario", id), {
+        coach: currentUser.name,
+        data: new Date().toISOString().split('T')[0],
+        topic, luogo, neve, note,
+        timestamp: Date.now()
+      });
+
+      document.getElementById('diarioNote').value = "";
+    };
+
+    window.eliminaDiario = async function(id) {
+      if (confirm("Eliminare questo debriefing dal cloud?")) {
+        await deleteDoc(doc(db, "diario", id));
+      }
+    };
+
     window.renderCoachManagerList = function() {
       const cont = document.getElementById('listaCoachManager');
       if (!cont) return;
@@ -486,49 +599,29 @@
       `).join('');
     };
 
-    window.rimuoviCoachPerIndice = function(index) {
+    window.rimuoviCoachPerIndice = async function(index) {
       if (index >= 0 && index < coaches.length) {
         coaches.splice(index, 1);
-        localStorage.setItem('ns_coaches', JSON.stringify(coaches));
-        window.renderCoachManagerList();
-        populateCoachDropdowns();
+        await setDoc(doc(db, "settings", "staff"), { list: coaches });
       }
     };
 
-    window.aggiungiCoach = function() {
+    window.aggiungiCoach = async function() {
       const input = document.getElementById('nuovoCoachNome');
-      if (!input) return;
-      const nome = sanitizzaStringa(input.value);
+      const nome = input.value.trim();
       if (nome && !coaches.includes(nome)) {
         coaches.push(nome);
-        localStorage.setItem('ns_coaches', JSON.stringify(coaches));
+        await setDoc(doc(db, "settings", "staff"), { list: coaches });
         input.value = "";
-        window.renderCoachManagerList();
-        populateCoachDropdowns();
       }
     };
 
-    window.resetStaffDefault = function() {
-      coaches = [...DEFAULT_COACHES];
-      localStorage.setItem('ns_coaches', JSON.stringify(coaches));
-      window.renderCoachManagerList();
-      populateCoachDropdowns();
+    window.resetStaffDefault = async function() {
+      await setDoc(doc(db, "settings", "staff"), { list: DEFAULT_COACHES });
     };
 
-    function populateCoachDropdowns() {
-      const selLogin = document.getElementById('loginCoachSelect');
-      if (!selLogin) return;
-      selLogin.innerHTML = coaches.filter(c => c !== "Stefano").map(c => `<option value="${c}">${c}</option>`).join('');
-    }
-
-    function populateTopicsDropdown() {
-      const sel = document.getElementById('selectTopicDiario');
-      if (!sel) return;
-      sel.innerHTML = topics.map(t => `<option value="${t}">${t}</option>`).join('');
-    }
-
-    // --- AUTENTICAZIONE E SICUREZZA ---
-    function switchLoginRole(role) {
+    // --- INTERFACCIA E LOGIN ---
+    window.switchLoginRole = function(role) {
       const err = document.getElementById('loginErrorMsg');
       err.classList.add('hidden');
       if (role === 'coach') {
@@ -542,49 +635,40 @@
         document.getElementById('tabRoleAdmin').className = "py-2.5 rounded-xl font-semibold text-xs tracking-wide bg-white dark:bg-slate-700 shadow-sm text-amber-500";
         document.getElementById('tabRoleCoach').className = "py-2.5 rounded-xl font-semibold text-xs tracking-wide text-slate-500 hover:text-white";
       }
-    }
+    };
 
-    function attemptCoachLogin() {
+    window.attemptCoachLogin = function() {
       const pass = document.getElementById('inputCoachPassword').value.trim();
       const name = document.getElementById('loginCoachSelect').value;
-      const storedPass = localStorage.getItem('ns_pass_coach') || DEFAULT_COACH_PASS;
-
-      if (pass === storedPass) {
+      if (pass === DEFAULT_COACH_PASS) {
         currentUser = { name: name, role: 'coach' };
         sessionStorage.setItem('ns_session', JSON.stringify(currentUser));
         sbloccaInterfaccia();
       } else {
-        showLoginError("Password Coach non corretta.");
+        document.getElementById('loginErrorMsg').innerText = "Password Coach non corretta.";
+        document.getElementById('loginErrorMsg').classList.remove('hidden');
       }
-    }
+    };
 
-    function attemptAdminLogin() {
+    window.attemptAdminLogin = function() {
       const pass = document.getElementById('inputAdminPassword').value.trim();
-      const storedAdminPass = localStorage.getItem('ns_pass_admin') || DEFAULT_ADMIN_PASS;
-
-      if (pass === storedAdminPass) {
+      if (pass === DEFAULT_ADMIN_PASS) {
         currentUser = { name: "Stefano", role: 'admin' };
         sessionStorage.setItem('ns_session', JSON.stringify(currentUser));
         sbloccaInterfaccia();
       } else {
-        showLoginError("Master Password Admin non corretta.");
+        document.getElementById('loginErrorMsg').innerText = "Master Password Admin non corretta.";
+        document.getElementById('loginErrorMsg').classList.remove('hidden');
       }
-    }
+    };
 
-    function showLoginError(msg) {
-      const err = document.getElementById('loginErrorMsg');
-      err.innerText = msg;
-      err.classList.remove('hidden');
-    }
-
-    function lockApp() {
+    window.lockApp = function() {
       sessionStorage.removeItem('ns_session');
       currentUser = null;
       document.getElementById('authGate').classList.remove('hidden');
       document.getElementById('inputCoachPassword').value = "";
       document.getElementById('inputAdminPassword').value = "";
-      document.getElementById('loginErrorMsg').classList.add('hidden');
-    }
+    };
 
     function sbloccaInterfaccia() {
       document.getElementById('authGate').classList.add('hidden');
@@ -608,8 +692,19 @@
       renderStats();
     }
 
-    // --- NAVIGAZIONE SCHEDE ---
-    function navigateTab(tabId) {
+    function populateCoachDropdowns() {
+      const selLogin = document.getElementById('loginCoachSelect');
+      if (!selLogin) return;
+      selLogin.innerHTML = coaches.filter(c => c !== "Stefano").map(c => `<option value="${c}">${c}</option>`).join('');
+    }
+
+    function populateTopicsDropdown() {
+      const sel = document.getElementById('selectTopicDiario');
+      if (!sel) return;
+      sel.innerHTML = topics.map(t => `<option value="${t}">${t}</option>`).join('');
+    }
+
+    window.navigateTab = function(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.nav-tab').forEach(el => {
         el.classList.remove('bg-sky-50', 'dark:bg-sky-950/40', 'text-sky-600', 'dark:text-sky-400');
@@ -622,58 +717,23 @@
         activeBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
         activeBtn.classList.add('bg-sky-50', 'dark:bg-sky-950/40', 'text-sky-600', 'dark:text-sky-400');
       }
-    }
-
-    // --- SALVATAGGIO ANALISI ---
-    function salvaNuovaAnalisi() {
-      const sintomo = document.getElementById('inputSintomo').value.trim();
-      const causa = document.getElementById('inputCausa').value.trim();
-      const focus = document.getElementById('inputFocus').value.trim();
-      const esercizio = document.getElementById('inputEsercizio').value.trim();
-      const pilastro = document.querySelector('input[name="pilastro"]:checked').value;
-      const neve = document.getElementById('inputNeve').value;
-      const raggio = document.getElementById('inputRaggio').value;
-
-      if (!sintomo || !causa) {
-        alert("Inserisci almeno 'Cosa vedo' e 'Perché'.");
-        return;
-      }
-
-      const nuova = {
-        id: "NS-" + (Date.now()),
-        coach: currentUser.name,
-        sintomo, causa, focus, esercizio, pilastro, neve, raggio,
-        data: new Date().toISOString().split('T')[0]
-      };
-
-      analisiList.unshift(nuova);
-      localStorage.setItem('ns_analisi', JSON.stringify(analisiList));
-
-      document.getElementById('inputSintomo').value = "";
-      document.getElementById('inputCausa').value = "";
-      document.getElementById('inputFocus').value = "";
-      document.getElementById('inputEsercizio').value = "";
-
-      renderArchivio();
-      renderStats();
-      navigateTab('tabArchivio');
-    }
+    };
 
     function renderArchivio(filtro = 'Tutti') {
       const cont = document.getElementById('containerArchivio');
+      if (!cont) return;
       let filtrati = analisiList;
       if (filtro !== 'Tutti') {
         filtrati = analisiList.filter(a => a.pilastro === filtro);
       }
 
       if (filtrati.length === 0) {
-        cont.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">Nessuna analisi presente.</div>`;
+        cont.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">Nessuna analisi presente nel cloud.</div>`;
         return;
       }
 
       cont.innerHTML = filtrati.map(a => {
-        const canDelete = (currentUser.role === 'admin') || (currentUser.name === a.coach);
-
+        const canDelete = currentUser && ((currentUser.role === 'admin') || (currentUser.name === a.coach));
         return `
           <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 space-y-2">
             <div class="flex items-center justify-between">
@@ -681,9 +741,9 @@
                 ${a.pilastro}
               </span>
               <div class="flex items-center gap-2">
-                <span class="text-[10px] text-slate-400">${a.coach} • ${a.data}</span>
+                <span class="text-[10px] text-slate-400 font-bold">${a.coach} • ${a.data}</span>
                 ${canDelete ? `
-                  <button onclick="eliminaAnalisi('${a.id}')" class="text-rose-500 hover:text-rose-700 text-xs px-2 py-1 rounded bg-rose-50 dark:bg-rose-950/40 font-bold" title="Elimina la tua analisi">
+                  <button onclick="window.eliminaAnalisi('${a.id}')" class="text-rose-500 hover:text-rose-700 text-xs px-2 py-1 rounded bg-rose-50 dark:bg-rose-950/40 font-bold" title="Elimina analisi">
                     ✕
                   </button>
                 ` : ''}
@@ -733,26 +793,24 @@
       }
     }
 
-    function eliminaAnalisi(id) {
-      analisiList = analisiList.filter(a => a.id !== id);
-      localStorage.setItem('ns_analisi', JSON.stringify(analisiList));
-      renderArchivio();
-      renderStats();
-    }
-
-    function filtraArchivio(p) {
+    window.filtraArchivio = function(p) {
       renderArchivio(p);
-    }
+    };
 
-    // --- IDEE IN PISTA ---
     function renderIdee() {
       const cont = document.getElementById('containerIdee');
+      if (!cont) return;
+      if (ideeList.length === 0) {
+        cont.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">Nessuna idea inserita nel database condiviso.</div>`;
+        return;
+      }
       cont.innerHTML = ideeList.map(item => `
         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 space-y-2">
           <div class="flex items-center justify-between">
             <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getPilastroBadgeClass(item.pilastro)}">
               ${item.pilastro}
             </span>
+            <span class="text-[10px] text-slate-400 font-bold">${item.coach || ''}</span>
           </div>
           <h3 class="text-xs font-bold text-slate-900 dark:text-white">${item.titolo}</h3>
           <p class="text-xs text-slate-600 dark:text-slate-300">${item.descrizione}</p>
@@ -763,60 +821,22 @@
       `).join('');
     }
 
-    function apriModalNuovaIdea() {
-      const titolo = prompt("Titolo dell'idea o topic tecnico:");
-      if (!titolo) return;
-      const pilastro = prompt("Pilastro (Taglio, Fulmine, Treno, Excalibur):") || "Taglio";
-      const descrizione = prompt("Descrizione:") || "";
-      const cue = prompt("Frase guida in pista (Cue):") || "";
-
-      ideeList.unshift({
-        id: "ID-" + Date.now(),
-        titolo, pilastro, descrizione, cue
-      });
-      localStorage.setItem('ns_idee', JSON.stringify(ideeList));
-      renderIdee();
-    }
-
-    // --- DIARIO DEL CAMP ---
-    function salvaDiario() {
-      const topic = document.getElementById('selectTopicDiario').value;
-      const luogo = document.getElementById('diarioLuogo').value.trim();
-      const neve = document.getElementById('diarioNeve').value.trim();
-      const note = document.getElementById('diarioNote').value.trim();
-
-      if (!note) {
-        alert("Inserisci le riflessioni tecniche.");
-        return;
-      }
-
-      diarioList.unshift({
-        id: "D-" + Date.now(),
-        coach: currentUser.name,
-        data: new Date().toISOString().split('T')[0],
-        topic, luogo, neve, note
-      });
-      localStorage.setItem('ns_diario', JSON.stringify(diarioList));
-
-      document.getElementById('diarioNote').value = "";
-      renderDiario();
-    }
-
     function renderDiario() {
       const cont = document.getElementById('containerDiario');
+      if (!cont) return;
       if (diarioList.length === 0) {
-        cont.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">Nessun debriefing salvato finora.</div>`;
+        cont.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">Nessun debriefing salvato nel cloud.</div>`;
         return;
       }
       cont.innerHTML = diarioList.map(d => {
-        const canDelete = (currentUser.role === 'admin') || (currentUser.name === d.coach);
+        const canDelete = currentUser && ((currentUser.role === 'admin') || (currentUser.name === d.coach));
         return `
           <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 space-y-2">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-900 dark:text-white">${d.topic}</span>
               <div class="flex items-center gap-2">
-                <span class="text-[10px] text-slate-400">${d.coach} • ${d.data}</span>
-                ${canDelete ? `<button onclick="eliminaDiario('${d.id}')" class="text-rose-500 font-bold text-xs px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/40">✕</button>` : ''}
+                <span class="text-[10px] text-slate-400 font-bold">${d.coach} • ${d.data}</span>
+                ${canDelete ? `<button onclick="window.eliminaDiario('${d.id}')" class="text-rose-500 font-bold text-xs px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/40">✕</button>` : ''}
               </div>
             </div>
             <p class="text-xs text-slate-600 dark:text-slate-300 whitespace-pre-line">${d.note}</p>
@@ -826,45 +846,38 @@
       }).join('');
     }
 
-    function eliminaDiario(id) {
-      diarioList = diarioList.filter(d => d.id !== id);
-      localStorage.setItem('ns_diario', JSON.stringify(diarioList));
-      renderDiario();
-    }
-
-    function creaNuovoTopicPrompt() {
+    window.creaNuovoTopicPrompt = function() {
       const nuovo = prompt("Nome del nuovo topic tecnico per il camp:");
       if (nuovo && !topics.includes(nuovo)) {
         topics.push(nuovo);
-        localStorage.setItem('ns_topics', JSON.stringify(topics));
         populateTopicsDropdown();
         document.getElementById('selectTopicDiario').value = nuovo;
       }
-    }
+    };
 
-    // --- MODAL STAFF COACH ---
-    function openCoachManager() {
+    window.openCoachManager = function() {
       if (currentUser.role !== 'admin') return;
       window.renderCoachManagerList();
       document.getElementById('modalStaff').classList.remove('hidden');
       document.getElementById('modalStaff').classList.add('flex');
-    }
+    };
 
-    function chiudiCoachManager() {
+    window.chiudiCoachManager = function() {
       document.getElementById('modalStaff').classList.add('hidden');
       document.getElementById('modalStaff').classList.remove('flex');
-    }
+    };
 
-    // --- STATISTICHE & EXPORT DATASET ---
     function renderStats() {
-      document.getElementById('statTotaleAnalisi').innerText = analisiList.length;
+      const elTot = document.getElementById('statTotaleAnalisi');
+      if (!elTot) return;
+      elTot.innerText = analisiList.length;
       const sintomiUnici = new Set(analisiList.map(a => a.sintomo.toLowerCase())).size;
       document.getElementById('statSintomiUnici').innerText = sintomiUnici;
       const coachAttivi = new Set(analisiList.map(a => a.coach)).size;
       document.getElementById('statCoachAttivi').innerText = coachAttivi;
     }
 
-    function esportaDataset(formato) {
+    window.esportaDataset = function(formato) {
       if (currentUser.role !== 'admin') return;
       const dataStr = formato === 'json' 
         ? "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(analisiList, null, 2))
@@ -876,7 +889,7 @@
       document.body.appendChild(a);
       a.click();
       a.remove();
-    }
+    };
 
     function convertiInCSV(arr) {
       if (!arr.length) return "";
@@ -885,40 +898,36 @@
       return [headers, ...rows].join("\n");
     }
 
-    // --- TEMA GIORNO / NOTTE ---
-    function toggleTheme() {
+    window.toggleTheme = function() {
       const isDark = document.documentElement.classList.toggle('dark');
       localStorage.setItem('ns_theme', isDark ? 'dark' : 'light');
       updateThemeIcons(isDark);
-    }
+    };
 
     function updateThemeIcons(isDark) {
       document.getElementById('themeIconSun').classList.toggle('hidden', !isDark);
       document.getElementById('themeIconMoon').classList.toggle('hidden', isDark);
     }
 
-    // --- AVVIO APPLICAZIONE ---
-    window.addEventListener('DOMContentLoaded', () => {
-      const savedTheme = localStorage.getItem('ns_theme') || 'dark';
-      if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-        updateThemeIcons(true);
-      } else {
-        document.documentElement.classList.remove('dark');
-        updateThemeIcons(false);
-      }
+    // Inizializzazione
+    const savedTheme = localStorage.getItem('ns_theme') || 'dark';
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      updateThemeIcons(true);
+    } else {
+      document.documentElement.classList.remove('dark');
+      updateThemeIcons(false);
+    }
 
-      populateCoachDropdowns();
-      populateTopicsDropdown();
+    populateTopicsDropdown();
 
-      const savedSession = sessionStorage.getItem('ns_session');
-      if (savedSession) {
-        currentUser = JSON.parse(savedSession);
-        sbloccaInterfaccia();
-      } else {
-        document.getElementById('authGate').classList.remove('hidden');
-      }
-    });
+    const savedSession = sessionStorage.getItem('ns_session');
+    if (savedSession) {
+      currentUser = JSON.parse(savedSession);
+      sbloccaInterfaccia();
+    } else {
+      document.getElementById('authGate').classList.remove('hidden');
+    }
   </script>
 </body>
 </html>
