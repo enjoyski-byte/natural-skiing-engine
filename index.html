@@ -4,12 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Natural Skiing — Coach Field Engine</title>
-  <!-- Favicon e Icona Schermata Home (Apple / PWA) -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230f172a'/%3E%3Cpath d='M18 82 L82 18' stroke='%2338bdf8' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M36 82 L82 36' stroke='%230284c7' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='78' cy='22' r='5' fill='%23f59e0b'/%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230f172a'/%3E%3Cpath d='M35 145 L145 35' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cpath d='M65 145 L145 65' stroke='%230284c7' stroke-width='12' stroke-linecap='round'/%3E%3Ccircle cx='140' cy='40' r='9' fill='%23f59e0b'/%3E%3C/svg%3E">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Natural Skiing">
+  
+  <!-- Favicon e Icona Apple PWA ad alto contrasto -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230f172a'/%3E%3Cpath d='M18 82 L82 18' stroke='%2338bdf8' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M36 82 L82 36' stroke='%230284c7' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='78' cy='22' r='5' fill='%23f59e0b'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230f172a'/%3E%3Cpath d='M35 145 L145 35' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cpath d='M65 145 L145 65' stroke='%230284c7' stroke-width='12' stroke-linecap='round'/%3E%3Ccircle cx='140' cy='40' r='9' fill='%23f59e0b'/%3E%3C/svg%3E">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Natural Skiing">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -30,18 +32,24 @@
     }
   </script>
   <style>
-    /* Ottimizzazione touch per guanti da sci */
     button, select, input, textarea {
       touch-action: manipulation;
     }
     .min-touch {
       min-height: 48px;
     }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
   </style>
 </head>
 <body class="h-full bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200 font-sans antialiased select-none">
 
-  <!-- ================= SCHERMATA DI BLOCCO / LOGIN ================= -->
+  <!-- ================= SCHERMATA DI LOGIN / BLOCCO ================= -->
   <div id="authGate" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl text-center">
       
@@ -57,7 +65,7 @@
       <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">NATURAL SKIING</h1>
       <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-6">Accesso Riservato Staff Tecnico & Coach</p>
 
-      <!-- Scelta Ruolo Accesso -->
+      <!-- Selettore Ruolo Coach / Admin -->
       <div class="grid grid-cols-2 gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl mb-4">
         <button id="tabRoleCoach" onclick="switchLoginRole('coach')" class="py-2.5 rounded-xl font-semibold text-xs tracking-wide bg-white dark:bg-slate-700 shadow-sm text-sky-600 dark:text-sky-400 transition-all">
           COACH
@@ -67,7 +75,7 @@
         </button>
       </div>
 
-      <!-- Form Coach -->
+      <!-- Form Login Coach -->
       <div id="formLoginCoach" class="space-y-4 text-left">
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Seleziona Coach</label>
@@ -84,10 +92,10 @@
         </button>
       </div>
 
-      <!-- Form Admin -->
+      <!-- Form Login Admin -->
       <div id="formLoginAdmin" class="space-y-4 text-left hidden">
         <div>
-          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Profilo</label>
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Profilo Titolare</label>
           <input type="text" value="Stefano (Direzione Tecnica)" disabled class="w-full min-touch px-4 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold text-slate-500">
         </div>
         <div>
@@ -102,7 +110,7 @@
       <p id="loginErrorMsg" class="text-xs text-rose-500 font-semibold mt-3 hidden"></p>
 
       <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-400">
-        Password predefinite: Coach <code class="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-sky-500">COACH2026</code> | Admin <code class="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-amber-500">ADMIN_STEFANO</code>
+        Default: Coach <code class="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-sky-500">COACH2026</code> | Admin <code class="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-amber-500">ADMIN_STEFANO</code>
       </div>
     </div>
   </div>
@@ -142,7 +150,7 @@
           Staff ⚙️
         </button>
 
-        <!-- Blocca App / Esci -->
+        <!-- Blocca / Esci -->
         <button onclick="lockApp()" title="Blocca App" class="min-touch px-3 h-11 flex items-center justify-center gap-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 text-xs font-bold hover:bg-rose-100">
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
@@ -187,14 +195,13 @@
         <!-- 1. COSA VEDO -->
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">1. Cosa vedo (Effetto / Sintomo visivo)</label>
-          <input type="text" id="inputSintomo" list="listSintomi" placeholder="es. Sci esterno che derapa via, punta a V..." class="w-full min-touch px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
-          <datalist id="listSintomi"></datalist>
+          <input type="text" id="inputSintomo" placeholder="es. Sci esterno che derapa via, punta a V..." class="w-full min-touch px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
         </div>
 
         <!-- 2. PERCHÉ -->
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">2. Perché? (Causa biomeccanica reale)</label>
-          <textarea id="inputCausa" rows="2" placeholder="es. Spinta muscolare attiva con la gamba anziché presa di spigolo in appoggio..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"></textarea>
+          <textarea id="inputCausa" rows="2" placeholder="es. Spinta muscolare attiva con la gamba anziché presa di spigolo in appoggio strutturale..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"></textarea>
         </div>
 
         <!-- 3. FOCUS MENTALE IN PISTA -->
@@ -206,10 +213,10 @@
         <!-- 4. ESERCIZIO IN PISTA -->
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">4. Esercizio in pista (Compito pratico)</label>
-          <textarea id="inputEsercizio" rows="2" placeholder="es. Discesa su un solo sci esterno con bastoncini orizzontali..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"></textarea>
+          <textarea id="inputEsercizio" rows="2" placeholder="es. Curva su un solo sci esterno a velocità controllata..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"></textarea>
         </div>
 
-        <!-- PILASTRO FONDAMENTALE (POSIZIONATO SOTTO LE 4 FRASI) -->
+        <!-- PILASTRO FONDAMENTALE (SOTTO LE 4 FRASI) -->
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-2">Pilastro Fondamentale</label>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -262,7 +269,6 @@
 
     <!-- 2. ARCHIVIO ANALISI -->
     <section id="tabArchivio" class="tab-content space-y-4 hidden">
-      <!-- Filtri -->
       <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
         <button onclick="filtraArchivio('Tutti')" class="btn-filtro min-touch px-3 rounded-xl text-xs font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-950">Tutti</button>
         <button onclick="filtraArchivio('Taglio')" class="btn-filtro min-touch px-3 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Taglio</button>
@@ -299,7 +305,7 @@
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Topic Affrontato</label>
           <div class="flex gap-2">
             <select id="selectTopicDiario" class="flex-1 min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">
-              <!-- Popolato con i topic precedenti -->
+              <!-- Popolato via JS -->
             </select>
             <button onclick="creaNuovoTopicPrompt()" class="min-touch px-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold text-sky-600 dark:text-sky-400">
               + Nuovo
@@ -313,8 +319,8 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Riflessioni & Conclusioni Tecniche del Team</label>
-          <textarea id="diarioNote" rows="3" placeholder="Sensazioni riscontrate sugli atleti, cosa ha funzionato meglio..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-sky-500"></textarea>
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Riflessioni Tecniche del Team</label>
+          <textarea id="diarioNote" rows="3" placeholder="Sensazioni riscontrate, cosa ha funzionato meglio..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-sky-500"></textarea>
         </div>
 
         <button onclick="salvaDiario()" class="w-full min-touch bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold rounded-2xl text-xs transition-all active:scale-98">
@@ -327,13 +333,13 @@
       </div>
     </section>
 
-    <!-- 5. AI DATASET (SEZIONE RISERVATA SOLO AD ADMIN) -->
+    <!-- 5. AI DATASET (SOLO ADMIN) -->
     <section id="tabAiDataset" class="tab-content space-y-4 hidden">
       <div class="bg-amber-500/10 border border-amber-500/20 rounded-3xl p-5">
         <div class="flex items-center justify-between mb-3">
           <div>
             <h2 class="text-sm font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">Pannello Supervisione AI (Admin)</h2>
-            <p class="text-xs text-slate-500">Statistiche frequenze, correlazioni e download dataset per Machine Learning</p>
+            <p class="text-xs text-slate-500">Statistiche e download dataset per Machine Learning</p>
           </div>
           <span class="text-xs font-bold px-2 py-1 bg-amber-500 text-slate-950 rounded-lg">Riservato</span>
         </div>
@@ -379,23 +385,39 @@
         <button onclick="aggiungiCoach()" class="min-touch px-3 bg-sky-600 text-white rounded-xl text-xs font-bold">Aggiungi</button>
       </div>
 
-      <div id="listaCoachManager" class="space-y-1.5 max-h-48 overflow-y-auto">
-        <!-- Lista coach con tasto elimina -->
+      <div id="listaCoachManager" class="space-y-1.5 max-h-56 overflow-y-auto">
+        <!-- Lista coach popolata via JS -->
       </div>
     </div>
   </div>
 
-  <!-- ================= JAVASCRIPT LOGICA & SICUREZZA ================= -->
+  <!-- ================= JAVASCRIPT LOGICA, SICUREZZA & PULIZIA DATI ================= -->
   <script>
-    // --- CHIAVI DI ACCESSO PREDEFINITE (CONFIGURABILI) ---
     const DEFAULT_COACH_PASS = "COACH2026";
     const DEFAULT_ADMIN_PASS = "ADMIN_STEFANO";
 
-    // --- STATO APPLICAZIONE ---
-    let currentUser = null; // { name: "Stefano", role: "admin" } oppure { name: "Riccardo", role: "coach" }
-    let coaches = JSON.parse(localStorage.getItem('ns_coaches')) || [
+    let currentUser = null;
+
+    // Funzione pulizia nomi da vecchi residui di debug
+    function sanificaNomeCoach(raw) {
+      if (!raw) return '';
+      if (typeof raw === 'object') {
+        return raw.name || raw.nome || raw.coach || '';
+      }
+      let s = String(raw).trim();
+      return (s === '[object Object]' || s === '') ? '' : s;
+    }
+
+    // Lettura e auto-riparazione immediata dell'array coach
+    let rawCoaches = JSON.parse(localStorage.getItem('ns_coaches')) || [
       "Stefano", "Riccardo", "Federico", "Alessandro", "Davide", "Lorenzo"
     ];
+    let coaches = rawCoaches.map(sanificaNomeCoach).filter(Boolean);
+    if (!coaches.includes("Stefano")) {
+      coaches.unshift("Stefano");
+    }
+    localStorage.setItem('ns_coaches', JSON.stringify(coaches));
+
     let topics = JSON.parse(localStorage.getItem('ns_topics')) || [
       "Deformazione dello sci a basse velocità",
       "Pressione sul tallone e caviglia chiusa (Fulmine)",
@@ -403,7 +425,6 @@
       "Spalle parallele al pendio senza collassi (Excalibur)"
     ];
 
-    // Dataset Iniziale 8 Casistiche Pure Natural Skiing
     let analisiList = JSON.parse(localStorage.getItem('ns_analisi')) || [
       {
         id: "NS-1",
@@ -437,19 +458,19 @@
         id: "ID-1",
         titolo: "Deformazione passiva su basse velocità",
         pilastro: "Taglio",
-        descrizione: "Far sentire all'atleta che lo sci curva per la sciancratura e l'angolo di spigolo, non forzando con i quadricipiti.",
-        cue: "Lascia lavorare la sciancratura"
+        descrizione: "Far sentire all'atleta che lo sci curva per la sciancratura e l'inclinazione dell'attrezzo, non forzando con i quadricipiti.",
+        cue: "Lascia lavorare la lamina"
       },
       {
         id: "ID-2",
         titolo: "Moneta sotto il tallone",
         pilastro: "Fulmine",
-        descrizione: "Evitare di buttarsi avanti solo con le ginocchia. Sentire il tallone ancorato nello scarpone.",
+        descrizione: "Evitare di buttarsi avanti solo con le ginocchia. Sentire il tallone ancorato nello scarpone per trasmettere pressione continua.",
         cue: "Tallone incollato"
       }
     ];
 
-    // --- CONTROLLO LOGIN / SICUREZZA ---
+    // --- AUTENTICAZIONE E SICUREZZA ---
     function switchLoginRole(role) {
       const err = document.getElementById('loginErrorMsg');
       err.classList.add('hidden');
@@ -512,7 +533,6 @@
       document.getElementById('authGate').classList.add('hidden');
       document.getElementById('activeCoachBadge').innerText = `${currentUser.role.toUpperCase()}: ${currentUser.name}`;
 
-      // Regola visibilità Admin
       const navAi = document.getElementById('nav-tabAiDataset');
       const btnStaff = document.getElementById('btnManageCoaches');
       if (currentUser.role === 'admin') {
@@ -534,15 +554,17 @@
     // --- POPOLAMENTO TENDINE ---
     function populateCoachDropdowns() {
       const selLogin = document.getElementById('loginCoachSelect');
+      if (!selLogin) return;
       selLogin.innerHTML = coaches.filter(c => c !== "Stefano").map(c => `<option value="${c}">${c}</option>`).join('');
     }
 
     function populateTopicsDropdown() {
       const sel = document.getElementById('selectTopicDiario');
+      if (!sel) return;
       sel.innerHTML = topics.map(t => `<option value="${t}">${t}</option>`).join('');
     }
 
-    // --- GESTIONE SCHEDE (NAVIGATION) ---
+    // --- NAVIGAZIONE SCHEDE ---
     function navigateTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.nav-tab').forEach(el => {
@@ -574,7 +596,7 @@
       }
 
       const nuova = {
-        id: "NS-" + (analisiList.length + 1),
+        id: "NS-" + (Date.now()),
         coach: currentUser.name,
         sintomo, causa, focus, esercizio, pilastro, neve, raggio,
         data: new Date().toISOString().split('T')[0]
@@ -583,7 +605,6 @@
       analisiList.unshift(nuova);
       localStorage.setItem('ns_analisi', JSON.stringify(analisiList));
 
-      // Reset campi
       document.getElementById('inputSintomo').value = "";
       document.getElementById('inputCausa').value = "";
       document.getElementById('inputFocus').value = "";
@@ -594,7 +615,7 @@
       navigateTab('tabArchivio');
     }
 
-    // --- RENDERING ARCHIVIO (CON REGOLE CANCELLAZIONE) ---
+    // --- RENDERING ARCHIVIO (CANCELLAZIONE SELETTIVA) ---
     function renderArchivio(filtro = 'Tutti') {
       const cont = document.getElementById('containerArchivio');
       let filtrati = analisiList;
@@ -608,7 +629,6 @@
       }
 
       cont.innerHTML = filtrati.map(a => {
-        // Regola cancellazione: Admin può cancellare tutto, Coach solo le proprie
         const canDelete = (currentUser.role === 'admin') || (currentUser.name === a.coach);
 
         return `
@@ -620,7 +640,7 @@
               <div class="flex items-center gap-2">
                 <span class="text-[10px] text-slate-400">${a.coach} • ${a.data}</span>
                 ${canDelete ? `
-                  <button onclick="eliminaAnalisi('${a.id}')" class="text-rose-500 hover:text-rose-700 text-xs px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/40 font-bold" title="Elimina la tua analisi">
+                  <button onclick="eliminaAnalisi('${a.id}')" class="text-rose-500 hover:text-rose-700 text-xs px-2 py-1 rounded bg-rose-50 dark:bg-rose-950/40 font-bold" title="Elimina la tua analisi">
                     ✕
                   </button>
                 ` : ''}
@@ -671,7 +691,6 @@
     }
 
     function eliminaAnalisi(id) {
-      if (!confirm("Confermi di voler eliminare questa analisi?")) return;
       analisiList = analisiList.filter(a => a.id !== id);
       localStorage.setItem('ns_analisi', JSON.stringify(analisiList));
       renderArchivio();
@@ -705,11 +724,11 @@
       const titolo = prompt("Titolo dell'idea o topic tecnico:");
       if (!titolo) return;
       const pilastro = prompt("Pilastro (Taglio, Fulmine, Treno, Excalibur):") || "Taglio";
-      const descrizione = prompt("Descrizione di cosa si tratta:") || "";
+      const descrizione = prompt("Descrizione:") || "";
       const cue = prompt("Frase guida in pista (Cue):") || "";
 
       ideeList.unshift({
-        id: "ID-" + (ideeList.length + 1),
+        id: "ID-" + Date.now(),
         titolo, pilastro, descrizione, cue
       });
       localStorage.setItem('ns_idee', JSON.stringify(ideeList));
@@ -724,12 +743,12 @@
       const note = document.getElementById('diarioNote').value.trim();
 
       if (!note) {
-        alert("Inserisci almeno le riflessioni tecniche.");
+        alert("Inserisci le riflessioni tecniche.");
         return;
       }
 
       diarioList.unshift({
-        id: "D-" + (diarioList.length + 1),
+        id: "D-" + Date.now(),
         coach: currentUser.name,
         data: new Date().toISOString().split('T')[0],
         topic, luogo, neve, note
@@ -754,7 +773,7 @@
               <span class="text-xs font-bold text-slate-900 dark:text-white">${d.topic}</span>
               <div class="flex items-center gap-2">
                 <span class="text-[10px] text-slate-400">${d.coach} • ${d.data}</span>
-                ${canDelete ? `<button onclick="eliminaDiario('${d.id}')" class="text-rose-500 font-bold text-xs">✕</button>` : ''}
+                ${canDelete ? `<button onclick="eliminaDiario('${d.id}')" class="text-rose-500 font-bold text-xs px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/40">✕</button>` : ''}
               </div>
             </div>
             <p class="text-xs text-slate-600 dark:text-slate-300 whitespace-pre-line">${d.note}</p>
@@ -765,7 +784,6 @@
     }
 
     function eliminaDiario(id) {
-      if (!confirm("Eliminare questa nota di debriefing?")) return;
       diarioList = diarioList.filter(d => d.id !== id);
       localStorage.setItem('ns_diario', JSON.stringify(diarioList));
       renderDiario();
@@ -781,25 +799,22 @@
       }
     }
 
-    // --- GESTIONE COACH ROBUSTA BASATA SU INDICE ---
-    function pulisciNomeCoach(item) {
-      if (!item) return '';
-      if (typeof item === 'object') {
-        return item.name || item.nome || item.coach || '';
-      }
-      const str = String(item).trim();
-      return (str === '[object Object]' || str === '') ? '' : str;
+    // --- GESTIONE COACH A PROVA DI ERRORE BASATA SU INDICE ---
+    function openCoachManager() {
+      if (currentUser.role !== 'admin') return;
+      renderCoachManagerList();
+      document.getElementById('modalStaff').classList.remove('hidden');
+      document.getElementById('modalStaff').classList.add('flex');
+    }
+
+    function chiudiCoachManager() {
+      document.getElementById('modalStaff').classList.add('hidden');
+      document.getElementById('modalStaff').classList.remove('flex');
     }
 
     function renderCoachManagerList() {
       const cont = document.getElementById('listaCoachManager');
       if (!cont) return;
-
-      // Pulisce l'array da eventuali oggetti corrotti o residui
-      coaches = coaches.map(pulisciNomeCoach).filter(Boolean);
-      if (!coaches.includes("Stefano")) {
-        coaches.unshift("Stefano");
-      }
 
       cont.innerHTML = coaches.map((nome, idx) => `
         <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800 text-xs font-semibold border border-slate-200 dark:border-slate-700">
@@ -826,7 +841,7 @@
 
     function aggiungiCoach() {
       const input = document.getElementById('nuovoCoachNome');
-      const nome = pulisciNomeCoach(input.value);
+      const nome = sanificaNomeCoach(input.value);
       if (nome && !coaches.includes(nome)) {
         coaches.push(nome);
         localStorage.setItem('ns_coaches', JSON.stringify(coaches));
@@ -834,13 +849,6 @@
         renderCoachManagerList();
         populateCoachDropdowns();
       }
-    }
-
-    function populateCoachDropdowns() {
-      const selLogin = document.getElementById('loginCoachSelect');
-      if (!selLogin) return;
-      coaches = coaches.map(pulisciNomeCoach).filter(Boolean);
-      selLogin.innerHTML = coaches.filter(c => c !== "Stefano").map(c => `<option value="${c}">${c}</option>`).join('');
     }
 
     // --- STATISTICHE & EXPORT DATASET ---
@@ -885,9 +893,8 @@
       document.getElementById('themeIconMoon').classList.toggle('hidden', isDark);
     }
 
-    // --- INIZIALIZZAZIONE ALL'AVVIO ---
+    // --- AVVIO APPLICAZIONE ---
     window.addEventListener('DOMContentLoaded', () => {
-      // Imposta tema
       const savedTheme = localStorage.getItem('ns_theme') || 'dark';
       if (savedTheme === 'dark') {
         document.documentElement.classList.add('dark');
@@ -900,7 +907,6 @@
       populateCoachDropdowns();
       populateTopicsDropdown();
 
-      // Controllo sessione salvata
       const savedSession = sessionStorage.getItem('ns_session');
       if (savedSession) {
         currentUser = JSON.parse(savedSession);
