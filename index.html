@@ -49,7 +49,7 @@
 <body class="h-full bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200 font-sans antialiased select-none">
 
   <!-- ================= SCHERMATA DI LOGIN ================= -->
-  <div id="authGate" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
+  <div id="authGate" class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl text-center">
       
       <div class="w-16 h-16 mx-auto mb-4 bg-sky-500/10 text-sky-500 rounded-2xl flex items-center justify-center">
@@ -171,7 +171,7 @@
         Idee in Pista
       </button>
       <button onclick="navigateTab('tabDiario')" id="nav-tabDiario" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 whitespace-nowrap">
-        Diario Camp
+        Cosa ho fatto oggi
       </button>
       <button onclick="navigateTab('tabAiDataset')" id="nav-tabAiDataset" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-amber-600 dark:text-amber-400 hover:text-amber-500 whitespace-nowrap hidden">
         AI Dataset 🔒
@@ -207,45 +207,58 @@
           <textarea id="inputEsercizio" rows="2" placeholder="es. Curva su un solo sci esterno a velocità controllata..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"></textarea>
         </div>
 
+        <!-- PILASTRI MULTIPLI -->
         <div>
-          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-2">Pilastro Fondamentale</label>
+          <div class="flex items-center justify-between mb-2">
+            <label class="block text-xs font-bold text-slate-600 dark:text-slate-400">Pilastri Fondamentali</label>
+            <span class="text-[11px] text-sky-500 font-semibold">Selezione multipla</span>
+          </div>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            <label class="flex items-center gap-2 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 cursor-pointer">
-              <input type="radio" name="pilastro" value="Taglio" checked class="text-sky-500 focus:ring-sky-500">
-              <span class="text-xs font-bold text-sky-600 dark:text-sky-400">Taglio</span>
+            <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 cursor-pointer hover:bg-slate-100 transition-colors">
+              <input type="checkbox" name="pilastri" value="Taglio" checked class="w-4 h-4 rounded text-sky-600 focus:ring-sky-500">
+              <span class="text-xs font-bold text-sky-600 dark:text-sky-400">Taglio / Coltello</span>
             </label>
-            <label class="flex items-center gap-2 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 cursor-pointer">
-              <input type="radio" name="pilastro" value="Fulmine" class="text-amber-500 focus:ring-amber-500">
+            <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 cursor-pointer hover:bg-slate-100 transition-colors">
+              <input type="checkbox" name="pilastri" value="Fulmine" class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500">
               <span class="text-xs font-bold text-amber-600 dark:text-amber-400">Fulmine</span>
             </label>
-            <label class="flex items-center gap-2 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 cursor-pointer">
-              <input type="radio" name="pilastro" value="Treno" class="text-emerald-500 focus:ring-emerald-500">
+            <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 cursor-pointer hover:bg-slate-100 transition-colors">
+              <input type="checkbox" name="pilastri" value="Treno" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
               <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">Treno</span>
             </label>
-            <label class="flex items-center gap-2 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 cursor-pointer">
-              <input type="radio" name="pilastro" value="Excalibur" class="text-purple-500 focus:ring-purple-500">
+            <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 cursor-pointer hover:bg-slate-100 transition-colors">
+              <input type="checkbox" name="pilastri" value="Excalibur" class="w-4 h-4 rounded text-purple-600 focus:ring-purple-500">
               <span class="text-xs font-bold text-purple-600 dark:text-purple-400">Excalibur</span>
             </label>
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200 dark:border-slate-800">
-          <div>
-            <label class="block text-[11px] font-bold text-slate-500 mb-1">Condizione Neve</label>
-            <select id="inputNeve" class="w-full min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium">
-              <option value="Compatta invernale">Compatta invernale</option>
-              <option value="Dura / Barrata">Dura / Barrata</option>
-              <option value="Pappa primaverile">Pappa primaverile</option>
-              <option value="Neve fresca / mossa">Neve fresca / mossa</option>
-            </select>
+        <!-- CONDIZIONI CON DICITURA FACOLTATIVO -->
+        <div class="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Condizioni Ambiente & Curva</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500">FACOLTATIVO</span>
           </div>
-          <div>
-            <label class="block text-[11px] font-bold text-slate-500 mb-1">Raggio Curva</label>
-            <select id="inputRaggio" class="w-full min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium">
-              <option value="Medio (14-18m)">Medio (14-18m)</option>
-              <option value="Corto / Cortoraggio (<13m)">Corto (<13m)</option>
-              <option value="Ampio (>19m)">Ampio (>19m)</option>
-            </select>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 mb-1">Condizione Neve</label>
+              <select id="inputNeve" class="w-full min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium">
+                <option value="">Non specificata</option>
+                <option value="Compatta invernale">Compatta invernale</option>
+                <option value="Dura / Barrata">Dura / Barrata</option>
+                <option value="Pappa primaverile">Pappa primaverile</option>
+                <option value="Neve fresca / mossa">Neve fresca / mossa</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 mb-1">Raggio Curva</label>
+              <select id="inputRaggio" class="w-full min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium">
+                <option value="">Non specificato</option>
+                <option value="Medio (14-18m)">Medio (14-18m)</option>
+                <option value="Corto / Cortoraggio (<13m)">Corto (<13m)</option>
+                <option value="Ampio (>19m)">Ampio (>19m)</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -259,34 +272,43 @@
     <!-- 2. ARCHIVIO ANALISI -->
     <section id="tabArchivio" class="tab-content space-y-4 hidden">
       <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-        <button onclick="filtraArchivio('Tutti')" class="btn-filtro min-touch px-3 rounded-xl text-xs font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-950">Tutti</button>
-        <button onclick="filtraArchivio('Taglio')" class="btn-filtro min-touch px-3 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Taglio</button>
-        <button onclick="filtraArchivio('Fulmine')" class="btn-filtro min-touch px-3 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Fulmine</button>
-        <button onclick="filtraArchivio('Treno')" class="btn-filtro min-touch px-3 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Treno</button>
-        <button onclick="filtraArchivio('Excalibur')" class="btn-filtro min-touch px-3 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Excalibur</button>
+        <button onclick="filtraArchivio('Tutti')" id="btnFiltroArchivio-Tutti" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-950">Tutti</button>
+        <button onclick="filtraArchivio('Taglio')" id="btnFiltroArchivio-Taglio" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Taglio / Coltello</button>
+        <button onclick="filtraArchivio('Fulmine')" id="btnFiltroArchivio-Fulmine" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Fulmine</button>
+        <button onclick="filtraArchivio('Treno')" id="btnFiltroArchivio-Treno" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Treno</button>
+        <button onclick="filtraArchivio('Excalibur')" id="btnFiltroArchivio-Excalibur" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Excalibur</button>
       </div>
 
       <div id="containerArchivio" class="space-y-3">
       </div>
     </section>
 
-    <!-- 3. IDEE IN PISTA -->
+    <!-- 3. IDEE IN PISTA (CON FILTRI PER PILASTRO) -->
     <section id="tabIdee" class="tab-content space-y-4 hidden">
       <div class="flex items-center justify-between">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Biblioteca Spunti & Topic Condivisa</h2>
-        <button onclick="apriModalNuovaIdea()" class="min-touch px-3 py-1.5 rounded-xl bg-sky-600 text-white text-xs font-bold shadow-sm">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Biblioteca Spunti & Topic</h2>
+        <button onclick="apriModalNuovaIdea()" class="min-touch px-3.5 py-1.5 rounded-xl bg-sky-600 text-white text-xs font-bold shadow-sm">
           + Nuova Idea
         </button>
+      </div>
+
+      <!-- Filtri Pilastro per Idee -->
+      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+        <button onclick="filtraIdee('Tutti')" id="btnFiltroIdee-Tutti" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-950">Tutti</button>
+        <button onclick="filtraIdee('Taglio')" id="btnFiltroIdee-Taglio" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Coltello / Taglio</button>
+        <button onclick="filtraIdee('Fulmine')" id="btnFiltroIdee-Fulmine" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Fulmine</button>
+        <button onclick="filtraIdee('Treno')" id="btnFiltroIdee-Treno" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Treno</button>
+        <button onclick="filtraIdee('Excalibur')" id="btnFiltroIdee-Excalibur" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Excalibur</button>
       </div>
 
       <div id="containerIdee" class="space-y-3">
       </div>
     </section>
 
-    <!-- 4. DIARIO DEL CAMP -->
+    <!-- 4. DIARIO DEL CAMP (COSA HO FATTO OGGI) -->
     <section id="tabDiario" class="tab-content space-y-4 hidden">
-      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm space-y-3">
-        <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Nuovo Debriefing di Giornata</h2>
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Cosa ho fatto oggi</h2>
 
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Topic Affrontato</label>
@@ -299,18 +321,29 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-2">
-          <input type="text" id="diarioLuogo" placeholder="Luogo / Pista" class="min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs">
-          <input type="text" id="diarioNeve" placeholder="Meteo & Neve" class="min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Spiega cosa è e come si fa</label>
+          <textarea id="diarioNote" rows="3" placeholder="Descrivi il concetto chiave e il modo esatto in cui farlo eseguire agli allievi in pista..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-sky-500"></textarea>
         </div>
 
-        <div>
-          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Riflessioni Tecniche del Team</label>
-          <textarea id="diarioNote" rows="3" placeholder="Sensazioni riscontrate, cosa ha funzionato meglio..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-sky-500"></textarea>
+        <!-- CAMPI BEN SEPARATI: LUOGO, METEO, NEVE -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-slate-100 dark:border-slate-800">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 mb-1">📍 Luogo</label>
+            <input type="text" id="diarioLuogo" placeholder="es. Livigno, Pista Mottolino" class="w-full min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 mb-1">☀️ Meteo</label>
+            <input type="text" id="diarioMeteo" placeholder="es. Sereno, vento freddo" class="w-full min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 mb-1">❄️ Condizioni Neve</label>
+            <input type="text" id="diarioNeve" placeholder="es. Dura al mattino, primaverile" class="w-full min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs">
+          </div>
         </div>
 
         <button onclick="salvaDiario()" class="w-full min-touch bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold rounded-2xl text-xs transition-all active:scale-98">
-          Archivia Debriefing
+          Archivia in Diario
         </button>
       </div>
 
@@ -357,7 +390,7 @@
 
   </main>
 
-  <!-- ================= MODAL GESTIONE COACH (SOLO ADMIN) ================= -->
+  <!-- MODAL STAFF COACH -->
   <div id="modalStaff" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 max-w-sm w-full space-y-4">
       <div class="flex items-center justify-between">
@@ -383,7 +416,7 @@
     </div>
   </div>
 
-  <!-- ================= FIREBASE SDK & LOGICA REALTIME ================= -->
+  <!-- SCRIPT FIREBASE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
     import { 
@@ -396,7 +429,6 @@
       enableIndexedDbPersistence 
     } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
-    // Configurazione Firebase del tuo progetto
     const firebaseConfig = {
       apiKey: "AIzaSyDd8FYuLtj4tHoyA2_cqdDD1jpvYzeR3hc",
       authDomain: "natural-skiing-engine.firebaseapp.com",
@@ -420,10 +452,9 @@
     const colIdee = collection(db, "idee");
     const colDiario = collection(db, "diario");
 
-    // CREDENZIALI DI ACCESSO
     const DEFAULT_COACH_PASS = "COACH2026";
     const DEFAULT_ADMIN_PASS = "ADMIN_STEFANO";
-    const DEFAULT_COACHES = ["Stefano", "Ruben", "Lorenzo", "Alessandro", "Davide"];
+    const DEFAULT_COACHES = ["Stefano", "Ruben", "Riccardo", "Federico", "Alessandro", "Davide"];
 
     let currentUser = null;
     let coaches = [...DEFAULT_COACHES];
@@ -437,10 +468,10 @@
     let analisiList = [];
     let ideeList = [];
     let diarioList = [];
+    let filtroArchivioAttivo = 'Tutti';
+    let filtroIdeeAttivo = 'Tutti';
 
-    // --- ASCOLTO TEMPO REALE DA FIRESTORE ---
-
-    // 1. Staff Coach
+    // Listener Real-time
     onSnapshot(doc(db, "settings", "staff"), (docSnap) => {
       if (docSnap.exists() && docSnap.data().list) {
         coaches = docSnap.data().list;
@@ -454,28 +485,25 @@
       }
     });
 
-    // 2. Analisi
     onSnapshot(colAnalisi, (snapshot) => {
       analisiList = [];
       snapshot.forEach(doc => {
         analisiList.push({ id: doc.id, ...doc.data() });
       });
       analisiList.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
-      renderArchivio();
+      renderArchivio(filtroArchivioAttivo);
       renderStats();
     });
 
-    // 3. Idee in Pista
     onSnapshot(colIdee, (snapshot) => {
       ideeList = [];
       snapshot.forEach(doc => {
         ideeList.push({ id: doc.id, ...doc.data() });
       });
       ideeList.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
-      renderIdee();
+      renderIdee(filtroIdeeAttivo);
     });
 
-    // 4. Diario Camp
     onSnapshot(colDiario, (snapshot) => {
       diarioList = [];
       snapshot.forEach(doc => {
@@ -485,13 +513,14 @@
       renderDiario();
     });
 
-    // --- FUNZIONI CLOUD ---
+    // --- SALVATAGGIO ANALISI (PILASTRI MULTIPLI) ---
     window.salvaNuovaAnalisi = async function() {
       const sintomo = document.getElementById('inputSintomo').value.trim();
       const causa = document.getElementById('inputCausa').value.trim();
       const focus = document.getElementById('inputFocus').value.trim();
       const esercizio = document.getElementById('inputEsercizio').value.trim();
-      const pilastro = document.querySelector('input[name="pilastro"]:checked').value;
+      
+      const pilastriChecked = Array.from(document.querySelectorAll('input[name="pilastri"]:checked')).map(el => el.value);
       const neve = document.getElementById('inputNeve').value;
       const raggio = document.getElementById('inputRaggio').value;
 
@@ -499,11 +528,18 @@
         alert("Inserisci almeno 'Cosa vedo' e 'Perché'.");
         return;
       }
+      if (pilastriChecked.length === 0) {
+        alert("Seleziona almeno un pilastro fondamentale.");
+        return;
+      }
 
       const id = "NS-" + Date.now();
       const nuova = {
         coach: currentUser.name,
-        sintomo, causa, focus, esercizio, pilastro, neve, raggio,
+        sintomo, causa, focus, esercizio,
+        pilastri: pilastriChecked,
+        neve: neve || 'Non specificata',
+        raggio: raggio || 'Non specificato',
         data: new Date().toISOString().split('T')[0],
         timestamp: Date.now()
       };
@@ -526,6 +562,7 @@
       }
     };
 
+    // --- SALVATAGGIO IDEE (CON SCELTA PILASTRO) ---
     window.apriModalNuovaIdea = async function() {
       const titolo = prompt("Titolo dell'idea o topic tecnico:");
       if (!titolo) return;
@@ -541,14 +578,16 @@
       });
     };
 
+    // --- SALVATAGGIO DIARIO (RIVISTO) ---
     window.salvaDiario = async function() {
       const topic = document.getElementById('selectTopicDiario').value;
-      const luogo = document.getElementById('diarioLuogo').value.trim();
-      const neve = document.getElementById('diarioNeve').value.trim();
       const note = document.getElementById('diarioNote').value.trim();
+      const luogo = document.getElementById('diarioLuogo').value.trim();
+      const meteo = document.getElementById('diarioMeteo').value.trim();
+      const neve = document.getElementById('diarioNeve').value.trim();
 
       if (!note) {
-        alert("Inserisci le riflessioni tecniche.");
+        alert("Inserisci la spiegazione di 'cosa è e come si fa'.");
         return;
       }
 
@@ -556,11 +595,17 @@
       await setDoc(doc(db, "diario", id), {
         coach: currentUser.name,
         data: new Date().toISOString().split('T')[0],
-        topic, luogo, neve, note,
+        topic, note,
+        luogo: luogo || 'In pista',
+        meteo: meteo || 'Non specificato',
+        neve: neve || 'Non specificata',
         timestamp: Date.now()
       });
 
       document.getElementById('diarioNote').value = "";
+      document.getElementById('diarioLuogo').value = "";
+      document.getElementById('diarioMeteo').value = "";
+      document.getElementById('diarioNeve').value = "";
     };
 
     window.eliminaDiario = async function(id) {
@@ -569,6 +614,182 @@
       }
     };
 
+    // --- RENDERING ARCHIVIO ---
+    function renderArchivio(filtro = 'Tutti') {
+      filtroArchivioAttivo = filtro;
+      const cont = document.getElementById('containerArchivio');
+      if (!cont) return;
+
+      aggiornaBottoniFiltro('btnFiltroArchivio', filtro);
+
+      let filtrati = analisiList;
+      if (filtro !== 'Tutti') {
+        filtrati = analisiList.filter(a => {
+          if (Array.isArray(a.pilastri)) return a.pilastri.includes(filtro);
+          return a.pilastro === filtro;
+        });
+      }
+
+      if (filtrati.length === 0) {
+        cont.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">Nessuna analisi presente per il filtro selezionato.</div>`;
+        return;
+      }
+
+      cont.innerHTML = filtrati.map(a => {
+        const canDelete = currentUser && ((currentUser.role === 'admin') || (currentUser.name === a.coach));
+        const listPilastri = Array.isArray(a.pilastri) ? a.pilastri : [a.pilastro || 'Taglio'];
+
+        return `
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="flex flex-wrap gap-1.5">
+                ${listPilastri.map(p => `
+                  <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getPilastroBadgeClass(p)}">
+                    ${p === 'Taglio' ? 'Taglio / Coltello' : p}
+                  </span>
+                `).join('')}
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] text-slate-400 font-bold">${a.coach} • ${a.data}</span>
+                ${canDelete ? `
+                  <button onclick="window.eliminaAnalisi('${a.id}')" class="text-rose-500 hover:text-rose-700 text-xs px-2 py-1 rounded bg-rose-50 dark:bg-rose-950/40 font-bold" title="Elimina analisi">
+                    ✕
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+
+            <div>
+              <span class="text-[10px] uppercase font-bold text-slate-400 block">Cosa vedo:</span>
+              <p class="text-xs font-bold text-slate-800 dark:text-slate-100">${a.sintomo}</p>
+            </div>
+
+            <div>
+              <span class="text-[10px] uppercase font-bold text-slate-400 block">Causa biomeccanica:</span>
+              <p class="text-xs text-slate-600 dark:text-slate-300">${a.causa}</p>
+            </div>
+
+            ${a.focus ? `
+              <div class="bg-sky-50 dark:bg-sky-950/30 border border-sky-200 dark:border-sky-800/40 rounded-xl p-2.5">
+                <span class="text-[10px] uppercase font-bold text-sky-600 dark:text-sky-400 block">Focus in pista:</span>
+                <p class="text-xs font-black text-sky-700 dark:text-sky-300">"${a.focus}"</p>
+              </div>
+            ` : ''}
+
+            ${a.esercizio ? `
+              <div class="text-xs text-slate-500">
+                <span class="font-bold text-slate-700 dark:text-slate-300">Esercizio:</span> ${a.esercizio}
+              </div>
+            ` : ''}
+
+            <div class="pt-2 border-t border-slate-100 dark:border-slate-800 flex gap-2 text-[10px] text-slate-400">
+              <span>❄️ ${a.neve}</span>
+              <span>•</span>
+              <span>📐 ${a.raggio}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // --- RENDERING IDEE (CON FILTRO PER PILASTRO) ---
+    function renderIdee(filtro = 'Tutti') {
+      filtroIdeeAttivo = filtro;
+      const cont = document.getElementById('containerIdee');
+      if (!cont) return;
+
+      aggiornaBottoniFiltro('btnFiltroIdee', filtro);
+
+      let filtrati = ideeList;
+      if (filtro !== 'Tutti') {
+        filtrati = ideeList.filter(item => item.pilastro === filtro);
+      }
+
+      if (filtrati.length === 0) {
+        cont.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">Nessuna idea presente per questo pilastro.</div>`;
+        return;
+      }
+
+      cont.innerHTML = filtrati.map(item => `
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getPilastroBadgeClass(item.pilastro)}">
+              ${item.pilastro === 'Taglio' ? 'Coltello / Taglio' : item.pilastro}
+            </span>
+            <span class="text-[10px] text-slate-400 font-bold">${item.coach || ''}</span>
+          </div>
+          <h3 class="text-xs font-bold text-slate-900 dark:text-white">${item.titolo}</h3>
+          <p class="text-xs text-slate-600 dark:text-slate-300">${item.descrizione}</p>
+          ${item.cue ? `
+            <div class="bg-slate-100 dark:bg-slate-800 rounded-xl p-2 text-xs font-semibold text-sky-600 dark:text-sky-400">
+              Cue: "${item.cue}"
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+    function aggiornaBottoniFiltro(prefisso, filtro) {
+      ['Tutti', 'Taglio', 'Fulmine', 'Treno', 'Excalibur'].forEach(f => {
+        const b = document.getElementById(`${prefisso}-${f}`);
+        if (!b) return;
+        if (f === filtro) {
+          b.className = "min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-950";
+        } else {
+          b.className = "min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300";
+        }
+      });
+    }
+
+    window.filtraArchivio = function(p) { renderArchivio(p); };
+    window.filtraIdee = function(p) { renderIdee(p); };
+
+    // --- RENDERING DIARIO ---
+    function renderDiario() {
+      const cont = document.getElementById('containerDiario');
+      if (!cont) return;
+      if (diarioList.length === 0) {
+        cont.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">Nessuna voce salvata nel diario.</div>`;
+        return;
+      }
+      cont.innerHTML = diarioList.map(d => {
+        const canDelete = currentUser && ((currentUser.role === 'admin') || (currentUser.name === d.coach));
+        return `
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">${d.topic}</span>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] text-slate-400 font-bold">${d.coach} • ${d.data}</span>
+                ${canDelete ? `<button onclick="window.eliminaDiario('${d.id}')" class="text-rose-500 font-bold text-xs px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/40">✕</button>` : ''}
+              </div>
+            </div>
+
+            <div>
+              <span class="text-[10px] uppercase font-bold text-slate-400 block">Cosa è e come si fa:</span>
+              <p class="text-xs text-slate-600 dark:text-slate-300 whitespace-pre-line mt-0.5">${d.note}</p>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-1 text-[11px] text-slate-500 dark:text-slate-400">
+              <span>📍 <b>Luogo:</b> ${d.luogo || 'In pista'}</span>
+              <span>☀️ <b>Meteo:</b> ${d.meteo || 'Non specificato'}</span>
+              <span>❄️ <b>Neve:</b> ${d.neve || 'Non specificata'}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function getPilastroBadgeClass(pilastro) {
+      switch(pilastro) {
+        case 'Taglio': return 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300';
+        case 'Fulmine': return 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300';
+        case 'Treno': return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300';
+        case 'Excalibur': return 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300';
+        default: return 'bg-slate-100 text-slate-700';
+      }
+    }
+
+    // --- GESTIONE STAFF COACH (ADMIN) ---
     window.renderCoachManagerList = function() {
       const cont = document.getElementById('listaCoachManager');
       if (!cont) return;
@@ -674,8 +895,8 @@
         btnStaff.classList.remove('flex');
       }
 
-      renderArchivio();
-      renderIdee();
+      renderArchivio(filtroArchivioAttivo);
+      renderIdee(filtroIdeeAttivo);
       renderDiario();
       renderStats();
     }
@@ -692,6 +913,15 @@
       sel.innerHTML = topics.map(t => `<option value="${t}">${t}</option>`).join('');
     }
 
+    window.creaNuovoTopicPrompt = function() {
+      const nuovo = prompt("Nome del nuovo topic tecnico per il camp:");
+      if (nuovo && !topics.includes(nuovo)) {
+        topics.push(nuovo);
+        populateTopicsDropdown();
+        document.getElementById('selectTopicDiario').value = nuovo;
+      }
+    };
+
     window.navigateTab = function(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.nav-tab').forEach(el => {
@@ -704,142 +934,6 @@
       if (activeBtn) {
         activeBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
         activeBtn.classList.add('bg-sky-50', 'dark:bg-sky-950/40', 'text-sky-600', 'dark:text-sky-400');
-      }
-    };
-
-    function renderArchivio(filtro = 'Tutti') {
-      const cont = document.getElementById('containerArchivio');
-      if (!cont) return;
-      let filtrati = analisiList;
-      if (filtro !== 'Tutti') {
-        filtrati = analisiList.filter(a => a.pilastro === filtro);
-      }
-
-      if (filtrati.length === 0) {
-        cont.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">Nessuna analisi presente nel cloud.</div>`;
-        return;
-      }
-
-      cont.innerHTML = filtrati.map(a => {
-        const canDelete = currentUser && ((currentUser.role === 'admin') || (currentUser.name === a.coach));
-        return `
-          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getPilastroBadgeClass(a.pilastro)}">
-                ${a.pilastro}
-              </span>
-              <div class="flex items-center gap-2">
-                <span class="text-[10px] text-slate-400 font-bold">${a.coach} • ${a.data}</span>
-                ${canDelete ? `
-                  <button onclick="window.eliminaAnalisi('${a.id}')" class="text-rose-500 hover:text-rose-700 text-xs px-2 py-1 rounded bg-rose-50 dark:bg-rose-950/40 font-bold" title="Elimina analisi">
-                    ✕
-                  </button>
-                ` : ''}
-              </div>
-            </div>
-
-            <div>
-              <span class="text-[10px] uppercase font-bold text-slate-400 block">Cosa vedo:</span>
-              <p class="text-xs font-bold text-slate-800 dark:text-slate-100">${a.sintomo}</p>
-            </div>
-
-            <div>
-              <span class="text-[10px] uppercase font-bold text-slate-400 block">Causa biomeccanica:</span>
-              <p class="text-xs text-slate-600 dark:text-slate-300">${a.causa}</p>
-            </div>
-
-            ${a.focus ? `
-              <div class="bg-sky-50 dark:bg-sky-950/30 border border-sky-200 dark:border-sky-800/40 rounded-xl p-2.5">
-                <span class="text-[10px] uppercase font-bold text-sky-600 dark:text-sky-400 block">Focus in pista:</span>
-                <p class="text-xs font-black text-sky-700 dark:text-sky-300">"${a.focus}"</p>
-              </div>
-            ` : ''}
-
-            ${a.esercizio ? `
-              <div class="text-xs text-slate-500">
-                <span class="font-bold text-slate-700 dark:text-slate-300">Esercizio:</span> ${a.esercizio}
-              </div>
-            ` : ''}
-
-            <div class="pt-2 border-t border-slate-100 dark:border-slate-800 flex gap-2 text-[10px] text-slate-400">
-              <span>❄️ ${a.neve}</span>
-              <span>•</span>
-              <span>📐 ${a.raggio}</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function getPilastroBadgeClass(pilastro) {
-      switch(pilastro) {
-        case 'Taglio': return 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300';
-        case 'Fulmine': return 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300';
-        case 'Treno': return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300';
-        case 'Excalibur': return 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300';
-        default: return 'bg-slate-100 text-slate-700';
-      }
-    }
-
-    window.filtraArchivio = function(p) {
-      renderArchivio(p);
-    };
-
-    function renderIdee() {
-      const cont = document.getElementById('containerIdee');
-      if (!cont) return;
-      if (ideeList.length === 0) {
-        cont.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">Nessuna idea inserita nel database condiviso.</div>`;
-        return;
-      }
-      cont.innerHTML = ideeList.map(item => `
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getPilastroBadgeClass(item.pilastro)}">
-              ${item.pilastro}
-            </span>
-            <span class="text-[10px] text-slate-400 font-bold">${item.coach || ''}</span>
-          </div>
-          <h3 class="text-xs font-bold text-slate-900 dark:text-white">${item.titolo}</h3>
-          <p class="text-xs text-slate-600 dark:text-slate-300">${item.descrizione}</p>
-          <div class="bg-slate-100 dark:bg-slate-800 rounded-xl p-2 text-xs font-semibold text-sky-600 dark:text-sky-400">
-            Cue: "${item.cue}"
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function renderDiario() {
-      const cont = document.getElementById('containerDiario');
-      if (!cont) return;
-      if (diarioList.length === 0) {
-        cont.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">Nessun debriefing salvato nel cloud.</div>`;
-        return;
-      }
-      cont.innerHTML = diarioList.map(d => {
-        const canDelete = currentUser && ((currentUser.role === 'admin') || (currentUser.name === d.coach));
-        return `
-          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-900 dark:text-white">${d.topic}</span>
-              <div class="flex items-center gap-2">
-                <span class="text-[10px] text-slate-400 font-bold">${d.coach} • ${d.data}</span>
-                ${canDelete ? `<button onclick="window.eliminaDiario('${d.id}')" class="text-rose-500 font-bold text-xs px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/40">✕</button>` : ''}
-              </div>
-            </div>
-            <p class="text-xs text-slate-600 dark:text-slate-300 whitespace-pre-line">${d.note}</p>
-            <div class="text-[10px] text-slate-400">📍 ${d.luogo || 'In pista'} • ❄️ ${d.neve || 'Condizioni camp'}</div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    window.creaNuovoTopicPrompt = function() {
-      const nuovo = prompt("Nome del nuovo topic tecnico per il camp:");
-      if (nuovo && !topics.includes(nuovo)) {
-        topics.push(nuovo);
-        populateTopicsDropdown();
-        document.getElementById('selectTopicDiario').value = nuovo;
       }
     };
 
