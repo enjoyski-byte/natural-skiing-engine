@@ -61,12 +61,11 @@
       </div>
 
       <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">NATURAL SKIING</h1>
-      <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-2">Cloud Database Sincronizzato</p>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-2">Piattaforma Tecnica Camp</p>
       
-      <!-- Indicatore stato Cloud -->
       <div id="cloudStatusBadge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400 mb-6">
         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-        Firebase Connesso
+        Cloud Sincronizzato
       </div>
 
       <div class="grid grid-cols-2 gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl mb-4">
@@ -83,15 +82,14 @@
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Seleziona Coach</label>
           <select id="loginCoachSelect" class="w-full min-touch px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500">
-            <!-- Popolato dinamicamente da Firestore -->
           </select>
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Password Coach</label>
-          <input type="password" id="inputCoachPassword" placeholder="Inserisci password coach" class="w-full min-touch px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm tracking-widest focus:outline-none focus:ring-2 focus:ring-sky-500">
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Password</label>
+          <input type="password" id="inputCoachPassword" placeholder="Inserisci password" class="w-full min-touch px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm tracking-widest focus:outline-none focus:ring-2 focus:ring-sky-500">
         </div>
         <button onclick="attemptCoachLogin()" class="w-full min-touch bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl text-sm transition-all shadow-lg shadow-sky-600/20 active:scale-98">
-          Entra come Coach
+          Entra
         </button>
       </div>
 
@@ -111,14 +109,10 @@
       </div>
 
       <p id="loginErrorMsg" class="text-xs text-rose-500 font-semibold mt-3 hidden"></p>
-
-      <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-400">
-        Default: Coach <code class="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-sky-500">COACH2026</code> | Admin <code class="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-amber-500">ADMIN_STEFANO</code>
-      </div>
     </div>
   </div>
 
-  <!-- ================= INTESTAZIONE PRINCIPALE ================= -->
+  <!-- ================= INTESTAZIONE ================= -->
   <header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-3">
     <div class="max-w-4xl mx-auto flex items-center justify-between gap-3">
       
@@ -273,7 +267,6 @@
       </div>
 
       <div id="containerArchivio" class="space-y-3">
-        <!-- Schede caricate in tempo reale da Firestore -->
       </div>
     </section>
 
@@ -373,7 +366,7 @@
       </div>
       
       <div class="flex gap-2">
-        <input type="text" id="nuovoCoachNome" placeholder="Nome nuovo coach (es. Ruben)" class="flex-1 min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">
+        <input type="text" id="nuovoCoachNome" placeholder="Nome nuovo coach" class="flex-1 min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">
         <button type="button" onclick="window.aggiungiCoach()" class="min-touch px-4 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold active:scale-95 transition-all">
           Aggiungi
         </button>
@@ -403,7 +396,7 @@
       enableIndexedDbPersistence 
     } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
-    // Configurazione Firebase
+    // Configurazione Firebase del tuo progetto
     const firebaseConfig = {
       apiKey: "AIzaSyDd8FYuLtj4tHoyA2_cqdDD1jpvYzeR3hc",
       authDomain: "natural-skiing-engine.firebaseapp.com",
@@ -417,19 +410,17 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Abilita persistenza offline per le piste da sci
     try {
       enableIndexedDbPersistence(db).catch(err => {
         console.warn("Offline persistence:", err.code);
       });
     } catch(e) {}
 
-    // Riferimenti collezioni
     const colAnalisi = collection(db, "analisi");
     const colIdee = collection(db, "idee");
     const colDiario = collection(db, "diario");
-    const colSettings = collection(db, "settings");
 
+    // CREDENZIALI DI ACCESSO
     const DEFAULT_COACH_PASS = "COACH2026";
     const DEFAULT_ADMIN_PASS = "ADMIN_STEFANO";
     const DEFAULT_COACHES = ["Stefano", "Ruben", "Riccardo", "Federico", "Alessandro", "Davide"];
@@ -454,7 +445,6 @@
       if (docSnap.exists() && docSnap.data().list) {
         coaches = docSnap.data().list;
       } else {
-        // Se non esiste ancora sul cloud, carichiamo la base con Ruben
         setDoc(doc(db, "settings", "staff"), { list: DEFAULT_COACHES });
         coaches = [...DEFAULT_COACHES];
       }
@@ -470,7 +460,6 @@
       snapshot.forEach(doc => {
         analisiList.push({ id: doc.id, ...doc.data() });
       });
-      // Ordina dalla più recente
       analisiList.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
       renderArchivio();
       renderStats();
@@ -496,8 +485,7 @@
       renderDiario();
     });
 
-    // --- FUNZIONI CLOUD ESPOSTE ALLA WINDOW ---
-
+    // --- FUNZIONI CLOUD ---
     window.salvaNuovaAnalisi = async function() {
       const sintomo = document.getElementById('inputSintomo').value.trim();
       const causa = document.getElementById('inputCausa').value.trim();
@@ -645,7 +633,7 @@
         sessionStorage.setItem('ns_session', JSON.stringify(currentUser));
         sbloccaInterfaccia();
       } else {
-        document.getElementById('loginErrorMsg').innerText = "Password Coach non corretta.";
+        document.getElementById('loginErrorMsg').innerText = "Password non corretta.";
         document.getElementById('loginErrorMsg').classList.remove('hidden');
       }
     };
@@ -909,7 +897,6 @@
       document.getElementById('themeIconMoon').classList.toggle('hidden', isDark);
     }
 
-    // Inizializzazione
     const savedTheme = localStorage.getItem('ns_theme') || 'dark';
     if (savedTheme === 'dark') {
       document.documentElement.classList.add('dark');
