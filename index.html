@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Natural Skiing — Coach Field Engine</title>
   
-  <!-- Favicon e Icona Apple PWA ad alto contrasto -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230f172a'/%3E%3Cpath d='M18 82 L82 18' stroke='%2338bdf8' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M36 82 L82 36' stroke='%230284c7' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='78' cy='22' r='5' fill='%23f59e0b'/%3E%3C/svg%3E">
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230f172a'/%3E%3Cpath d='M35 145 L145 35' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cpath d='M65 145 L145 65' stroke='%230284c7' stroke-width='12' stroke-linecap='round'/%3E%3Ccircle cx='140' cy='40' r='9' fill='%23f59e0b'/%3E%3C/svg%3E">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -49,11 +48,10 @@
 </head>
 <body class="h-full bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200 font-sans antialiased select-none">
 
-  <!-- ================= SCHERMATA DI LOGIN / BLOCCO ================= -->
+  <!-- ================= SCHERMATA DI LOGIN ================= -->
   <div id="authGate" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl text-center">
       
-      <!-- Icona Spigolo / Sci Alpino -->
       <div class="w-16 h-16 mx-auto mb-4 bg-sky-500/10 text-sky-500 rounded-2xl flex items-center justify-center">
         <svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="m3 21 18-18"/>
@@ -65,7 +63,6 @@
       <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">NATURAL SKIING</h1>
       <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-6">Accesso Riservato Staff Tecnico & Coach</p>
 
-      <!-- Selettore Ruolo Coach / Admin -->
       <div class="grid grid-cols-2 gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl mb-4">
         <button id="tabRoleCoach" onclick="switchLoginRole('coach')" class="py-2.5 rounded-xl font-semibold text-xs tracking-wide bg-white dark:bg-slate-700 shadow-sm text-sky-600 dark:text-sky-400 transition-all">
           COACH
@@ -80,7 +77,6 @@
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Seleziona Coach</label>
           <select id="loginCoachSelect" class="w-full min-touch px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500">
-            <!-- Popolato via JS -->
           </select>
         </div>
         <div>
@@ -115,7 +111,7 @@
     </div>
   </div>
 
-  <!-- ================= INTESTAZIONE PRINCIPALE ================= -->
+  <!-- ================= INTESTAZIONE ================= -->
   <header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-3">
     <div class="max-w-4xl mx-auto flex items-center justify-between gap-3">
       
@@ -133,9 +129,7 @@
         </div>
       </div>
 
-      <!-- Azioni Rapide Header -->
       <div class="flex items-center gap-2">
-        <!-- Switch Giorno / Notte -->
         <button onclick="toggleTheme()" title="Cambia Giorno/Notte" class="min-touch w-11 h-11 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
           <svg id="themeIconSun" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9h-1m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -145,12 +139,10 @@
           </svg>
         </button>
 
-        <!-- Gestione Coach (Solo Admin) -->
         <button id="btnManageCoaches" onclick="openCoachManager()" title="Gestione Coach" class="min-touch px-3 h-11 hidden items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-200">
           Staff ⚙️
         </button>
 
-        <!-- Blocca / Esci -->
         <button onclick="lockApp()" title="Blocca App" class="min-touch px-3 h-11 flex items-center justify-center gap-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 text-xs font-bold hover:bg-rose-100">
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
@@ -177,7 +169,6 @@
       <button onclick="navigateTab('tabDiario')" id="nav-tabDiario" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 whitespace-nowrap">
         Diario Camp
       </button>
-      <!-- TAB AI DATASET: VISIBILE SOLO AD ADMIN -->
       <button onclick="navigateTab('tabAiDataset')" id="nav-tabAiDataset" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-amber-600 dark:text-amber-400 hover:text-amber-500 whitespace-nowrap hidden">
         AI Dataset 🔒
       </button>
@@ -192,31 +183,26 @@
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm space-y-4">
         <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Nuova Scheda di Rilevamento</h2>
 
-        <!-- 1. COSA VEDO -->
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">1. Cosa vedo (Effetto / Sintomo visivo)</label>
           <input type="text" id="inputSintomo" placeholder="es. Sci esterno che derapa via, punta a V..." class="w-full min-touch px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
         </div>
 
-        <!-- 2. PERCHÉ -->
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">2. Perché? (Causa biomeccanica reale)</label>
-          <textarea id="inputCausa" rows="2" placeholder="es. Spinta muscolare attiva con la gamba anziché presa di spigolo in appoggio strutturale..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"></textarea>
+          <textarea id="inputCausa" rows="2" placeholder="es. Spinta muscolare attiva anziché presa di spigolo in appoggio strutturale..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"></textarea>
         </div>
 
-        <!-- 3. FOCUS MENTALE IN PISTA -->
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">3. Focus mentale in pista (Frase guida immediata - max 5 parole)</label>
           <input type="text" id="inputFocus" placeholder="es. Non spingere: appoggiati" class="w-full min-touch px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
         </div>
 
-        <!-- 4. ESERCIZIO IN PISTA -->
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">4. Esercizio in pista (Compito pratico)</label>
           <textarea id="inputEsercizio" rows="2" placeholder="es. Curva su un solo sci esterno a velocità controllata..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"></textarea>
         </div>
 
-        <!-- PILASTRO FONDAMENTALE (SOTTO LE 4 FRASI) -->
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-2">Pilastro Fondamentale</label>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -239,7 +225,6 @@
           </div>
         </div>
 
-        <!-- DETTAGLI IN FONDO: NEVE E RAGGIO -->
         <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200 dark:border-slate-800">
           <div>
             <label class="block text-[11px] font-bold text-slate-500 mb-1">Condizione Neve</label>
@@ -278,7 +263,6 @@
       </div>
 
       <div id="containerArchivio" class="space-y-3">
-        <!-- Schede caricate dinamicamente -->
       </div>
     </section>
 
@@ -292,7 +276,6 @@
       </div>
 
       <div id="containerIdee" class="space-y-3">
-        <!-- Schede Idee caricate via JS -->
       </div>
     </section>
 
@@ -305,7 +288,6 @@
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Topic Affrontato</label>
           <div class="flex gap-2">
             <select id="selectTopicDiario" class="flex-1 min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">
-              <!-- Popolato via JS -->
             </select>
             <button onclick="creaNuovoTopicPrompt()" class="min-touch px-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold text-sky-600 dark:text-sky-400">
               + Nuovo
@@ -329,7 +311,6 @@
       </div>
 
       <div id="containerDiario" class="space-y-3">
-        <!-- Voci diario -->
       </div>
     </section>
 
@@ -382,40 +363,56 @@
       
       <div class="flex gap-2">
         <input type="text" id="nuovoCoachNome" placeholder="Nome nuovo coach" class="flex-1 min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">
-        <button onclick="aggiungiCoach()" class="min-touch px-3 bg-sky-600 text-white rounded-xl text-xs font-bold">Aggiungi</button>
+        <button type="button" onclick="window.aggiungiCoach()" class="min-touch px-4 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold active:scale-95 transition-all">
+          Aggiungi
+        </button>
       </div>
 
       <div id="listaCoachManager" class="space-y-1.5 max-h-56 overflow-y-auto">
-        <!-- Lista coach popolata via JS -->
+      </div>
+
+      <div class="pt-2 border-t border-slate-200 dark:border-slate-800 text-center">
+        <button type="button" onclick="window.resetStaffDefault()" class="text-[11px] text-slate-400 hover:text-rose-500 underline font-medium">
+          Ripristina Staff Predefinito
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- ================= JAVASCRIPT LOGICA, SICUREZZA & PULIZIA DATI ================= -->
+  <!-- ================= SCRIPT JAVASCRIPT ================= -->
   <script>
     const DEFAULT_COACH_PASS = "COACH2026";
     const DEFAULT_ADMIN_PASS = "ADMIN_STEFANO";
+    const DEFAULT_COACHES = ["Stefano", "Riccardo", "Federico", "Alessandro", "Davide", "Lorenzo"];
 
     let currentUser = null;
 
-    // Funzione pulizia nomi da vecchi residui di debug
-    function sanificaNomeCoach(raw) {
-      if (!raw) return '';
-      if (typeof raw === 'object') {
-        return raw.name || raw.nome || raw.coach || '';
-      }
-      let s = String(raw).trim();
+    // Pulizia e auto-riparazione
+    function sanitizzaStringa(val) {
+      if (!val) return '';
+      if (typeof val === 'object') return val.name || val.nome || '';
+      let s = String(val).trim();
       return (s === '[object Object]' || s === '') ? '' : s;
     }
 
-    // Lettura e auto-riparazione immediata dell'array coach
-    let rawCoaches = JSON.parse(localStorage.getItem('ns_coaches')) || [
-      "Stefano", "Riccardo", "Federico", "Alessandro", "Davide", "Lorenzo"
-    ];
-    let coaches = rawCoaches.map(sanificaNomeCoach).filter(Boolean);
-    if (!coaches.includes("Stefano")) {
-      coaches.unshift("Stefano");
+    function caricaCoachesDaStorage() {
+      let raw = localStorage.getItem('ns_coaches');
+      let arr = [];
+      try {
+        arr = raw ? JSON.parse(raw) : DEFAULT_COACHES;
+      } catch(e) {
+        arr = DEFAULT_COACHES;
+      }
+      if (!Array.isArray(arr)) arr = DEFAULT_COACHES;
+      
+      let puliti = arr.map(sanitizzaStringa).filter(Boolean);
+      if (!puliti.includes("Stefano")) {
+        puliti.unshift("Stefano");
+      }
+      return puliti;
     }
+
+    let coaches = caricaCoachesDaStorage();
     localStorage.setItem('ns_coaches', JSON.stringify(coaches));
 
     let topics = JSON.parse(localStorage.getItem('ns_topics')) || [
@@ -469,6 +466,66 @@
         cue: "Tallone incollato"
       }
     ];
+
+    // --- FUNZIONI DI GESTIONE STAFF GLOBALI ---
+    window.renderCoachManagerList = function() {
+      const cont = document.getElementById('listaCoachManager');
+      if (!cont) return;
+
+      cont.innerHTML = coaches.map((nome, idx) => `
+        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800 text-xs font-semibold border border-slate-200 dark:border-slate-700">
+          <span class="text-slate-900 dark:text-white font-bold">
+            ${nome} ${nome === "Stefano" ? '<span class="text-amber-500 font-black ml-1">(Admin)</span>' : ''}
+          </span>
+          ${nome !== "Stefano" ? `
+            <button type="button" onclick="window.rimuoviCoachPerIndice(${idx})" class="min-touch px-3 py-1.5 rounded-lg bg-rose-100 hover:bg-rose-200 dark:bg-rose-950 dark:hover:bg-rose-900 text-rose-600 dark:text-rose-400 font-bold active:scale-95 transition-all">
+              Rimuovi ✕
+            </button>
+          ` : '<span class="text-slate-400 text-[10px]">Titolare</span>'}
+        </div>
+      `).join('');
+    };
+
+    window.rimuoviCoachPerIndice = function(index) {
+      if (index >= 0 && index < coaches.length) {
+        coaches.splice(index, 1);
+        localStorage.setItem('ns_coaches', JSON.stringify(coaches));
+        window.renderCoachManagerList();
+        populateCoachDropdowns();
+      }
+    };
+
+    window.aggiungiCoach = function() {
+      const input = document.getElementById('nuovoCoachNome');
+      if (!input) return;
+      const nome = sanitizzaStringa(input.value);
+      if (nome && !coaches.includes(nome)) {
+        coaches.push(nome);
+        localStorage.setItem('ns_coaches', JSON.stringify(coaches));
+        input.value = "";
+        window.renderCoachManagerList();
+        populateCoachDropdowns();
+      }
+    };
+
+    window.resetStaffDefault = function() {
+      coaches = [...DEFAULT_COACHES];
+      localStorage.setItem('ns_coaches', JSON.stringify(coaches));
+      window.renderCoachManagerList();
+      populateCoachDropdowns();
+    };
+
+    function populateCoachDropdowns() {
+      const selLogin = document.getElementById('loginCoachSelect');
+      if (!selLogin) return;
+      selLogin.innerHTML = coaches.filter(c => c !== "Stefano").map(c => `<option value="${c}">${c}</option>`).join('');
+    }
+
+    function populateTopicsDropdown() {
+      const sel = document.getElementById('selectTopicDiario');
+      if (!sel) return;
+      sel.innerHTML = topics.map(t => `<option value="${t}">${t}</option>`).join('');
+    }
 
     // --- AUTENTICAZIONE E SICUREZZA ---
     function switchLoginRole(role) {
@@ -551,19 +608,6 @@
       renderStats();
     }
 
-    // --- POPOLAMENTO TENDINE ---
-    function populateCoachDropdowns() {
-      const selLogin = document.getElementById('loginCoachSelect');
-      if (!selLogin) return;
-      selLogin.innerHTML = coaches.filter(c => c !== "Stefano").map(c => `<option value="${c}">${c}</option>`).join('');
-    }
-
-    function populateTopicsDropdown() {
-      const sel = document.getElementById('selectTopicDiario');
-      if (!sel) return;
-      sel.innerHTML = topics.map(t => `<option value="${t}">${t}</option>`).join('');
-    }
-
     // --- NAVIGAZIONE SCHEDE ---
     function navigateTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
@@ -615,7 +659,6 @@
       navigateTab('tabArchivio');
     }
 
-    // --- RENDERING ARCHIVIO (CANCELLAZIONE SELETTIVA) ---
     function renderArchivio(filtro = 'Tutti') {
       const cont = document.getElementById('containerArchivio');
       let filtrati = analisiList;
@@ -799,10 +842,10 @@
       }
     }
 
-    // --- GESTIONE COACH A PROVA DI ERRORE BASATA SU INDICE ---
+    // --- MODAL STAFF COACH ---
     function openCoachManager() {
       if (currentUser.role !== 'admin') return;
-      renderCoachManagerList();
+      window.renderCoachManagerList();
       document.getElementById('modalStaff').classList.remove('hidden');
       document.getElementById('modalStaff').classList.add('flex');
     }
@@ -810,45 +853,6 @@
     function chiudiCoachManager() {
       document.getElementById('modalStaff').classList.add('hidden');
       document.getElementById('modalStaff').classList.remove('flex');
-    }
-
-    function renderCoachManagerList() {
-      const cont = document.getElementById('listaCoachManager');
-      if (!cont) return;
-
-      cont.innerHTML = coaches.map((nome, idx) => `
-        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800 text-xs font-semibold border border-slate-200 dark:border-slate-700">
-          <span class="text-slate-900 dark:text-white font-bold">
-            ${nome} ${nome === "Stefano" ? '<span class="text-amber-500 font-black ml-1">(Admin)</span>' : ''}
-          </span>
-          ${nome !== "Stefano" ? `
-            <button type="button" onclick="rimuoviCoachPerIndice(${idx})" class="min-touch px-3 py-1.5 rounded-lg bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 font-bold hover:bg-rose-100 active:scale-95 transition-transform">
-              Rimuovi ✕
-            </button>
-          ` : '<span class="text-slate-400 text-[10px]">Titolare</span>'}
-        </div>
-      `).join('');
-    }
-
-    function rimuoviCoachPerIndice(index) {
-      if (index >= 0 && index < coaches.length) {
-        coaches.splice(index, 1);
-        localStorage.setItem('ns_coaches', JSON.stringify(coaches));
-        renderCoachManagerList();
-        populateCoachDropdowns();
-      }
-    }
-
-    function aggiungiCoach() {
-      const input = document.getElementById('nuovoCoachNome');
-      const nome = sanificaNomeCoach(input.value);
-      if (nome && !coaches.includes(nome)) {
-        coaches.push(nome);
-        localStorage.setItem('ns_coaches', JSON.stringify(coaches));
-        input.value = "";
-        renderCoachManagerList();
-        populateCoachDropdowns();
-      }
     }
 
     // --- STATISTICHE & EXPORT DATASET ---
