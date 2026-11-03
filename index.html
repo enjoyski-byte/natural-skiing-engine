@@ -145,7 +145,7 @@
     </div>
   </header>
 
-  <!-- ================= NAV BAR A SCHEDE (RIORDINATA) ================= -->
+  <!-- ================= NAV BAR A SCHEDE ================= -->
   <nav class="sticky top-[57px] z-30 bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800">
     <div class="max-w-4xl mx-auto flex overflow-x-auto no-scrollbar px-2 py-1 gap-1">
       <button onclick="navigateTab('tabAnalisi')" id="nav-tabAnalisi" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/40 whitespace-nowrap">
@@ -248,7 +248,7 @@
           </div>
         </div>
 
-        <!-- 4. ESERCIZI IN PISTA CONSIGLIATI (AZZERATI PRECARICATI) -->
+        <!-- 4. ESERCIZI IN PISTA CONSIGLIATI -->
         <div class="space-y-2.5">
           <div class="flex items-center justify-between">
             <label class="block text-xs font-bold text-slate-600 dark:text-slate-400">4. Esercizi in pista consigliati</label>
@@ -359,7 +359,7 @@
           </div>
         </div>
 
-        <!-- DETTAGLI AMBIENTE: NEVE A TENDINA + AGGIUNGI -->
+        <!-- DETTAGLI AMBIENTE -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
           <div>
             <label class="block text-[11px] font-bold text-slate-500 mb-1">📍 Luogo</label>
@@ -419,10 +419,10 @@
       </div>
     </section>
 
-    <!-- 4. IDEE IN PISTA (CON VOCALE & CREA TOPIC) -->
+    <!-- 4. IDEE IN PISTA -->
     <section id="tabIdee" class="tab-content space-y-4 hidden">
       
-      <!-- BOX ASSISTENTE VOCALE IN PISTA -->
+      <!-- BOX VOCALE -->
       <div class="bg-gradient-to-r from-sky-600 to-indigo-700 text-white rounded-3xl p-5 shadow-lg space-y-3">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
@@ -448,7 +448,7 @@
         </div>
       </div>
 
-      <!-- INTESTAZIONE + TASTO NUOVO TOPIC SENZA METEO -->
+      <!-- INTESTAZIONE + TASTO NUOVO TOPIC -->
       <div class="flex items-center justify-between pt-1">
         <div>
           <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Biblioteca Topic di Lavoro</h2>
@@ -540,7 +540,7 @@
     </div>
   </div>
 
-  <!-- MODAL AGGIUNGI NUOVO TOPIC DA IDEE (SENZA METEO/LUOGO) -->
+  <!-- MODAL NUOVO TOPIC DA IDEE -->
   <div id="modalNuovoTopicIdee" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 max-w-md w-full space-y-4">
       <div class="flex items-center justify-between">
@@ -600,7 +600,7 @@
     </div>
   </div>
 
-  <!-- SCRIPT FIREBASE -->
+  <!-- ================= FIREBASE & LOGICA ================= -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
     import { 
@@ -608,6 +608,7 @@
       collection, 
       doc, 
       setDoc, 
+      addDoc,
       deleteDoc, 
       onSnapshot, 
       enableIndexedDbPersistence 
@@ -633,79 +634,94 @@
     } catch(e) {}
 
     const colAnalisi = collection(db, "analisi");
-    // CARICAMENTO AUTOMATICO DAI CSV DIRETTAMENTE IN FIRESTORE
-  async function importaCSVDaGitHub() {
-    if (localStorage.getItem("dati_gia_importati_v2")) return;
-    try {
-      console.log("Importazione CSV in corso...");
-      async function leggi(file) {
-        const r = await fetch(file + '?t=' + Date.now());
-        const txt = await r.text();
-        const lines = txt.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-        const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
-        return lines.slice(1).map(line => {
-          const vals = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || line.split(',');
-          const obj = {};
-          headers.forEach((h, i) => { obj[h] = (vals[i] || '').replace(/^"|"$/g, '').trim(); });
-          return obj;
-        });
-      }
-
-      const csvErrori = await leggi('errori_tipici_natural_skiing_v2.csv');
-      const csvTopics = await leggi('topics_camp_natural_skiing_v2.csv');
-
-      for (const row of csvErrori) {
-        if (!row.Cosa_Vedo) continue;
-        let pil = ["Taglio"];
-        const s = (row.Topic_Correlato || "") + " " + row.Cosa_Vedo;
-        if (s.includes("Fulmine")) pil = ["Fulmine"];
-        if (s.includes("Treno")) pil = ["Treno"];
-        if (s.includes("Excalibur")) pil = ["Excalibur"];
-
-        await addDoc(colAnalisi, {
-          author: "Stefano",
-          createdAt: new Date().toISOString(),
-          sintomo: row.Cosa_Vedo,
-          perche: row.Perche_Causa_Biomeccanica || "",
-          focusMentale: row.Consiglio_In_Pista || "",
-          pilastri: pil,
-          archi: ["Medio"],
-          esercizi: [row.Esercizio_Risolutivo || ""]
-        });
-      }
-
-      for (const row of csvTopics) {
-        if (!row.Nome_Topic) continue;
-        let pil = ["Taglio"];
-        const s = (row.Fondamentale_Collegato || "") + " " + row.Nome_Topic;
-        if (s.includes("Fulmine")) pil = ["Fulmine"];
-        if (s.includes("Treno")) pil = ["Treno"];
-        if (s.includes("Excalibur")) pil = ["Excalibur"];
-
-        await addDoc(colDiario, {
-          coach: "Stefano",
-          data: "2026-11-03",
-          topic: row.Nome_Topic,
-          titolo: row.Nome_Topic,
-          note: (row.Focus_Tecnico || "") + " - " + (row.Obiettivo_Camp || ""),
-          pilastri: pil,
-          archi: ["Ampio", "Medio"],
-          esercizi: [row.Esercizi_Proposte || ""]
-        });
-      }
-
-      localStorage.setItem("dati_gia_importati_v2", "true");
-      console.log("Importazione completata con successo!");
-      window.location.reload();
-    } catch (err) {
-      console.error("Errore importazione:", err);
-    }
-  }
-
-  // Avvia l'importazione
-  importaCSVDaGitHub();
     const colDiario = collection(db, "diario");
     const colEsercizi = collection(db, "esercizi_fissi");
+
+    // ========================================================
+    // IMPORTAZIONE AUTOMATICA CSV DIRETTAMENTE IN FIRESTORE
+    // ========================================================
+    async function importaCSVDaGitHub() {
+      if (localStorage.getItem("natural_skiing_csv_synced_v3")) return;
+      try {
+        console.log("🚀 Sincronizzazione automatica CSV -> Firestore...");
+
+        async function leggi(file) {
+          const r = await fetch(file + '?t=' + Date.now());
+          if (!r.ok) return [];
+          const txt = await r.text();
+          const lines = txt.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+          if (lines.length < 2) return [];
+          const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+          return lines.slice(1).map(line => {
+            const vals = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || line.split(',');
+            const obj = {};
+            headers.forEach((h, i) => { obj[h] = (vals[i] || '').replace(/^"|"$/g, '').trim(); });
+            return obj;
+          });
+        }
+
+        const csvErrori = await leggi('errori_tipici_natural_skiing_v2.csv');
+        const csvTopics = await leggi('topics_camp_natural_skiing_v2.csv');
+
+        // Carica gli errori
+        for (const row of csvErrori) {
+          const cosaVedo = row.Cosa_Vedo;
+          if (!cosaVedo) continue;
+
+          let pil = ["Taglio"];
+          const s = (row.Topic_Correlato || "") + " " + cosaVedo;
+          if (s.includes("Fulmine")) pil = ["Fulmine"];
+          if (s.includes("Treno")) pil = ["Treno"];
+          if (s.includes("Excalibur")) pil = ["Excalibur"];
+
+          await addDoc(colAnalisi, {
+            coach: "Stefano",
+            data: "2026-11-03",
+            timestamp: Date.now(),
+            sintomo: cosaVedo,
+            causa: row.Perche_Causa_Biomeccanica || "",
+            focus: row.Consiglio_In_Pista || "",
+            pilastri: pil,
+            archi: ["Medio"],
+            esercizi: [row.Esercizio_Risolutivo || ""],
+            esercizioLibero: "",
+            topicConsigliato: row.Topic_Correlato || ""
+          });
+        }
+
+        // Carica i topic
+        for (const row of csvTopics) {
+          const nome = row.Nome_Topic;
+          if (!nome) continue;
+
+          let pil = ["Taglio"];
+          const s = (row.Fondamentale_Collegato || "") + " " + nome;
+          if (s.includes("Fulmine")) pil = ["Fulmine"];
+          if (s.includes("Treno")) pil = ["Treno"];
+          if (s.includes("Excalibur")) pil = ["Excalibur"];
+
+          await addDoc(colDiario, {
+            coach: "Stefano",
+            data: "2026-11-03",
+            timestamp: Date.now(),
+            topic: nome,
+            note: (row.Focus_Tecnico ? row.Focus_Tecnico + "\n\n" : "") + (row.Obiettivo_Camp ? "Obiettivo: " + row.Obiettivo_Camp + "\n\n" : "") + (row.Esercizi_Proposte ? "Esercizi: " + row.Esercizi_Proposte : ""),
+            pilastri: pil,
+            archi: ["Ampio", "Medio"],
+            luogo: "Biblioteca Topic",
+            meteo: "Teorico",
+            neve: "Tutte"
+          });
+        }
+
+        localStorage.setItem("natural_skiing_csv_synced_v3", "true");
+        console.log("✅ Importazione completata con successo!");
+      } catch (err) {
+        console.error("Errore sincronizzazione CSV:", err);
+      }
+    }
+
+    importaCSVDaGitHub();
 
     const DEFAULT_COACH_PASS = "COACH2026";
     const DEFAULT_ADMIN_PASS = "ADMIN_STEFANO";
@@ -736,7 +752,7 @@
       }
     });
 
-    // 2. Esercizi Fissi (Inizia vuoto se non inseriti da voi)
+    // 2. Esercizi Fissi
     onSnapshot(colEsercizi, (snapshot) => {
       eserciziFissi = [];
       snapshot.forEach(doc => {
@@ -762,7 +778,6 @@
       snapshot.forEach(doc => {
         diarioList.push({ id: doc.id, ...doc.data() });
       });
-      // ORDINE: sempre per primo l'ultimo aggiunto
       diarioList.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
       
       aggiornaListaTopicDinamici();
@@ -780,7 +795,7 @@
       populateTopicsDropdown();
     }
 
-    // --- AGGIUNGI ANALISI ---
+    // --- GESTIONE INTERFACCIA E FORM ---
     window.onCambiamentoPilastriArchiAnalisi = function() {
       window.aggiornaEserciziSottoPilastro();
       window.aggiornaTopicConsigliati();
@@ -810,7 +825,6 @@
       }).join('');
     };
 
-    // CORREZIONE TASTO SALVA NUOVO ESERCIZIO FISSO
     window.salvaNuovoEsercizioFissoPrompt = async function() {
       const nome = prompt("Nome del nuovo esercizio fisso in pista:");
       if (!nome || !nome.trim()) return;
@@ -830,7 +844,6 @@
       }
     };
 
-    // 5. TOPIC CONSIGLIATO DINAMICO
     window.aggiornaTopicConsigliati = function() {
       const sel = document.getElementById('selectTopicConsigliato');
       if (!sel) return;
@@ -838,7 +851,6 @@
       const pilastriChecked = Array.from(document.querySelectorAll('input[name="pilastri"]:checked')).map(el => el.value);
       const archiChecked = Array.from(document.querySelectorAll('input[name="archi"]:checked')).map(el => el.value);
 
-      // Cerca nei topic registrati quelli con almeno un pilastro o arco coincidente
       const topicSuggeriti = new Set();
       diarioList.forEach(d => {
         const pMatch = (d.pilastri || []).some(p => pilastriChecked.includes(p));
@@ -976,7 +988,7 @@
       }
     };
 
-    // --- ARCHIVIO ANALISI (ACCORDION) ---
+    // --- ARCHIVIO ANALISI ---
     function renderArchivio(filtro = 'Tutti') {
       filtroArchivioAttivo = filtro;
       const cont = document.getElementById('containerArchivio');
@@ -1093,7 +1105,7 @@
       if (chv) chv.style.transform = isHidden ? "rotate(180deg)" : "rotate(0deg)";
     };
 
-    // --- COSA HO FATTO OGGI (COMPATTI ESPANDIBILI + NEVE A SCELTA) ---
+    // --- COSA HO FATTO OGGI ---
     window.aggiungiNuovaTipologiaNevePrompt = function() {
       const nuova = prompt("Nuova tipologia di neve da aggiungere:");
       if (nuova && nuova.trim()) {
@@ -1254,7 +1266,7 @@
       if (corrente && topicsList.includes(corrente)) sel.value = corrente;
     }
 
-    // --- IDEE IN PISTA + VOCALE GEMINI + MODAL NUOVO TOPIC ---
+    // --- IDEE IN PISTA + VOCALE ---
     let recognizer = null;
     let isListening = false;
 
@@ -1307,7 +1319,6 @@
       document.getElementById('boxRispostaVocale').classList.remove('hidden');
       document.getElementById('testoTrascrittoVocale').innerText = `"${testo}"`;
 
-      // Analisi semantica istantanea locale tra i topic disponibili
       let bestMatch = topicsList[0] || "Lavoro di Appoggio Strutturale";
       let highestScore = 0;
 
@@ -1329,7 +1340,6 @@
       };
     }
 
-    // Modal Nuovo Topic senza meteo/luogo
     window.apriModalNuovoTopicIdee = function() {
       document.getElementById('modalTopicNome').value = '';
       document.getElementById('modalTopicNote').value = '';
@@ -1681,175 +1691,4 @@
     }
   </script>
 </body>
-<!-- ========================================== -->
-<!-- SINCRONIZZAZIONE AUTOMATICA DATABASE CSV   -->
-<!-- ========================================== -->
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-
-<script>
-(function() {
-  // 1. Rimuove eventuali sezioni bianche o blocchi creati in precedenza
-  const oldSec = document.getElementById("sezione-database-natural");
-  if (oldSec) oldSec.remove();
-
-  // 2. Funzione per leggere e convertire i file CSV
-  async function leggiCSV(percorso) {
-    try {
-      const resp = await fetch(percorso + '?cache_bust=' + Date.now());
-      if (!resp.ok) return [];
-      const testo = await resp.text();
-      return new Promise(resolve => {
-        Papa.parse(testo, {
-          header: true,
-          skipEmptyLines: true,
-          complete: res => resolve(res.data || [])
-        });
-      });
-    } catch (e) {
-      console.warn("Impossibile caricare " + percorso, e);
-      return [];
-    }
-  }
-
-  // 3. Mappatura automatica dei pilastri e degli archi per i badge nativi
-  function estraiPilastri(testo) {
-    if (!testo) return ["Coltello / Taglio"];
-    const str = testo.toUpperCase();
-    const tags = [];
-    if (str.includes("COLTELLO") || str.includes("TAGLIO")) tags.push("Coltello / Taglio");
-    if (str.includes("FULMINE")) tags.push("Fulmine");
-    if (str.includes("TRENO")) tags.push("Treno");
-    if (str.includes("EXCALIBUR")) tags.push("Excalibur");
-    return tags.length > 0 ? tags : ["Coltello / Taglio"];
-  }
-
-  function estraiArchi(testo) {
-    if (!testo) return ["Medio"];
-    const str = testo.toUpperCase();
-    const archi = [];
-    if (str.includes("AMPIO")) archi.push("Ampio");
-    if (str.includes("MEDIO")) archi.push("Medio");
-    if (str.includes("CORTO")) archi.push("Corto");
-    return archi.length > 0 ? archi : ["Medio"];
-  }
-
-  // 4. Inserimento dei record nel localStorage originale dell'app
-  async function integraDatiNativi() {
-    // Individuazione dinamica delle chiavi usate dall'app
-    let keyAnalisi = "natural_skiing_analyses";
-    let keyIdee = "natural_skiing_ideas";
-
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
-      const val = localStorage.getItem(k);
-      if (val && (val.includes("Cosa vedo") || val.includes("sintomo") || val.includes("Bacino controruotato"))) {
-        keyAnalisi = k;
-      }
-      if (val && (val.includes("Cioccolata") || val.includes("Mangiacurva") || val.includes("Brocca"))) {
-        keyIdee = k;
-      }
-    }
-
-    let archivioAnalisi = [];
-    let archivioIdee = [];
-
-    try { archivioAnalisi = JSON.parse(localStorage.getItem(keyAnalisi)) || []; } catch(e) {}
-    try { archivioIdee = JSON.parse(localStorage.getItem(keyIdee)) || []; } catch(e) {}
-
-    // Scarica i due file CSV aggiornati
-    const csvErrori = await leggiCSV('errori_tipici_natural_skiing_v2.csv');
-    const csvTopics = await leggiCSV('topics_camp_natural_skiing_v2.csv');
-
-    let datiAggiornati = false;
-
-    // INSERIMENTO ERRORI IN "ARCHIVIO ANALISI"
-    csvErrori.forEach((row, i) => {
-      const cosaVedo = (row.Cosa_Vedo || row["Cosa vedo"] || "").trim();
-      if (!cosaVedo) return;
-
-      const giaPresente = archivioAnalisi.some(item => {
-        const text = (item.sintomo || item.cosaVedo || item.title || "").trim();
-        return text.toLowerCase() === cosaVedo.toLowerCase();
-      });
-
-      if (!giaPresente) {
-        archivioAnalisi.push({
-          id: "CSV_ERR_" + (Date.now() + i),
-          author: "Stefano",
-          authorName: "Stefano",
-          date: "2026-11-03",
-          sintomo: cosaVedo,
-          cosaVedo: cosaVedo,
-          title: cosaVedo,
-          perche: (row.Perche_Causa_Biomeccanica || row["Perché"] || "").trim(),
-          focus: (row.Consiglio_In_Pista || row["Consiglio"] || "").trim(),
-          consiglio: (row.Consiglio_In_Pista || row["Consiglio"] || "").trim(),
-          pilastri: estraiPilastri((row.Topic_Correlato || "") + " " + cosaVedo),
-          archi: estraiArchi((row.Topic_Correlato || "") + " " + cosaVedo),
-          esercizi: [(row.Esercizio_Risolutivo || row["Proposta"] || "").trim()],
-          proposta: (row.Esercizio_Risolutivo || row["Proposta"] || "").trim(),
-          note: row.Topic_Correlato || ""
-        });
-        datiAggiornati = true;
-      }
-    });
-
-    // INSERIMENTO TOPIC IN "IDEE IN PISTA"
-    csvTopics.forEach((row, i) => {
-      const nomeTopic = (row.Nome_Topic || row["Nome Topic"] || "").trim();
-      if (!nomeTopic) return;
-
-      const giaPresente = archivioIdee.some(item => {
-        const text = (item.titolo || item.nome || item.title || "").trim();
-        return text.toLowerCase() === nomeTopic.toLowerCase();
-      });
-
-      if (!giaPresente) {
-        archivioIdee.push({
-          id: "CSV_TOPIC_" + (Date.now() + i),
-          titolo: nomeTopic,
-          nome: nomeTopic,
-          title: nomeTopic,
-          date: "2026-11-03",
-          lastSessionDate: "2026-11-03",
-          pilastri: estraiPilastri((row.Fondamentale_Collegato || "") + " " + nomeTopic),
-          archi: estraiArchi((row.Fondamentale_Collegato || "") + " " + nomeTopic),
-          focus: (row.Focus_Tecnico || "").trim(),
-          obiettivo: (row.Obiettivo_Camp || "").trim(),
-          esercizi: (row.Esercizi_Proposte || "").trim(),
-          giornateCount: 1,
-          giornate: ["2026-11-03"]
-        });
-        datiAggiornati = true;
-      }
-    });
-
-    // Se ci sono nuovi dati, salva e ricarica i componenti dell'interfaccia
-    if (datiAggiornati) {
-      localStorage.setItem(keyAnalisi, JSON.stringify(archivioAnalisi));
-      localStorage.setItem(keyIdee, JSON.stringify(archivioIdee));
-
-      // Trigger di aggiornamento per ridisegnare le schede scure
-      window.dispatchEvent(new Event('storage'));
-      if (typeof renderAnalisi === "function") renderAnalisi();
-      if (typeof renderIdee === "function") renderIdee();
-      if (typeof loadData === "function") loadData();
-      if (typeof renderAll === "function") renderAll();
-      if (typeof initApp === "function") initApp();
-      
-      // Ricarica pulita solo se necessario al primo inserimento
-      if (!sessionStorage.getItem("db_synced")) {
-        sessionStorage.setItem("db_synced", "true");
-        window.location.reload();
-      }
-    }
-  }
-
-  // Esecuzione immediata e al caricamento completo
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", integraDatiNativi);
-  } else {
-    integraDatiNativi();
-  }
-})();
-</script>
+</html>
