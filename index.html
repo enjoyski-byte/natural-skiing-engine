@@ -307,10 +307,17 @@
     <!-- 3. COSA HO FATTO OGGI -->
     <section id="tabDiario" class="tab-content space-y-4 hidden">
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm space-y-4">
-        <div>
-          <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Cosa ho fatto oggi</h2>
-          <p class="text-xs text-slate-500 mt-0.5">Registra la tua lezione del giorno. Verrà archiviata nella tua sezione "Le mie lezioni".</p>
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 id="titoloSezioneDiario" class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Cosa ho fatto oggi</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Registra la tua lezione del giorno. Verrà archiviata nella tua sezione "Le mie lezioni".</p>
+          </div>
+          <button id="btnAnnullaModificaDiario" onclick="window.annullaModificaDiario()" class="hidden text-xs font-bold text-rose-500 hover:underline">
+            Annulla Modifica ✕
+          </button>
         </div>
+
+        <input type="hidden" id="editDiarioId" value="">
 
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Topic Affrontato</label>
@@ -393,7 +400,7 @@
           </div>
         </div>
 
-        <button onclick="salvaDiario()" class="w-full min-touch bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold rounded-2xl text-xs transition-all active:scale-98">
+        <button id="btnSubmitDiario" onclick="salvaDiario()" class="w-full min-touch bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold rounded-2xl text-xs transition-all active:scale-98">
           Archivia in Le mie Lezioni
         </button>
       </div>
@@ -412,26 +419,31 @@
       </div>
     </section>
 
-    <!-- 5. + NUOVO TOPIC (CAMPI SEPARATI: COSA È E COME SI FA) -->
+    <!-- 5. + NUOVO TOPIC -->
     <section id="tabNuovoTopic" class="tab-content space-y-4 hidden">
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm space-y-4">
-        <div>
-          <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Aggiungi Nuovo Topic Tecnico</h2>
-          <p class="text-xs text-slate-500 mt-0.5">Definisci un concetto teorico/pratico da inserire nella biblioteca "Idee in Pista".</p>
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 id="titoloSezioneNuovoTopic" class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Aggiungi Nuovo Topic Tecnico</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Definisci un concetto teorico/pratico da inserire nella biblioteca "Idee in Pista".</p>
+          </div>
+          <button id="btnAnnullaModificaTopic" onclick="window.annullaModificaTopic()" class="hidden text-xs font-bold text-rose-500 hover:underline">
+            Annulla Modifica ✕
+          </button>
         </div>
+
+        <input type="hidden" id="editTopicId" value="">
 
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Titolo del Topic</label>
           <input type="text" id="nuovoTopicNome" placeholder="es. Il Mangiacurva, La Staccionata, Il Fulmine Dinamico..." class="w-full min-touch px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-sky-500">
         </div>
 
-        <!-- CAMPO 1: COSA È E SPIEGAZIONE -->
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">1. Cosa è (Spiegazione del concetto & biomeccanica)</label>
           <textarea id="nuovoTopicCosaE" rows="3" placeholder="es. Azione tecnica per accorciare la fase di massima pendenza sui muri ripidi e gestire la velocità senza subire la discesa..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-sky-500"></textarea>
         </div>
 
-        <!-- CAMPO 2: COME SI FA -->
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">2. Come si fa (Istruzioni pratiche di esecuzione in pista)</label>
           <textarea id="nuovoTopicComeSiFa" rows="4" placeholder="es. A inizio curva gira subito i piedi per orientare gli sci verso la diagonale, inclina subito le tibie sulle lamine e fai risalire gli sci verso monte..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-sky-500"></textarea>
@@ -476,13 +488,13 @@
           </div>
         </div>
 
-        <button type="button" onclick="salvaNuovoTopicPagina()" class="w-full min-touch bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-2xl text-sm transition-all shadow-lg shadow-sky-600/20 active:scale-98">
+        <button id="btnSubmitTopic" type="button" onclick="salvaNuovoTopicPagina()" class="w-full min-touch bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-2xl text-sm transition-all shadow-lg shadow-sky-600/20 active:scale-98">
           Salva Topic in Idee in Pista
         </button>
       </div>
     </section>
 
-    <!-- 6. IDEE IN PISTA (CON COSA È E COME SI FA SEPARATI) -->
+    <!-- 6. IDEE IN PISTA -->
     <section id="tabIdee" class="tab-content space-y-4 hidden">
       
       <!-- ASSISTENTE VOCALE IN PISTA -->
@@ -675,7 +687,7 @@
       }
     });
 
-    // 2. Esercizi Fissi (SOLO QUELLI CREATI DA VOI)
+    // 2. Esercizi Fissi
     onSnapshot(colEsercizi, (snapshot) => {
       eserciziFissi = [];
       snapshot.forEach(doc => {
@@ -717,7 +729,7 @@
       renderMieLezioni();
     });
 
-    // --- FORM ANALISI ---
+    // --- FORM ANALISI (AGGIUNGI & MODIFICA) ---
     window.onCambiamentoPilastriArchiAnalisi = function() {
       window.aggiornaEserciziSottoPilastro();
       window.aggiornaTopicConsigliati();
@@ -905,7 +917,7 @@
       }
     };
 
-    // --- ARCHIVIO ANALISI ---
+    // --- ARCHIVIO ANALISI (ACCORDION & PERMESSI ADMIN) ---
     function renderArchivio(filtro = 'Tutti') {
       filtroArchivioAttivo = filtro;
       const cont = document.getElementById('containerArchivio');
@@ -928,6 +940,7 @@
       }
 
       cont.innerHTML = filtrati.map(a => {
+        // ADMIN PUÒ MODIFICARE TUTTI, I COACH SOLO LE PROPRIE
         const canManage = currentUser && ((currentUser.role === 'admin') || (currentUser.name === a.coach));
         const listPilastri = Array.isArray(a.pilastri) ? a.pilastri : [a.pilastro || 'Taglio'];
         const listArchi = Array.isArray(a.archi) ? a.archi : (a.raggio ? [a.raggio] : []);
@@ -1013,7 +1026,7 @@
       }).join('');
     }
 
-    // --- 3. COSA HO FATTO OGGI ---
+    // --- 3. COSA HO FATTO OGGI (REGISTRAZIONE & MODIFICA PROPRIA LEZIONE) ---
     window.aggiungiNuovaTipologiaNevePrompt = function() {
       const nuova = prompt("Nuova tipologia di neve:");
       if (nuova && nuova.trim()) {
@@ -1027,6 +1040,7 @@
     };
 
     window.salvaDiario = async function() {
+      const editId = document.getElementById('editDiarioId').value;
       let topic = document.getElementById('selectTopicDiario').value.trim();
       const note = document.getElementById('diarioNote').value.trim();
       const luogo = document.getElementById('diarioLuogo').value.trim();
@@ -1045,28 +1059,83 @@
         return;
       }
 
-      const id = "D-" + Date.now();
+      const id = editId ? editId : ("D-" + Date.now());
+      let dataOriginale = new Date().toISOString().split('T')[0];
+      let timestampOriginale = Date.now();
+      let coachOriginale = currentUser.name;
+
+      if (editId) {
+        const esistente = diarioList.find(d => d.id === editId);
+        if (esistente) {
+          coachOriginale = esistente.coach;
+          dataOriginale = esistente.data;
+          timestampOriginale = esistente.timestamp || timestampOriginale;
+        }
+      }
+
       await setDoc(doc(db, "diario", id), {
-        coach: currentUser.name,
-        data: new Date().toISOString().split('T')[0],
+        coach: coachOriginale,
+        data: dataOriginale,
         topic, note,
         pilastri: pilastriChecked,
         archi: archiChecked,
         luogo: luogo || 'In pista',
         meteo: meteo || 'Non specificato',
         neve: neve || 'Compatta invernale',
-        timestamp: Date.now()
+        timestamp: timestampOriginale
       });
 
-      document.getElementById('diarioNote').value = "";
-      document.getElementById('diarioLuogo').value = "";
-      document.getElementById('diarioMeteo').value = "";
-      
-      alert("Lezione archiviata con successo!");
+      window.annullaModificaDiario();
+      alert(editId ? "Lezione aggiornata con successo!" : "Lezione archiviata con successo!");
       navigateTab('tabMieLezioni');
     };
 
-    // --- 4. LE MIE LEZIONI ---
+    window.avviaModificaDiario = function(id) {
+      const item = diarioList.find(d => d.id === id);
+      if (!item) return;
+
+      document.getElementById('editDiarioId').value = item.id;
+      document.getElementById('selectTopicDiario').value = item.topic || '';
+      document.getElementById('diarioNote').value = item.note || '';
+      document.getElementById('diarioLuogo').value = item.luogo || '';
+      document.getElementById('diarioMeteo').value = item.meteo || '';
+      if (item.neve) document.getElementById('diarioNeveSelect').value = item.neve;
+
+      const listP = item.pilastri || ['Taglio'];
+      document.querySelectorAll('input[name="diarioPilastri"]').forEach(cb => {
+        cb.checked = listP.includes(cb.value);
+      });
+
+      const listA = item.archi || ['Medio'];
+      document.querySelectorAll('input[name="diarioArchi"]').forEach(cb => {
+        cb.checked = listA.includes(cb.value);
+      });
+
+      document.getElementById('titoloSezioneDiario').innerText = "Modifica Lezione Registrata";
+      document.getElementById('btnSubmitDiario').innerText = "Aggiorna Lezione";
+      document.getElementById('btnAnnullaModificaDiario').classList.remove('hidden');
+
+      navigateTab('tabDiario');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.annullaModificaDiario = function() {
+      document.getElementById('editDiarioId').value = '';
+      document.getElementById('selectTopicDiario').value = '';
+      document.getElementById('diarioNote').value = '';
+      document.getElementById('diarioLuogo').value = '';
+      document.getElementById('diarioMeteo').value = '';
+      document.getElementById('diarioNeveSelect').value = 'Compatta invernale';
+
+      document.querySelectorAll('input[name="diarioPilastri"]').forEach(cb => cb.checked = (cb.value === 'Taglio'));
+      document.querySelectorAll('input[name="diarioArchi"]').forEach(cb => cb.checked = (cb.value === 'Medio'));
+
+      document.getElementById('titoloSezioneDiario').innerText = "Cosa ho fatto oggi";
+      document.getElementById('btnSubmitDiario').innerText = "Archivia in Le mie Lezioni";
+      document.getElementById('btnAnnullaModificaDiario').classList.add('hidden');
+    };
+
+    // --- 4. LE MIE LEZIONI (OGNUNO MODIFICA/VEDE LE SUE, NON CONDIVISE) ---
     function renderMieLezioni() {
       const cont = document.getElementById('containerMieLezioni');
       if (!cont) return;
@@ -1076,10 +1145,8 @@
         ? `Tutte le lezioni registrate da ${currentUser.name}` 
         : 'Il tuo storico personale';
 
-      let mie = diarioList;
-      if (currentUser && currentUser.role !== 'admin') {
-        mie = diarioList.filter(d => d.coach === coachAttuale);
-      }
+      // Le lezioni sono personali: ogni coach vede solo le sue (anche se admin, il diario resta personale)
+      let mie = diarioList.filter(d => d.coach === coachAttuale);
 
       if (mie.length === 0) {
         cont.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">Non hai ancora registrato nessuna lezione. Vai su "Cosa ho fatto oggi" per registrare la tua prima giornata in pista!</div>`;
@@ -1121,8 +1188,9 @@
                 <span>📍 <b>Luogo:</b> ${d.luogo || 'In pista'}</span>
               </div>
 
-              <div class="pt-2 border-t border-slate-200 dark:border-slate-700 text-right">
-                <button onclick="window.eliminaLezione('${d.id}')" class="text-rose-500 font-bold hover:underline">Elimina Lezione ✕</button>
+              <div class="pt-2 border-t border-slate-200 dark:border-slate-700 flex items-center justify-end gap-3">
+                <button type="button" onclick="window.avviaModificaDiario('${d.id}')" class="font-bold text-sky-600 dark:text-sky-400 hover:underline">Modifica ✏️</button>
+                <button type="button" onclick="window.eliminaLezione('${d.id}')" class="text-rose-500 font-bold hover:underline">Elimina ✕</button>
               </div>
             </div>
           </div>
@@ -1136,8 +1204,9 @@
       }
     };
 
-    // --- 5. + NUOVO TOPIC (CAMPI SEPARATI: COSA È E COME SI FA) ---
+    // --- 5. + NUOVO TOPIC (CREAZIONE & MODIFICA CON PERMESSI ADMIN) ---
     window.salvaNuovoTopicPagina = async function() {
+      const editId = document.getElementById('editTopicId').value;
       const nome = document.getElementById('nuovoTopicNome').value.trim();
       const cosaE = document.getElementById('nuovoTopicCosaE').value.trim();
       const comeSiFa = document.getElementById('nuovoTopicComeSiFa').value.trim();
@@ -1157,7 +1226,20 @@
         return;
       }
 
-      const id = "TOPIC-" + Date.now();
+      const id = editId ? editId : ("TOPIC-" + Date.now());
+      let creatoreOriginale = currentUser ? currentUser.name : 'Stefano';
+      let dataOriginale = new Date().toISOString().split('T')[0];
+      let timestampOriginale = Date.now();
+
+      if (editId) {
+        const esistente = topicsList.find(t => t.id === editId);
+        if (esistente) {
+          creatoreOriginale = esistente.creatoDa || creatoreOriginale;
+          dataOriginale = esistente.data || dataOriginale;
+          timestampOriginale = esistente.timestamp || timestampOriginale;
+        }
+      }
+
       await setDoc(doc(db, "topics_biblioteca", id), {
         nome: nome,
         cosaE: cosaE,
@@ -1165,16 +1247,55 @@
         note: (cosaE ? `COSA È:\n${cosaE}\n\n` : '') + (comeSiFa ? `COME SI FA:\n${comeSiFa}` : ''),
         pilastri: pilastriChecked,
         archi: archiChecked,
-        creatoDa: currentUser ? currentUser.name : 'Stefano',
-        data: new Date().toISOString().split('T')[0],
-        timestamp: Date.now()
+        creatoDa: creatoreOriginale,
+        data: dataOriginale,
+        timestamp: timestampOriginale
       });
 
-      document.getElementById('nuovoTopicNome').value = "";
-      document.getElementById('nuovoTopicCosaE').value = "";
-      document.getElementById('nuovoTopicComeSiFa').value = "";
-      alert("Topic aggiunto alla biblioteca Idee in Pista!");
+      window.annullaModificaTopic();
+      alert(editId ? "Topic aggiornato con successo!" : "Topic aggiunto alla biblioteca Idee in Pista!");
       navigateTab('tabIdee');
+    };
+
+    window.avviaModificaTopic = function(id) {
+      const item = topicsList.find(t => t.id === id);
+      if (!item) return;
+
+      document.getElementById('editTopicId').value = item.id;
+      document.getElementById('nuovoTopicNome').value = item.nome || '';
+      document.getElementById('nuovoTopicCosaE').value = item.cosaE || '';
+      document.getElementById('nuovoTopicComeSiFa').value = item.comeSiFa || '';
+
+      const listP = item.pilastri || ['Taglio'];
+      document.querySelectorAll('input[name="nuovoTopicPilastri"]').forEach(cb => {
+        cb.checked = listP.includes(cb.value);
+      });
+
+      const listA = item.archi || ['Medio'];
+      document.querySelectorAll('input[name="nuovoTopicArchi"]').forEach(cb => {
+        cb.checked = listA.includes(cb.value);
+      });
+
+      document.getElementById('titoloSezioneNuovoTopic').innerText = "Modifica Topic Tecnico";
+      document.getElementById('btnSubmitTopic').innerText = "Aggiorna Topic in Idee in Pista";
+      document.getElementById('btnAnnullaModificaTopic').classList.remove('hidden');
+
+      navigateTab('tabNuovoTopic');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.annullaModificaTopic = function() {
+      document.getElementById('editTopicId').value = '';
+      document.getElementById('nuovoTopicNome').value = '';
+      document.getElementById('nuovoTopicCosaE').value = '';
+      document.getElementById('nuovoTopicComeSiFa').value = '';
+
+      document.querySelectorAll('input[name="nuovoTopicPilastri"]').forEach(cb => cb.checked = (cb.value === 'Taglio'));
+      document.querySelectorAll('input[name="nuovoTopicArchi"]').forEach(cb => cb.checked = (cb.value === 'Medio'));
+
+      document.getElementById('titoloSezioneNuovoTopic').innerText = "Aggiungi Nuovo Topic Tecnico";
+      document.getElementById('btnSubmitTopic').innerText = "Salva Topic in Idee in Pista";
+      document.getElementById('btnAnnullaModificaTopic').classList.add('hidden');
     };
 
     function populateTopicsDropdown() {
@@ -1185,7 +1306,7 @@
       if (curr) sel.value = curr;
     }
 
-    // --- 6. IDEE IN PISTA (VISUALIZZA COSA È E COME SI FA SEPARATI) ---
+    // --- 6. IDEE IN PISTA (CON TASTO MODIFICA TOPIC ADMIN/COACH) ---
     function renderIdee(filtro = 'Tutti') {
       filtroIdeeAttivo = filtro;
       const cont = document.getElementById('containerIdee');
@@ -1204,7 +1325,8 @@
       }
 
       cont.innerHTML = filtrati.map(t => {
-        const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.name === t.creatoDa);
+        // ADMIN PUÒ MODIFICARE TUTTI I TOPIC, I COACH SOLO I PROPRI
+        const canManage = currentUser && (currentUser.role === 'admin' || currentUser.name === t.creatoDa);
         const listP = t.pilastri || [];
         const listA = t.archi || [];
 
@@ -1229,7 +1351,7 @@
                   `).join('')}
                 </div>
                 <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">${t.nome}</h3>
-                <p class="text-[11px] text-slate-400">Inserito il ${t.data || '2026-11-03'}</p>
+                <p class="text-[11px] text-slate-400">Inserito da <b>${t.creatoDa || 'Stefano'}</b> il ${t.data || '2026-11-03'}</p>
               </div>
               <div class="flex items-center gap-2 pt-1">
                 <span class="text-xs text-sky-600 dark:text-sky-400 font-bold">Leggi scheda</span>
@@ -1260,9 +1382,14 @@
                 </div>
               ` : ''}
 
-              ${canDelete ? `
-                <div class="pt-2 border-t border-slate-200 dark:border-slate-700 text-right">
-                  <button onclick="window.eliminaTopicBiblioteca('${t.id}')" class="text-rose-500 font-bold hover:underline">Elimina Topic ✕</button>
+              ${canManage ? `
+                <div class="pt-2 border-t border-slate-200 dark:border-slate-700 flex items-center justify-end gap-3">
+                  <button type="button" onclick="window.avviaModificaTopic('${t.id}')" class="font-bold text-sky-600 dark:text-sky-400 hover:underline">
+                    Modifica ✏️
+                  </button>
+                  <button type="button" onclick="window.eliminaTopicBiblioteca('${t.id}')" class="text-rose-500 font-bold hover:underline">
+                    Elimina Topic ✕
+                  </button>
                 </div>
               ` : ''}
             </div>
