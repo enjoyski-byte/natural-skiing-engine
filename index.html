@@ -6,7 +6,7 @@
   <title>Natural Skiing — Coach Field Engine</title>
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230f172a'/%3E%3Cpath d='M18 82 L82 18' stroke='%2338bdf8' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M36 82 L82 36' stroke='%230284c7' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='78' cy='22' r='5' fill='%23f59e0b'/%3E%3C/svg%3E">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230f172a'/%3E%3Cpath d='M35 145 L145 35' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cpath d='M65 145 L145 65' stroke='%230284c7' stroke-width='12' stroke-linecap='round'/%3E%3Ccircle cx='140' cy='40' r='9' fill='%23f59e0b'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230f172a'/%3E%3Cpath d='M35 145 L145 35' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cpath d='M65 145 L145 65' stroke='%230284c7' stroke-width='12' stroke-linecap='round'/%3E%3Ccircle cx='140' cy='40' r='9' fill='%23f59e0b'/%3E%3C/svg%3E">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Natural Skiing">
@@ -494,34 +494,40 @@
       </div>
     </section>
 
-    <!-- 6. IDEE IN PISTA (CON AUDIO CUE COACH AVANZATO: 1-3 TOPIC + RESET) -->
+    <!-- 6. IDEE IN PISTA (CON AUDIO CUE COACH UNIVERSALE + CASELLA SCRITTURA) -->
     <section id="tabIdee" class="tab-content space-y-4 hidden">
       
-      <!-- ASSISTENTE VOCALE IN PISTA AVANZATO -->
-      <div class="bg-gradient-to-r from-sky-600 via-sky-700 to-indigo-800 text-white rounded-3xl p-5 shadow-lg space-y-3">
+      <!-- ASSISTENTE VOCALE & RICERCA IN PISTA -->
+      <div class="bg-gradient-to-r from-sky-600 via-sky-700 to-indigo-800 text-white rounded-3xl p-5 shadow-lg space-y-3.5">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <span class="p-2.5 bg-white/10 rounded-2xl text-lg">🎙️</span>
             <div>
               <h3 class="text-sm font-bold uppercase tracking-wide">Audio Cue Coach in Pista</h3>
-              <p class="text-[11px] text-sky-100">Dì il difetto visto in discesa: ricevi 1, 2 o 3 topic consigliati</p>
+              <p class="text-[11px] text-sky-100">Dì o scrivi il difetto visto in discesa: ricevi 1, 2 o 3 topic consigliati</p>
             </div>
           </div>
-          <div class="flex items-center gap-2">
-            <button id="btnResetVocale" onclick="window.resetAudioCoach()" class="min-touch px-3 py-2 bg-white/15 hover:bg-white/25 text-white rounded-2xl text-xs font-bold transition-all hidden active:scale-95">
-              Resetta ✕
-            </button>
-            <button id="btnRegistraAudio" onclick="window.toggleAscoltoVocale()" class="min-touch px-4 py-2 bg-white text-sky-700 hover:bg-sky-50 rounded-2xl text-xs font-black shadow transition-all active:scale-95 flex items-center gap-1.5">
-              <span id="dotVocale" class="w-2.5 h-2.5 rounded-full bg-rose-500 hidden animate-ping"></span>
-              <span id="txtBtnVocale">Parla 🎙️</span>
-            </button>
-          </div>
+          <button id="btnRegistraAudio" onclick="window.toggleAscoltoVocale()" class="min-touch px-4 py-2 bg-white text-sky-700 hover:bg-sky-50 rounded-2xl text-xs font-black shadow transition-all active:scale-95 flex items-center gap-1.5 shrink-0">
+            <span id="dotVocale" class="w-2.5 h-2.5 rounded-full bg-rose-500 hidden animate-ping"></span>
+            <span id="txtBtnVocale">Parla 🎙️</span>
+          </button>
+        </div>
+
+        <!-- RIGA PER SCRIVERE O DETTARE DA TASTIERA SMARTPHONE -->
+        <div class="flex gap-2">
+          <input type="text" id="inputRicercaAudioManuale" placeholder="Oppure scrivi qui il difetto (es. fretta a inizio curva, seduto...)" class="flex-1 min-touch px-3.5 bg-white/15 border border-white/25 rounded-2xl text-xs text-white placeholder-sky-200 focus:outline-none focus:bg-white/20 focus:border-white">
+          <button type="button" onclick="window.cercaTopicManuale()" class="min-touch px-4 bg-sky-500 hover:bg-sky-400 text-white text-xs font-bold rounded-2xl shadow active:scale-95 transition-all shrink-0">
+            Cerca Topic
+          </button>
+          <button id="btnResetVocale" type="button" onclick="window.resetAudioCoach()" class="min-touch px-3 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-2xl border border-white/20 hidden active:scale-95 transition-all shrink-0" title="Resetta">
+            ✕
+          </button>
         </div>
 
         <!-- BOX RISPOSTA MULTI-TOPIC -->
         <div id="boxRispostaVocale" class="hidden p-3.5 bg-white/10 backdrop-blur-md rounded-2xl text-xs space-y-2.5 border border-white/10">
           <div>
-            <span class="text-[10px] uppercase font-bold text-sky-200 block">Hai detto:</span>
+            <span class="text-[10px] uppercase font-bold text-sky-200 block">Testo analizzato:</span>
             <p id="testoTrascrittoVocale" class="italic text-white font-medium text-xs mt-0.5"></p>
           </div>
           
@@ -920,7 +926,7 @@
       }
     };
 
-    // --- ARCHIVIO ANALISI ---
+    // --- ARCHIVIO ANALISI (CON TOPIC LINKABILE DIRETTO) ---
     function renderArchivio(filtro = 'Tutti') {
       filtroArchivioAttivo = filtro;
       const cont = document.getElementById('containerArchivio');
@@ -1003,9 +1009,17 @@
                 </div>
               ` : ''}
 
+              <!-- TOPIC CONSIGLIATO CON LINK DIRETTO A IDEE IN PISTA -->
               ${a.topicConsigliato ? `
-                <div class="text-[11px] font-semibold text-sky-600 dark:text-sky-400">
-                  Topic consigliato: <b>${a.topicConsigliato}</b>
+                <div class="p-2.5 bg-sky-500/10 border border-sky-500/20 rounded-xl flex items-center justify-between gap-2">
+                  <div class="text-[11px] text-sky-800 dark:text-sky-300">
+                    <span class="text-[9px] uppercase font-bold text-sky-500 block">Topic Consigliato:</span>
+                    <span class="font-bold">${a.topicConsigliato}</span>
+                  </div>
+                  <button type="button" onclick="window.apriTopicDaNome('${a.topicConsigliato.replace(/'/g, "\\'")}')" class="min-touch px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-bold text-[10px] shadow active:scale-95 transition-all shrink-0 flex items-center gap-1">
+                    <span>Apri Topic</span>
+                    <span>↗</span>
+                  </button>
                 </div>
               ` : ''}
 
@@ -1027,6 +1041,31 @@
         `;
       }).join('');
     }
+
+    // Navigazione diretta dal link dell'analisi alla scheda di Idee in Pista
+    window.apriTopicDaNome = function(nomeTopic) {
+      navigateTab('tabIdee');
+      filtraIdee('Tutti');
+
+      setTimeout(() => {
+        const pulito = nomeTopic.trim().toLowerCase();
+        const target = topicsList.find(t => t.nome && t.nome.trim().toLowerCase() === pulito) 
+                    || topicsList.find(t => t.nome && t.nome.toLowerCase().includes(pulito))
+                    || topicsList.find(t => pulito.includes(t.nome.toLowerCase()));
+
+        if (target) {
+          const box = document.getElementById(`dettaglio-topic-${target.id}`);
+          const chv = document.getElementById(`chevron-topic-${target.id}`);
+          if (box) {
+            box.classList.remove('hidden');
+            if (chv) chv.style.transform = "rotate(180deg)";
+            box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        } else {
+          alert("Topic non trovato nella biblioteca. Potrebbe essere stato rinominato o rimosso.");
+        }
+      }, 150);
+    };
 
     // --- 3. COSA HO FATTO OGGI ---
     window.aggiungiNuovaTipologiaNevePrompt = function() {
@@ -1404,19 +1443,22 @@
       }
     };
 
-    // --- RECOGNITION VOCALE MIGLIORATO (1-3 RISULTATI + RESET) ---
+    // --- RECOGNITION VOCALE & RICERCA TESTUALE/MANUALE ---
     let recognizer = null;
     let isListening = false;
 
     window.toggleAscoltoVocale = function() {
+      // Supporto cross-browser sicuro (Opera, Chrome, Edge, Safari Desktop/iOS)
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
-        alert("Il riconoscimento vocale richiede Safari (iOS) o Chrome/Edge.");
+        alert("Il riconoscimento vocale diretto non è supportato da questo browser.\n\nPuoi usare la comoda riga 'Oppure scrivi qui' subito sotto, anche toccando l'icona del microfono sulla tastiera del tuo smartphone!");
         return;
       }
 
       if (isListening) {
-        if (recognizer) recognizer.stop();
+        if (recognizer) {
+          try { recognizer.stop(); } catch(e) {}
+        }
         fermaAscolto();
         return;
       }
@@ -1426,17 +1468,19 @@
         recognizer.lang = 'it-IT';
         recognizer.continuous = false;
         recognizer.interimResults = false;
+        recognizer.maxAlternatives = 1;
 
         recognizer.onstart = () => {
           isListening = true;
           document.getElementById('dotVocale').classList.remove('hidden');
-          document.getElementById('txtBtnVocale').innerText = "Ti ascolto...";
+          document.getElementById('txtBtnVocale').innerText = "Ascolto...";
           document.getElementById('btnResetVocale').classList.add('hidden');
         };
 
         recognizer.onresult = (event) => {
           if (event.results && event.results[0] && event.results[0][0]) {
             const vocaleDettato = event.results[0][0].transcript;
+            document.getElementById('inputRicercaAudioManuale').value = vocaleDettato;
             elaboraVocaleConGeminiRule(vocaleDettato);
           }
           fermaAscolto();
@@ -1446,7 +1490,7 @@
           console.warn("Errore vocale:", e.error);
           fermaAscolto();
           if (e.error === 'not-allowed') {
-            alert("Permesso microfono non concesso. Abilita il microfono nelle impostazioni del browser.");
+            alert("Permesso microfono negato. Verifica di aver consentito l'accesso al microfono nelle impostazioni del browser.");
           }
         };
 
@@ -1458,6 +1502,7 @@
       } catch (err) {
         console.error("Errore avvio microfono:", err);
         fermaAscolto();
+        alert("Impossibile avviare il microfono su questo software. Puoi scrivere il sintomo nella casella sottostante.");
       }
     };
 
@@ -1467,10 +1512,20 @@
       document.getElementById('txtBtnVocale').innerText = "Parla 🎙️";
     }
 
+    window.cercaTopicManuale = function() {
+      const testo = document.getElementById('inputRicercaAudioManuale').value.trim();
+      if (!testo) {
+        alert("Inserisci o detta almeno una parola chiave per la ricerca.");
+        return;
+      }
+      elaboraVocaleConGeminiRule(testo);
+    };
+
     window.resetAudioCoach = function() {
       document.getElementById('boxRispostaVocale').classList.add('hidden');
       document.getElementById('testoTrascrittoVocale').innerText = '';
       document.getElementById('listaSuggerimentiVocali').innerHTML = '';
+      document.getElementById('inputRicercaAudioManuale').value = '';
       document.getElementById('btnResetVocale').classList.add('hidden');
       fermaAscolto();
     };
@@ -1491,7 +1546,7 @@
       const paroleInput = testo.toLowerCase().split(/\s+/).filter(w => w.length > 2);
       const textLower = testo.toLowerCase();
 
-      // Calcola un punteggio di affinità tecnica per ciascun Topic
+      // Calcolo punteggio di affinità tecnica
       const scoredTopics = topicsList.map(t => {
         let score = 0;
         const target = (t.nome + " " + (t.cosaE || '') + " " + (t.comeSiFa || '') + " " + (t.note || '') + " " + (t.pilastri || []).join(" ")).toLowerCase();
@@ -1512,11 +1567,8 @@
         return { topic: t, score };
       });
 
-      // Ordina dal più attinente e filtra i topic con riscontro (altrimenti prende i top)
       scoredTopics.sort((a, b) => b.score - a.score);
       const topTopics = scoredTopics.slice(0, 3).filter(item => item.score > 0);
-
-      // Se non ci sono match specifici, mostra i primi 2 topic generali della biblioteca
       const proposti = topTopics.length > 0 ? topTopics.map(x => x.topic) : topicsList.slice(0, 2);
 
       containerSuggerimenti.innerHTML = proposti.map((top, idx) => `
