@@ -145,19 +145,25 @@
     </div>
   </header>
 
-  <!-- ================= NAV BAR A SCHEDE ================= -->
+  <!-- ================= NAV BAR A SCHEDE (RIORGANIZZATA) ================= -->
   <nav class="sticky top-[57px] z-30 bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800">
     <div class="max-w-4xl mx-auto flex overflow-x-auto no-scrollbar px-2 py-1 gap-1">
       <button onclick="navigateTab('tabAnalisi')" id="nav-tabAnalisi" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/40 whitespace-nowrap">
         + Aggiungi Analisi
       </button>
-      <button onclick="navigateTab('tabArchivio')" id="nav-tabArchivio" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 whitespace-nowrap">
+      <button onclick="navigateTab('tabArchivio')" id="nav-tabArchivio" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white whitespace-nowrap">
         Archivio Analisi
       </button>
-      <button onclick="navigateTab('tabDiario')" id="nav-tabDiario" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 whitespace-nowrap">
+      <button onclick="navigateTab('tabDiario')" id="nav-tabDiario" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white whitespace-nowrap">
         Cosa ho fatto oggi
       </button>
-      <button onclick="navigateTab('tabIdee')" id="nav-tabIdee" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 whitespace-nowrap">
+      <button onclick="navigateTab('tabMieLezioni')" id="nav-tabMieLezioni" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white whitespace-nowrap">
+        Le mie lezioni
+      </button>
+      <button onclick="navigateTab('tabNuovoTopic')" id="nav-tabNuovoTopic" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-sky-600 dark:text-sky-400 hover:text-sky-500 whitespace-nowrap">
+        + Nuovo Topic
+      </button>
+      <button onclick="navigateTab('tabIdee')" id="nav-tabIdee" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white whitespace-nowrap">
         Idee in Pista
       </button>
       <button onclick="navigateTab('tabAiDataset')" id="nav-tabAiDataset" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-amber-600 dark:text-amber-400 hover:text-amber-500 whitespace-nowrap hidden">
@@ -248,7 +254,7 @@
           </div>
         </div>
 
-        <!-- 4. ESERCIZI IN PISTA CONSIGLIATI -->
+        <!-- 4. ESERCIZI IN PISTA CONSIGLIATI (SOLO CREATI DA VOI) -->
         <div class="space-y-2.5">
           <div class="flex items-center justify-between">
             <label class="block text-xs font-bold text-slate-600 dark:text-slate-400">4. Esercizi in pista consigliati</label>
@@ -298,18 +304,21 @@
       </div>
     </section>
 
-    <!-- 3. COSA HO FATTO OGGI -->
+    <!-- 3. COSA HO FATTO OGGI (REGISTRAZIONE SENZA STORICO SOTTO) -->
     <section id="tabDiario" class="tab-content space-y-4 hidden">
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm space-y-4">
-        <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Cosa ho fatto oggi</h2>
+        <div>
+          <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Cosa ho fatto oggi</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Registra la tua lezione del giorno. Verrà archiviata nella tua sezione "Le mie lezioni".</p>
+        </div>
 
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Topic Affrontato</label>
           <div class="flex gap-2">
             <select id="selectTopicDiario" class="flex-1 min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">
-              <option value="">-- Seleziona o crea nuovo topic --</option>
+              <option value="">-- Seleziona topic affrontato --</option>
             </select>
-            <button type="button" onclick="creaNuovoTopicPrompt()" class="min-touch px-4 rounded-xl bg-sky-50 dark:bg-sky-950/40 text-xs font-bold text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-800/40">
+            <button type="button" onclick="navigateTab('tabNuovoTopic')" class="min-touch px-4 rounded-xl bg-sky-50 dark:bg-sky-950/40 text-xs font-bold text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-800/40">
               + Nuovo Topic
             </button>
           </div>
@@ -359,7 +368,7 @@
           </div>
         </div>
 
-        <!-- DETTAGLI AMBIENTE -->
+        <!-- AMBIENTE -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
           <div>
             <label class="block text-[11px] font-bold text-slate-500 mb-1">📍 Luogo</label>
@@ -385,51 +394,98 @@
         </div>
 
         <button onclick="salvaDiario()" class="w-full min-touch bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold rounded-2xl text-xs transition-all active:scale-98">
-          Archivia in Diario
+          Archivia in Le mie Lezioni
         </button>
-      </div>
-
-      <!-- FILTRI DIARIO -->
-      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 space-y-2.5">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Filtra Diario del Camp</span>
-          <button type="button" onclick="window.resetFiltriDiario()" class="text-[11px] font-bold text-sky-600 dark:text-sky-400 hover:underline">Mostra Tutti</button>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-          <select id="filtroDiarioCoach" onchange="window.applicaFiltriDiarioManuali()" class="min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">
-            <option value="">Tutti i Coach</option>
-          </select>
-          <select id="filtroDiarioPilastro" onchange="window.applicaFiltriDiarioManuali()" class="min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">
-            <option value="">Tutti i Pilastri</option>
-            <option value="Taglio">Taglio / Coltello</option>
-            <option value="Fulmine">Fulmine</option>
-            <option value="Treno">Treno</option>
-            <option value="Excalibur">Excalibur</option>
-          </select>
-          <select id="filtroDiarioArco" onchange="window.applicaFiltriDiarioManuali()" class="min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">
-            <option value="">Tutti gli Archi</option>
-            <option value="Ampio">Arco Ampio</option>
-            <option value="Medio">Arco Medio</option>
-            <option value="Corto">Arco Corto</option>
-          </select>
-        </div>
-      </div>
-
-      <div id="containerDiario" class="space-y-2.5">
       </div>
     </section>
 
-    <!-- 4. IDEE IN PISTA -->
+    <!-- 4. LE MIE LEZIONI (STORICO PERSONALE DEL COACH LOGGATO) -->
+    <section id="tabMieLezioni" class="tab-content space-y-4 hidden">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Le mie lezioni registrate</h2>
+          <p class="text-xs text-slate-500" id="subtitoloMieLezioni">Il tuo storico personale delle lezioni in pista</p>
+        </div>
+      </div>
+
+      <div id="containerMieLezioni" class="space-y-2.5">
+      </div>
+    </section>
+
+    <!-- 5. + NUOVO TOPIC (PAGINA DEDICATA, SENZA METEO/LUOGO/NEVE) -->
+    <section id="tabNuovoTopic" class="tab-content space-y-4 hidden">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm space-y-4">
+        <div>
+          <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Aggiungi Nuovo Topic Tecnico</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Definisci un concetto teorico/pratico da inserire nella biblioteca "Idee in Pista".</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Titolo del Topic</label>
+          <input type="text" id="nuovoTopicNome" placeholder="es. La Staccionata, Il Fulmine Dinamico..." class="w-full min-touch px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-sky-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Spiega cosa è e come si fa</label>
+          <textarea id="nuovoTopicNote" rows="5" placeholder="Condizione biomeccanica, obiettivo, esercizi e progressione sul campo..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-sky-500"></textarea>
+        </div>
+
+        <!-- PILASTRI E ARCHI -->
+        <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-3">
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400">Quale pilastro e arco di curva va a sistemare?</label>
+          
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
+              <input type="checkbox" name="nuovoTopicPilastri" value="Taglio" checked class="w-4 h-4 rounded text-sky-600">
+              <span class="text-xs font-bold text-sky-600">Taglio / Coltello</span>
+            </label>
+            <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
+              <input type="checkbox" name="nuovoTopicPilastri" value="Fulmine" class="w-4 h-4 rounded text-amber-600">
+              <span class="text-xs font-bold text-amber-600">Fulmine</span>
+            </label>
+            <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
+              <input type="checkbox" name="nuovoTopicPilastri" value="Treno" class="w-4 h-4 rounded text-emerald-600">
+              <span class="text-xs font-bold text-emerald-600">Treno</span>
+            </label>
+            <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
+              <input type="checkbox" name="nuovoTopicPilastri" value="Excalibur" class="w-4 h-4 rounded text-purple-600">
+              <span class="text-xs font-bold text-purple-600">Excalibur</span>
+            </label>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 pt-1">
+            <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
+              <input type="checkbox" name="nuovoTopicArchi" value="Ampio" class="w-4 h-4 rounded text-sky-600">
+              <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Ampio</span>
+            </label>
+            <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
+              <input type="checkbox" name="nuovoTopicArchi" value="Medio" checked class="w-4 h-4 rounded text-sky-600">
+              <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Medio</span>
+            </label>
+            <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
+              <input type="checkbox" name="nuovoTopicArchi" value="Corto" class="w-4 h-4 rounded text-sky-600">
+              <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Corto</span>
+            </label>
+          </div>
+        </div>
+
+        <button type="button" onclick="salvaNuovoTopicPagina()" class="w-full min-touch bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-2xl text-sm transition-all shadow-lg shadow-sky-600/20 active:scale-98">
+          Salva Topic in Idee in Pista
+        </button>
+      </div>
+    </section>
+
+    <!-- 6. IDEE IN PISTA (PULITA, VOCALE OTTIMIZZATO, SENZA "VEDI GIORNATE") -->
     <section id="tabIdee" class="tab-content space-y-4 hidden">
       
-      <!-- BOX VOCALE -->
+      <!-- ASSISTENTE VOCALE IN PISTA -->
       <div class="bg-gradient-to-r from-sky-600 to-indigo-700 text-white rounded-3xl p-5 shadow-lg space-y-3">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <span class="p-2 bg-white/10 rounded-xl">🎙️</span>
             <div>
               <h3 class="text-sm font-bold uppercase tracking-wide">Audio Cue Coach in Pista</h3>
-              <p class="text-[11px] text-sky-100">Dì il difetto visto al mattino, il motore seleziona il topic consigliato</p>
+              <p class="text-[11px] text-sky-100">Dì il difetto visto in discesa: il motore suggerisce il topic ideale</p>
             </div>
           </div>
           <button id="btnRegistraAudio" onclick="window.toggleAscoltoVocale()" class="min-touch px-4 py-2 bg-white text-sky-700 hover:bg-sky-50 rounded-2xl text-xs font-black shadow transition-all active:scale-95 flex items-center gap-1.5">
@@ -438,28 +494,35 @@
           </button>
         </div>
 
-        <div id="boxRispostaVocale" class="hidden p-3 bg-white/10 backdrop-blur-md rounded-2xl text-xs space-y-1">
-          <span class="text-[10px] uppercase font-bold text-sky-200 block">Trascrizione:</span>
-          <p id="testoTrascrittoVocale" class="italic text-white"></p>
+        <div id="boxRispostaVocale" class="hidden p-3 bg-white/10 backdrop-blur-md rounded-2xl text-xs space-y-2">
+          <div>
+            <span class="text-[10px] uppercase font-bold text-sky-200 block">Hai detto:</span>
+            <p id="testoTrascrittoVocale" class="italic text-white font-medium"></p>
+          </div>
           <div class="pt-2 border-t border-white/20 flex items-center justify-between">
-            <span id="suggerimentoTopicVocale" class="font-bold text-amber-300"></span>
-            <button id="btnVaiATopicSuggerito" class="px-2.5 py-1 bg-white text-slate-900 rounded-lg font-bold text-[10px]">Apri Giornate →</button>
+            <div>
+              <span class="text-[10px] uppercase font-bold text-sky-200 block">Topic consigliato da Gemini:</span>
+              <span id="suggerimentoTopicVocale" class="font-bold text-amber-300 text-sm"></span>
+            </div>
+            <button id="btnApriTopicSuggerito" class="px-3 py-1.5 bg-white text-slate-900 rounded-xl font-bold text-[11px] shadow">
+              Vedi Scheda →
+            </button>
           </div>
         </div>
       </div>
 
-      <!-- INTESTAZIONE + TASTO NUOVO TOPIC -->
+      <!-- INTESTAZIONE -->
       <div class="flex items-center justify-between pt-1">
         <div>
           <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Biblioteca Topic di Lavoro</h2>
-          <p class="text-[11px] text-slate-400">Tocca un topic per filtrare e consultare le sessioni registrate</p>
+          <p class="text-[11px] text-slate-400">Tocca un topic per leggerne la spiegazione tecnica e gli esercizi</p>
         </div>
-        <button onclick="window.apriModalNuovoTopicIdee()" class="min-touch px-3.5 py-2 rounded-2xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold shadow transition-all active:scale-95">
+        <button onclick="navigateTab('tabNuovoTopic')" class="min-touch px-3.5 py-2 rounded-2xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold shadow transition-all active:scale-95">
           + Aggiungi Nuovo Topic
         </button>
       </div>
 
-      <!-- Filtri Pilastro + Archi per Idee -->
+      <!-- Filtri Pilastro + Archi -->
       <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
         <button onclick="filtraIdee('Tutti')" id="btnFiltroIdee-Tutti" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-950">Tutti</button>
         <button onclick="filtraIdee('Taglio')" id="btnFiltroIdee-Taglio" class="min-touch px-3.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Coltello / Taglio</button>
@@ -475,7 +538,7 @@
       </div>
     </section>
 
-    <!-- 5. AI DATASET (SOLO ADMIN) -->
+    <!-- 7. AI DATASET (SOLO ADMIN) -->
     <section id="tabAiDataset" class="tab-content space-y-4 hidden">
       <div class="bg-amber-500/10 border border-amber-500/20 rounded-3xl p-5">
         <div class="flex items-center justify-between mb-3">
@@ -540,66 +603,6 @@
     </div>
   </div>
 
-  <!-- MODAL NUOVO TOPIC DA IDEE -->
-  <div id="modalNuovoTopicIdee" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 max-w-md w-full space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase">Nuovo Topic in Biblioteca</h3>
-        <button onclick="window.chiudiModalNuovoTopicIdee()" class="text-slate-400 hover:text-slate-600 text-sm font-bold">✕</button>
-      </div>
-
-      <div>
-        <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Nome Topic</label>
-        <input type="text" id="modalTopicNome" placeholder="es. Appoggio dello stinco in transizione..." class="w-full min-touch px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">
-      </div>
-
-      <div>
-        <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Spiega cosa è e come si fa</label>
-        <textarea id="modalTopicNote" rows="3" placeholder="Spiegazione tecnica e progressione di esecuzione..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs"></textarea>
-      </div>
-
-      <div class="p-3 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-2">
-        <label class="block text-xs font-bold text-slate-600 dark:text-slate-400">Pilastri e Archi di riferimento</label>
-        <div class="grid grid-cols-2 gap-2">
-          <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
-            <input type="checkbox" name="modalPilastri" value="Taglio" checked class="w-4 h-4 rounded text-sky-600">
-            <span class="text-xs font-bold text-sky-600">Taglio</span>
-          </label>
-          <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
-            <input type="checkbox" name="modalPilastri" value="Fulmine" class="w-4 h-4 rounded text-amber-600">
-            <span class="text-xs font-bold text-amber-600">Fulmine</span>
-          </label>
-          <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
-            <input type="checkbox" name="modalPilastri" value="Treno" class="w-4 h-4 rounded text-emerald-600">
-            <span class="text-xs font-bold text-emerald-600">Treno</span>
-          </label>
-          <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
-            <input type="checkbox" name="modalPilastri" value="Excalibur" class="w-4 h-4 rounded text-purple-600">
-            <span class="text-xs font-bold text-purple-600">Excalibur</span>
-          </label>
-        </div>
-        <div class="grid grid-cols-3 gap-2 pt-1">
-          <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
-            <input type="checkbox" name="modalArchi" value="Ampio" class="w-4 h-4 rounded text-sky-600">
-            <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Ampio</span>
-          </label>
-          <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
-            <input type="checkbox" name="modalArchi" value="Medio" checked class="w-4 h-4 rounded text-sky-600">
-            <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Medio</span>
-          </label>
-          <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer">
-            <input type="checkbox" name="modalArchi" value="Corto" class="w-4 h-4 rounded text-sky-600">
-            <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Corto</span>
-          </label>
-        </div>
-      </div>
-
-      <button type="button" onclick="window.salvaNuovoTopicDaModalIdee()" class="w-full min-touch bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-2xl text-xs transition-all active:scale-98">
-        Salva Topic in Archivio
-      </button>
-    </div>
-  </div>
-
   <!-- ================= FIREBASE & LOGICA ================= -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
@@ -608,7 +611,6 @@
       collection, 
       doc, 
       setDoc, 
-      addDoc,
       deleteDoc, 
       onSnapshot, 
       enableIndexedDbPersistence 
@@ -636,92 +638,7 @@
     const colAnalisi = collection(db, "analisi");
     const colDiario = collection(db, "diario");
     const colEsercizi = collection(db, "esercizi_fissi");
-
-    // ========================================================
-    // IMPORTAZIONE AUTOMATICA CSV DIRETTAMENTE IN FIRESTORE
-    // ========================================================
-    async function importaCSVDaGitHub() {
-      if (localStorage.getItem("natural_skiing_csv_synced_v3")) return;
-      try {
-        console.log("🚀 Sincronizzazione automatica CSV -> Firestore...");
-
-        async function leggi(file) {
-          const r = await fetch(file + '?t=' + Date.now());
-          if (!r.ok) return [];
-          const txt = await r.text();
-          const lines = txt.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-          if (lines.length < 2) return [];
-          const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
-          return lines.slice(1).map(line => {
-            const vals = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || line.split(',');
-            const obj = {};
-            headers.forEach((h, i) => { obj[h] = (vals[i] || '').replace(/^"|"$/g, '').trim(); });
-            return obj;
-          });
-        }
-
-        const csvErrori = await leggi('errori_tipici_natural_skiing_v2.csv');
-        const csvTopics = await leggi('topics_camp_natural_skiing_v2.csv');
-
-        // Carica gli errori
-        for (const row of csvErrori) {
-          const cosaVedo = row.Cosa_Vedo;
-          if (!cosaVedo) continue;
-
-          let pil = ["Taglio"];
-          const s = (row.Topic_Correlato || "") + " " + cosaVedo;
-          if (s.includes("Fulmine")) pil = ["Fulmine"];
-          if (s.includes("Treno")) pil = ["Treno"];
-          if (s.includes("Excalibur")) pil = ["Excalibur"];
-
-          await addDoc(colAnalisi, {
-            coach: "Stefano",
-            data: "2026-11-03",
-            timestamp: Date.now(),
-            sintomo: cosaVedo,
-            causa: row.Perche_Causa_Biomeccanica || "",
-            focus: row.Consiglio_In_Pista || "",
-            pilastri: pil,
-            archi: ["Medio"],
-            esercizi: [row.Esercizio_Risolutivo || ""],
-            esercizioLibero: "",
-            topicConsigliato: row.Topic_Correlato || ""
-          });
-        }
-
-        // Carica i topic
-        for (const row of csvTopics) {
-          const nome = row.Nome_Topic;
-          if (!nome) continue;
-
-          let pil = ["Taglio"];
-          const s = (row.Fondamentale_Collegato || "") + " " + nome;
-          if (s.includes("Fulmine")) pil = ["Fulmine"];
-          if (s.includes("Treno")) pil = ["Treno"];
-          if (s.includes("Excalibur")) pil = ["Excalibur"];
-
-          await addDoc(colDiario, {
-            coach: "Stefano",
-            data: "2026-11-03",
-            timestamp: Date.now(),
-            topic: nome,
-            note: (row.Focus_Tecnico ? row.Focus_Tecnico + "\n\n" : "") + (row.Obiettivo_Camp ? "Obiettivo: " + row.Obiettivo_Camp + "\n\n" : "") + (row.Esercizi_Proposte ? "Esercizi: " + row.Esercizi_Proposte : ""),
-            pilastri: pil,
-            archi: ["Ampio", "Medio"],
-            luogo: "Biblioteca Topic",
-            meteo: "Teorico",
-            neve: "Tutte"
-          });
-        }
-
-        localStorage.setItem("natural_skiing_csv_synced_v3", "true");
-        console.log("✅ Importazione completata con successo!");
-      } catch (err) {
-        console.error("Errore sincronizzazione CSV:", err);
-      }
-    }
-
-    importaCSVDaGitHub();
+    const colTopics = collection(db, "topics_biblioteca");
 
     const DEFAULT_COACH_PASS = "COACH2026";
     const DEFAULT_ADMIN_PASS = "ADMIN_STEFANO";
@@ -736,7 +653,6 @@
 
     let filtroArchivioAttivo = 'Tutti';
     let filtroIdeeAttivo = 'Tutti';
-    let filtroDiarioTopicAttivo = null;
 
     // 1. Staff Coach Real-time
     onSnapshot(doc(db, "settings", "staff"), (docSnap) => {
@@ -752,7 +668,7 @@
       }
     });
 
-    // 2. Esercizi Fissi
+    // 2. Esercizi Fissi (SOLO QUELLI CREATI DA VOI)
     onSnapshot(colEsercizi, (snapshot) => {
       eserciziFissi = [];
       snapshot.forEach(doc => {
@@ -772,30 +688,29 @@
       renderStats();
     });
 
-    // 4. Diario Real-time
+    // 4. Topics Biblioteca Real-time
+    onSnapshot(colTopics, (snapshot) => {
+      topicsList = [];
+      snapshot.forEach(doc => {
+        topicsList.push({ id: doc.id, ...doc.data() });
+      });
+      topicsList.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
+      populateTopicsDropdown();
+      renderIdee(filtroIdeeAttivo);
+      window.aggiornaTopicConsigliati();
+    });
+
+    // 5. Diario Lezioni Real-time
     onSnapshot(colDiario, (snapshot) => {
       diarioList = [];
       snapshot.forEach(doc => {
         diarioList.push({ id: doc.id, ...doc.data() });
       });
       diarioList.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
-      
-      aggiornaListaTopicDinamici();
-      renderDiario();
-      renderIdee(filtroIdeeAttivo);
-      window.aggiornaTopicConsigliati();
+      renderMieLezioni();
     });
 
-    function aggiornaListaTopicDinamici() {
-      const setT = new Set();
-      diarioList.forEach(d => {
-        if (d.topic && d.topic.trim()) setT.add(d.topic.trim());
-      });
-      topicsList = Array.from(setT);
-      populateTopicsDropdown();
-    }
-
-    // --- GESTIONE INTERFACCIA E FORM ---
+    // --- FORM ANALISI ---
     window.onCambiamentoPilastriArchiAnalisi = function() {
       window.aggiornaEserciziSottoPilastro();
       window.aggiornaTopicConsigliati();
@@ -809,14 +724,14 @@
       const filtrati = eserciziFissi.filter(ex => pilastriChecked.includes(ex.pilastro));
 
       if (filtrati.length === 0) {
-        cont.innerHTML = `<div class="text-[11px] text-slate-400 italic p-2 bg-slate-50 dark:bg-slate-800 rounded-xl">Nessun esercizio fisso presente per i pilastri selezionati. Clicca su "+ Salva nuovo esercizio fisso" per memorizzarne uno.</div>`;
+        cont.innerHTML = `<div class="text-[11px] text-slate-400 italic p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl">Nessun esercizio fisso creato per questi pilastri. Salva un esercizio fisso con il pulsante sopra oppure scrivilo a mano libera qui sotto.</div>`;
         return;
       }
 
       cont.innerHTML = filtrati.map(ex => {
         const isChecked = eserciziGiaSelezionati.includes(ex.nome) ? 'checked' : '';
         return `
-          <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-medium cursor-pointer hover:bg-slate-100">
+          <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-medium cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-750">
             <input type="checkbox" name="eserciziScelti" value="${ex.nome}" ${isChecked} class="w-4 h-4 rounded text-sky-600">
             <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${getPilastroBadgeClass(ex.pilastro)}">${ex.pilastro}</span>
             <span class="text-slate-800 dark:text-slate-200">${ex.nome}</span>
@@ -826,7 +741,7 @@
     };
 
     window.salvaNuovoEsercizioFissoPrompt = async function() {
-      const nome = prompt("Nome del nuovo esercizio fisso in pista:");
+      const nome = prompt("Nome del nuovo esercizio fisso:");
       if (!nome || !nome.trim()) return;
       const pilastro = prompt("Associa al pilastro (Taglio, Fulmine, Treno, Excalibur):") || "Taglio";
       
@@ -838,7 +753,6 @@
           creatoDa: currentUser ? currentUser.name : 'Coach',
           timestamp: Date.now()
         });
-        alert("Esercizio salvato con successo nella banca esercizi!");
       } catch(e) {
         alert("Errore salvataggio esercizio: " + e.message);
       }
@@ -851,20 +765,16 @@
       const pilastriChecked = Array.from(document.querySelectorAll('input[name="pilastri"]:checked')).map(el => el.value);
       const archiChecked = Array.from(document.querySelectorAll('input[name="archi"]:checked')).map(el => el.value);
 
-      const topicSuggeriti = new Set();
-      diarioList.forEach(d => {
-        const pMatch = (d.pilastri || []).some(p => pilastriChecked.includes(p));
-        const aMatch = (d.archi || []).some(a => archiChecked.includes(a));
-        if (pMatch || aMatch) {
-          topicSuggeriti.add(d.topic);
-        }
+      const topicSuggeriti = topicsList.filter(t => {
+        const pMatch = (t.pilastri || []).some(p => pilastriChecked.includes(p));
+        const aMatch = (t.archi || []).some(a => archiChecked.includes(a));
+        return pMatch || aMatch;
       });
 
-      const arr = Array.from(topicSuggeriti);
-      if (arr.length === 0) {
-        sel.innerHTML = `<option value="">Nessun topic collegato trovato (seleziona o creane in Idee)</option>` + topicsList.map(t => `<option value="${t}">${t}</option>`).join('');
+      if (topicSuggeriti.length === 0) {
+        sel.innerHTML = `<option value="">-- Seleziona un topic --</option>` + topicsList.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('');
       } else {
-        sel.innerHTML = `<option value="">-- Seleziona un topic suggerito --</option>` + arr.map(t => `<option value="${t}">⭐ ${t}</option>`).join('');
+        sel.innerHTML = `<option value="">-- Seleziona un topic suggerito --</option>` + topicSuggeriti.map(t => `<option value="${t.nome}">⭐ ${t.nome}</option>`).join('');
       }
     };
 
@@ -1006,7 +916,7 @@
       }
 
       if (filtrati.length === 0) {
-        cont.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">Nessuna analisi presente per questo filtro nell'Archivio.</div>`;
+        cont.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">Nessuna analisi presente per questo filtro.</div>`;
         return;
       }
 
@@ -1096,18 +1006,9 @@
       }).join('');
     }
 
-    window.toggleEspandiScheda = function(id) {
-      const box = document.getElementById(`dettaglio-${id}`);
-      const chv = document.getElementById(`chevron-${id}`);
-      if (!box) return;
-      const isHidden = box.classList.contains('hidden');
-      box.classList.toggle('hidden', !isHidden);
-      if (chv) chv.style.transform = isHidden ? "rotate(180deg)" : "rotate(0deg)";
-    };
-
-    // --- COSA HO FATTO OGGI ---
+    // --- 3. COSA HO FATTO OGGI ---
     window.aggiungiNuovaTipologiaNevePrompt = function() {
-      const nuova = prompt("Nuova tipologia di neve da aggiungere:");
+      const nuova = prompt("Nuova tipologia di neve:");
       if (nuova && nuova.trim()) {
         const sel = document.getElementById('diarioNeveSelect');
         const opt = document.createElement('option');
@@ -1129,11 +1030,11 @@
       const archiChecked = Array.from(document.querySelectorAll('input[name="diarioArchi"]:checked')).map(el => el.value);
 
       if (!topic) {
-        alert("Seleziona o crea un topic affrontato.");
+        alert("Seleziona il topic affrontato.");
         return;
       }
       if (!note) {
-        alert("Inserisci la spiegazione di 'cosa è e come si fa'.");
+        alert("Inserisci la spiegazione di cosa è e come si fa.");
         return;
       }
 
@@ -1153,64 +1054,51 @@
       document.getElementById('diarioNote').value = "";
       document.getElementById('diarioLuogo').value = "";
       document.getElementById('diarioMeteo').value = "";
+      
+      alert("Lezione archiviata con successo!");
+      navigateTab('tabMieLezioni');
     };
 
-    window.eliminaDiario = async function(id) {
-      if (confirm("Eliminare questa voce dal diario?")) {
-        await deleteDoc(doc(db, "diario", id));
-      }
-    };
-
-    window.applicaFiltriDiarioManuali = function() {
-      filtroDiarioTopicAttivo = null;
-      renderDiario();
-    };
-
-    function renderDiario() {
-      const cont = document.getElementById('containerDiario');
+    // --- 4. LE MIE LEZIONI (STORICO PRIVATO COACH) ---
+    function renderMieLezioni() {
+      const cont = document.getElementById('containerMieLezioni');
       if (!cont) return;
 
-      const fCoach = document.getElementById('filtroDiarioCoach') ? document.getElementById('filtroDiarioCoach').value : '';
-      const fPilastro = document.getElementById('filtroDiarioPilastro') ? document.getElementById('filtroDiarioPilastro').value : '';
-      const fArco = document.getElementById('filtroDiarioArco') ? document.getElementById('filtroDiarioArco').value : '';
+      const coachAttuale = currentUser ? currentUser.name : null;
+      document.getElementById('subtitoloMieLezioni').innerText = currentUser 
+        ? `Tutte le lezioni registrate da ${currentUser.name}` 
+        : 'Il tuo storico personale';
 
-      let filtrati = diarioList;
-
-      if (filtroDiarioTopicAttivo) {
-        filtrati = filtrati.filter(d => d.topic === filtroDiarioTopicAttivo);
-      }
-      if (fCoach) {
-        filtrati = filtrati.filter(d => d.coach === fCoach);
-      }
-      if (fPilastro) {
-        filtrati = filtrati.filter(d => (d.pilastri || []).includes(fPilastro));
-      }
-      if (fArco) {
-        filtrati = filtrati.filter(d => (d.archi || []).includes(fArco));
+      // Filtra solo le lezioni dell'utente loggato (oppure tutte se Admin)
+      let mie = diarioList;
+      if (currentUser && currentUser.role !== 'admin') {
+        mie = diarioList.filter(d => d.coach === coachAttuale);
       }
 
-      if (filtrati.length === 0) {
-        cont.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">Nessuna voce presente nel diario per i filtri selezionati.</div>`;
+      if (mie.length === 0) {
+        cont.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">Non hai ancora registrato nessuna lezione. Vai su "Cosa ho fatto oggi" per registrare la tua prima giornata in pista!</div>`;
         return;
       }
 
-      cont.innerHTML = filtrati.map(d => {
-        const canDelete = currentUser && ((currentUser.role === 'admin') || (currentUser.name === d.coach));
+      cont.innerHTML = mie.map(d => {
         const listP = d.pilastri || [];
         const listA = d.archi || [];
 
         return `
-          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden transition-all shadow-sm">
-            <div onclick="window.toggleEspandiScheda('${d.id}')" class="p-3.5 flex items-start justify-between gap-3 cursor-pointer select-none hover:bg-slate-50 dark:hover:bg-slate-800/50">
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+            <div onclick="window.toggleEspandiScheda('${d.id}')" class="p-4 flex items-start justify-between gap-3 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50">
               <div class="space-y-1.5 flex-1">
                 <div class="flex flex-wrap items-center gap-1">
                   ${listP.map(p => `<span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getPilastroBadgeClass(p)}">${p === 'Taglio' ? 'Coltello' : p}</span>`).join('')}
                   ${listA.map(a => `<span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">${a}</span>`).join('')}
                 </div>
-                <h3 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider">${d.topic}</h3>
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">${d.topic}</h3>
+                <div class="text-[11px] text-slate-400">
+                  <span>📅 ${d.data}</span> • <span>📍 ${d.luogo || 'In pista'}</span>
+                </div>
               </div>
-              <div class="flex items-center gap-2 shrink-0 pt-1">
-                <span class="text-[10px] font-bold text-slate-400">${d.coach} • ${d.data}</span>
+              <div class="flex items-center gap-2 pt-1">
+                <span class="text-[10px] font-bold text-sky-600 dark:text-sky-400">${d.coach}</span>
                 <span id="chevron-${d.id}" class="text-xs text-slate-400 transition-transform">▼</span>
               </div>
             </div>
@@ -1218,18 +1106,128 @@
             <div id="dettaglio-${d.id}" class="hidden p-4 pt-2 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 space-y-2.5 text-xs">
               <div>
                 <span class="text-[10px] uppercase font-bold text-slate-400 block">Cosa è e come si fa:</span>
-                <p class="text-xs text-slate-700 dark:text-slate-300 whitespace-pre-line mt-0.5">${d.note}</p>
+                <p class="text-xs text-slate-700 dark:text-slate-300 whitespace-pre-line mt-1">${d.note}</p>
               </div>
 
-              <div class="pt-2 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-1 text-[11px] text-slate-500 dark:text-slate-400">
-                <span>📍 <b>Luogo:</b> ${d.luogo || 'In pista'}</span>
-                <span>☀️ <b>Meteo:</b> ${d.meteo || 'Non specificato'}</span>
+              <div class="pt-2 border-t border-slate-100 dark:border-slate-800 grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-[11px] text-slate-500">
+                <span>☀️ <b>Meteo:</b> ${d.meteo || 'Non spec.'}</span>
                 <span>❄️ <b>Neve:</b> ${d.neve || 'Compatta'}</span>
+                <span>📍 <b>Luogo:</b> ${d.luogo || 'In pista'}</span>
+              </div>
+
+              <div class="pt-2 border-t border-slate-200 dark:border-slate-700 text-right">
+                <button onclick="window.eliminaLezione('${d.id}')" class="text-rose-500 font-bold hover:underline">Elimina Lezione ✕</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.eliminaLezione = async function(id) {
+      if (confirm("Vuoi eliminare questa lezione dal tuo storico?")) {
+        await deleteDoc(doc(db, "diario", id));
+      }
+    };
+
+    // --- 5. + NUOVO TOPIC (SALVATAGGIO DIRETTO IN BIBLIOTECA TOPICS) ---
+    window.salvaNuovoTopicPagina = async function() {
+      const nome = document.getElementById('nuovoTopicNome').value.trim();
+      const note = document.getElementById('nuovoTopicNote').value.trim();
+      const pilastriChecked = Array.from(document.querySelectorAll('input[name="nuovoTopicPilastri"]:checked')).map(el => el.value);
+      const archiChecked = Array.from(document.querySelectorAll('input[name="nuovoTopicArchi"]:checked')).map(el => el.value);
+
+      if (!nome || !note) {
+        alert("Inserisci il titolo del topic e la spiegazione.");
+        return;
+      }
+      if (pilastriChecked.length === 0) {
+        alert("Seleziona almeno un pilastro.");
+        return;
+      }
+
+      const id = "TOPIC-" + Date.now();
+      await setDoc(doc(db, "topics_biblioteca", id), {
+        nome: nome,
+        note: note,
+        pilastri: pilastriChecked,
+        archi: archiChecked,
+        creatoDa: currentUser ? currentUser.name : 'Stefano',
+        data: new Date().toISOString().split('T')[0],
+        timestamp: Date.now()
+      });
+
+      document.getElementById('nuovoTopicNome').value = "";
+      document.getElementById('nuovoTopicNote').value = "";
+      alert("Topic aggiunto alla biblioteca Idee in Pista!");
+      navigateTab('tabIdee');
+    };
+
+    function populateTopicsDropdown() {
+      const sel = document.getElementById('selectTopicDiario');
+      if (!sel) return;
+      const curr = sel.value;
+      sel.innerHTML = `<option value="">-- Seleziona topic affrontato --</option>` + topicsList.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('');
+      if (curr) sel.value = curr;
+    }
+
+    // --- 6. IDEE IN PISTA (PULITA, SENZA VEDI GIORNATE, ESPANDIBILE) ---
+    function renderIdee(filtro = 'Tutti') {
+      filtroIdeeAttivo = filtro;
+      const cont = document.getElementById('containerIdee');
+      if (!cont) return;
+
+      aggiornaBottoniFiltro('btnFiltroIdee', filtro);
+
+      let filtrati = topicsList;
+      if (filtro !== 'Tutti') {
+        filtrati = topicsList.filter(t => (t.pilastri || []).includes(filtro) || (t.archi || []).includes(filtro));
+      }
+
+      if (filtrati.length === 0) {
+        cont.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">Nessun topic presente per questo filtro. Clicca su "+ Nuovo Topic" sopra per aggiungerne uno.</div>`;
+        return;
+      }
+
+      cont.innerHTML = filtrati.map(t => {
+        const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.name === t.creatoDa);
+        const listP = t.pilastri || [];
+        const listA = t.archi || [];
+
+        return `
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm transition-all">
+            <div onclick="window.toggleEspandiScheda('topic-${t.id}')" class="p-4 flex items-start justify-between gap-3 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50">
+              <div class="space-y-1.5 flex-1">
+                <div class="flex flex-wrap items-center gap-1">
+                  ${listP.map(p => `
+                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getPilastroBadgeClass(p)}">
+                      ${p === 'Taglio' ? 'Coltello' : p}
+                    </span>
+                  `).join('')}
+                  ${listA.map(a => `
+                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                      ${a}
+                    </span>
+                  `).join('')}
+                </div>
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">${t.nome}</h3>
+                <p class="text-[11px] text-slate-400">Inserito il ${t.data || '2026-11-03'}</p>
+              </div>
+              <div class="flex items-center gap-2 pt-1">
+                <span class="text-xs text-sky-600 dark:text-sky-400 font-bold">Leggi scheda</span>
+                <span id="chevron-topic-${t.id}" class="text-xs text-slate-400 transition-transform">▼</span>
+              </div>
+            </div>
+
+            <div id="dettaglio-topic-${t.id}" class="hidden p-4 pt-2 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 space-y-3 text-xs">
+              <div>
+                <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Cosa è, Obiettivo ed Esercizi:</span>
+                <p class="text-xs text-slate-700 dark:text-slate-300 whitespace-pre-line leading-relaxed">${t.note}</p>
               </div>
 
               ${canDelete ? `
                 <div class="pt-2 border-t border-slate-200 dark:border-slate-700 text-right">
-                  <button onclick="window.eliminaDiario('${d.id}')" class="text-rose-500 font-bold hover:underline">Elimina Voce ✕</button>
+                  <button onclick="window.eliminaTopicBiblioteca('${t.id}')" class="text-rose-500 font-bold hover:underline">Elimina Topic ✕</button>
                 </div>
               ` : ''}
             </div>
@@ -1238,35 +1236,13 @@
       }).join('');
     }
 
-    window.resetFiltriDiario = function() {
-      filtroDiarioTopicAttivo = null;
-      if (document.getElementById('filtroDiarioCoach')) document.getElementById('filtroDiarioCoach').value = '';
-      if (document.getElementById('filtroDiarioPilastro')) document.getElementById('filtroDiarioPilastro').value = '';
-      if (document.getElementById('filtroDiarioArco')) document.getElementById('filtroDiarioArco').value = '';
-      renderDiario();
-    };
-
-    window.creaNuovoTopicPrompt = function() {
-      const nuovo = prompt("Nome del nuovo topic tecnico per il camp:");
-      if (nuovo && nuovo.trim()) {
-        const pulito = nuovo.trim();
-        if (!topicsList.includes(pulito)) {
-          topicsList.push(pulito);
-          populateTopicsDropdown();
-        }
-        document.getElementById('selectTopicDiario').value = pulito;
+    window.eliminaTopicBiblioteca = async function(id) {
+      if (confirm("Vuoi eliminare definitivamente questo topic dalla biblioteca?")) {
+        await deleteDoc(doc(db, "topics_biblioteca", id));
       }
     };
 
-    function populateTopicsDropdown() {
-      const sel = document.getElementById('selectTopicDiario');
-      if (!sel) return;
-      const corrente = sel.value;
-      sel.innerHTML = `<option value="">-- Seleziona topic esistente --</option>` + topicsList.map(t => `<option value="${t}">${t}</option>`).join('');
-      if (corrente && topicsList.includes(corrente)) sel.value = corrente;
-    }
-
-    // --- IDEE IN PISTA + VOCALE ---
+    // --- RECOGNITION VOCALE MIGLIORATO ---
     let recognizer = null;
     let isListening = false;
 
@@ -1278,35 +1254,48 @@
       }
 
       if (isListening) {
-        recognizer.stop();
+        if (recognizer) recognizer.stop();
+        fermaAscolto();
         return;
       }
 
-      recognizer = new SpeechRecognition();
-      recognizer.lang = 'it-IT';
-      recognizer.continuous = false;
-      recognizer.interimResults = false;
+      try {
+        recognizer = new SpeechRecognition();
+        recognizer.lang = 'it-IT';
+        recognizer.continuous = false;
+        recognizer.interimResults = false;
 
-      recognizer.onstart = () => {
-        isListening = true;
-        document.getElementById('dotVocale').classList.remove('hidden');
-        document.getElementById('txtBtnVocale').innerText = "Ti ascolto...";
-      };
+        recognizer.onstart = () => {
+          isListening = true;
+          document.getElementById('dotVocale').classList.remove('hidden');
+          document.getElementById('txtBtnVocale').innerText = "Ti ascolto...";
+        };
 
-      recognizer.onresult = (event) => {
-        const vocaleDettato = event.results[0][0].transcript;
-        elaboraVocaleConGeminiRule(vocaleDettato);
-      };
+        recognizer.onresult = (event) => {
+          if (event.results && event.results[0] && event.results[0][0]) {
+            const vocaleDettato = event.results[0][0].transcript;
+            elaboraVocaleConGeminiRule(vocaleDettato);
+          }
+          fermaAscolto();
+        };
 
-      recognizer.onerror = () => {
+        recognizer.onerror = (e) => {
+          console.warn("Errore vocale:", e.error);
+          fermaAscolto();
+          if (e.error === 'not-allowed') {
+            alert("Permesso microfono non concesso. Abilita il microfono nelle impostazioni del browser.");
+          }
+        };
+
+        recognizer.onend = () => {
+          fermaAscolto();
+        };
+
+        recognizer.start();
+      } catch (err) {
+        console.error("Errore avvio microfono:", err);
         fermaAscolto();
-      };
-
-      recognizer.onend = () => {
-        fermaAscolto();
-      };
-
-      recognizer.start();
+      }
     };
 
     function fermaAscolto() {
@@ -1319,147 +1308,62 @@
       document.getElementById('boxRispostaVocale').classList.remove('hidden');
       document.getElementById('testoTrascrittoVocale').innerText = `"${testo}"`;
 
-      let bestMatch = topicsList[0] || "Lavoro di Appoggio Strutturale";
-      let highestScore = 0;
+      if (topicsList.length === 0) {
+        document.getElementById('suggerimentoTopicVocale').innerText = "Nessun topic salvato in biblioteca.";
+        return;
+      }
 
-      const parole = testo.toLowerCase().split(/\s+/);
+      let bestMatch = topicsList[0];
+      let highestScore = -1;
+      const paroleInput = testo.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+
       topicsList.forEach(t => {
         let score = 0;
-        parole.forEach(p => {
-          if (p.length > 3 && t.toLowerCase().includes(p)) score += 2;
+        const target = (t.nome + " " + t.note + " " + (t.pilastri || []).join(" ")).toLowerCase();
+        
+        paroleInput.forEach(p => {
+          if (target.includes(p)) score += 3;
         });
+
+        // Correlazioni biomeccaniche Natural Skiing
+        if ((testo.includes("fretta") || testo.includes("forbice") || testo.includes("punta a v") || testo.includes("spigolo")) && t.nome.toLowerCase().includes("staccionata")) score += 10;
+        if ((testo.includes("arretramento") || testo.includes("seduto") || testo.includes("schiena") || testo.includes("quadricipiti")) && t.nome.toLowerCase().includes("fulmine")) score += 10;
+        if ((testo.includes("bacino") || testo.includes("controruotato") || testo.includes("spalle") || testo.includes("torsione")) && t.nome.toLowerCase().includes("treno")) score += 10;
+        if ((testo.includes("sguardo") || testo.includes("testa") || testo.includes("guardo giù") || testo.includes("anticipo")) && t.nome.toLowerCase().includes("sguardo")) score += 10;
+        if ((testo.includes("spinta") || testo.includes("peso") || testo.includes("ghiaccio") || testo.includes("derapa")) && t.nome.toLowerCase().includes("carico")) score += 10;
+        if ((testo.includes("rigido") || testo.includes("apnea") || testo.includes("bloccato") || testo.includes("fiato")) && t.nome.toLowerCase().includes("respiro")) score += 10;
+
         if (score > highestScore) {
           highestScore = score;
           bestMatch = t;
         }
       });
 
-      document.getElementById('suggerimentoTopicVocale').innerText = `Consiglio: ${bestMatch}`;
-      document.getElementById('btnVaiATopicSuggerito').onclick = () => {
-        window.apriDiarioPerTopic(bestMatch);
+      document.getElementById('suggerimentoTopicVocale').innerText = bestMatch.nome;
+      document.getElementById('btnApriTopicSuggerito').onclick = () => {
+        filtraIdee('Tutti');
+        const box = document.getElementById(`dettaglio-topic-${bestMatch.id}`);
+        if (box) {
+          box.classList.remove('hidden');
+          box.scrollIntoView({ behavior: 'smooth' });
+        }
       };
     }
 
-    window.apriModalNuovoTopicIdee = function() {
-      document.getElementById('modalTopicNome').value = '';
-      document.getElementById('modalTopicNote').value = '';
-      document.getElementById('modalNuovoTopicIdee').classList.remove('hidden');
-      document.getElementById('modalNuovoTopicIdee').classList.add('flex');
-    };
-
-    window.chiudiModalNuovoTopicIdee = function() {
-      document.getElementById('modalNuovoTopicIdee').classList.add('hidden');
-      document.getElementById('modalNuovoTopicIdee').classList.remove('flex');
-    };
-
-    window.salvaNuovoTopicDaModalIdee = async function() {
-      const nome = document.getElementById('modalTopicNome').value.trim();
-      const note = document.getElementById('modalTopicNote').value.trim();
-      const pilastriChecked = Array.from(document.querySelectorAll('input[name="modalPilastri"]:checked')).map(el => el.value);
-      const archiChecked = Array.from(document.querySelectorAll('input[name="modalArchi"]:checked')).map(el => el.value);
-
-      if (!nome || !note) {
-        alert("Inserisci il nome del topic e la spiegazione.");
-        return;
-      }
-
-      const id = "D-" + Date.now();
-      await setDoc(doc(db, "diario", id), {
-        coach: currentUser.name,
-        data: new Date().toISOString().split('T')[0],
-        topic: nome,
-        note: note,
-        pilastri: pilastriChecked,
-        archi: archiChecked,
-        luogo: 'Biblioteca Topic',
-        meteo: 'Teorico',
-        neve: 'Tutte',
-        timestamp: Date.now()
-      });
-
-      window.chiudiModalNuovoTopicIdee();
-    };
-
-    function renderIdee(filtro = 'Tutti') {
-      filtroIdeeAttivo = filtro;
-      const cont = document.getElementById('containerIdee');
-      if (!cont) return;
-
-      aggiornaBottoniFiltro('btnFiltroIdee', filtro);
-
-      const mappaTopic = {};
-      diarioList.forEach(d => {
-        const t = (d.topic || '').trim();
-        if (!t) return;
-        if (!mappaTopic[t]) {
-          mappaTopic[t] = {
-            topic: t,
-            giornate: 0,
-            pilastri: new Set(),
-            archi: new Set(),
-            ultimaData: d.data
-          };
-        }
-        mappaTopic[t].giornate++;
-        (d.pilastri || []).forEach(p => mappaTopic[t].pilastri.add(p));
-        (d.archi || []).forEach(a => mappaTopic[t].archi.add(a));
-      });
-
-      let lista = Object.values(mappaTopic);
-
-      if (filtro !== 'Tutti') {
-        lista = lista.filter(item => item.pilastri.has(filtro) || item.archi.has(filtro));
-      }
-
-      if (lista.length === 0) {
-        cont.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">Nessun topic affrontato registrato per questo filtro. Clicca "+ Aggiungi Nuovo Topic" sopra per crearlo.</div>`;
-        return;
-      }
-
-      cont.innerHTML = lista.map(item => `
-        <div onclick="window.apriDiarioPerTopic('${item.topic.replace(/'/g, "\\'")}')" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 cursor-pointer hover:border-sky-500 transition-all shadow-sm group">
-          <div class="flex items-center justify-between mb-1.5">
-            <div class="flex flex-wrap gap-1">
-              ${Array.from(item.pilastri).map(p => `
-                <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getPilastroBadgeClass(p)}">
-                  ${p === 'Taglio' ? 'Coltello' : p}
-                </span>
-              `).join('')}
-              ${Array.from(item.archi).map(a => `
-                <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
-                  ${a}
-                </span>
-              `).join('')}
-            </div>
-            <span class="text-[11px] font-bold text-sky-600 dark:text-sky-400 group-hover:underline">
-              Vedi giornate (${item.giornate}) →
-            </span>
-          </div>
-
-          <h3 class="text-sm font-bold text-slate-900 dark:text-white">${item.topic}</h3>
-          <p class="text-[11px] text-slate-400 mt-1">Ultima sessione registrata il ${item.ultimaData}</p>
-        </div>
-      `).join('');
-    }
-
-    window.apriDiarioPerTopic = function(topic) {
-      filtroDiarioTopicAttivo = topic;
-      navigateTab('tabDiario');
-      renderDiario();
-      const elCont = document.getElementById('containerDiario');
-      if (elCont) elCont.scrollIntoView({ behavior: 'smooth' });
+    // --- ACCORDION UTILITY ---
+    window.toggleEspandiScheda = function(id) {
+      const box = document.getElementById(`dettaglio-${id}`);
+      const chv = document.getElementById(`chevron-${id}`);
+      if (!box) return;
+      const isHidden = box.classList.contains('hidden');
+      box.classList.toggle('hidden', !isHidden);
+      if (chv) chv.style.transform = isHidden ? "rotate(180deg)" : "rotate(0deg)";
     };
 
     function populateCoachDropdowns() {
       const selLogin = document.getElementById('loginCoachSelect');
       if (selLogin) {
         selLogin.innerHTML = coaches.filter(c => c !== "Stefano").map(c => `<option value="${c}">${c}</option>`).join('');
-      }
-      const selFiltroDiario = document.getElementById('filtroDiarioCoach');
-      if (selFiltroDiario) {
-        const curr = selFiltroDiario.value;
-        selFiltroDiario.innerHTML = `<option value="">Tutti i Coach</option>` + coaches.map(c => `<option value="${c}">${c}</option>`).join('');
-        selFiltroDiario.value = curr;
       }
     }
 
@@ -1488,7 +1392,7 @@
     window.filtraArchivio = function(p) { renderArchivio(p); };
     window.filtraIdee = function(p) { renderIdee(p); };
 
-    // --- GESTIONE COACH ---
+    // --- STAFF COACH ---
     window.renderCoachManagerList = function() {
       const cont = document.getElementById('listaCoachManager');
       if (!cont) return;
@@ -1528,7 +1432,7 @@
       await setDoc(doc(db, "settings", "staff"), { list: DEFAULT_COACHES });
     };
 
-    // --- LOGIN / NAVIGAZIONE ---
+    // --- LOGIN & NAVIGAZIONE ---
     window.switchLoginRole = function(role) {
       const err = document.getElementById('loginErrorMsg');
       err.classList.add('hidden');
@@ -1596,7 +1500,7 @@
 
       renderArchivio(filtroArchivioAttivo);
       renderIdee(filtroIdeeAttivo);
-      renderDiario();
+      renderMieLezioni();
       renderStats();
       window.aggiornaEserciziSottoPilastro();
       window.aggiornaTopicConsigliati();
@@ -1615,6 +1519,9 @@
         activeBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
         activeBtn.classList.add('bg-sky-50', 'dark:bg-sky-950/40', 'text-sky-600', 'dark:text-sky-400');
       }
+      
+      if (tabId === 'tabMieLezioni') renderMieLezioni();
+      if (tabId === 'tabIdee') renderIdee(filtroIdeeAttivo);
     };
 
     window.openCoachManager = function() {
