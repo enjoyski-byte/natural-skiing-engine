@@ -1610,16 +1610,37 @@
     }
   </script>
 </body>
-</html>
-<!-- Libreria per leggere i file CSV -->
+</<!-- Libreria PapaParse per leggere i CSV -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<!-- Contenitore visivo per Topics ed Errori -->
+<section id="sezione-database-natural" style="max-width: 1000px; margin: 40px auto; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, sans-serif;">
+  
+  <!-- Blocco Topics -->
+  <div style="margin-bottom: 40px;">
+    <h2 style="color: #1F4E79; border-bottom: 2px solid #1F4E79; padding-bottom: 8px;">📚 Topic del Giorno (Camp Natural Skiing)</h2>
+    <div id="contenitore-topics" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-top: 15px;">
+      <p style="color: #666;">Caricamento Topic in corso...</p>
+    </div>
+  </div>
+
+  <!-- Blocco Errori Tipici -->
+  <div>
+    <h2 style="color: #1F4E79; border-bottom: 2px solid #1F4E79; padding-bottom: 8px;">🎯 Analisi e Correzione Errori</h2>
+    <div id="contenitore-errori" style="display: flex; flex-direction: column; gap: 16px; margin-top: 15px;">
+      <p style="color: #666;">Caricamento Errori in corso...</p>
+    </div>
+  </div>
+
+</section>
 
 <script>
   let TOPICS_DB = [];
   let ERRORI_DB = [];
 
+  // 1. Funzione che scarica e converte il file CSV
   async function caricaCSV(nomeFile) {
-    const response = await fetch(nomeFile + '?t=' + new Date().getTime());
+    const response = await fetch(nomeFile + '?v=' + new Date().getTime());
     const csvText = await response.text();
     return new Promise((resolve) => {
       Papa.parse(csvText, {
@@ -1630,17 +1651,79 @@
     });
   }
 
-  async function inizializzaDatiNaturalSkiing() {
+  // 2. Funzione che crea visivamente le schede dei TOPIC
+  function mostraTopics() {
+    const container = document.getElementById("contenitore-topics");
+    if (!container || TOPICS_DB.length === 0) return;
+
+    container.innerHTML = "";
+    TOPICS_DB.forEach(t => {
+      const card = document.createElement("div");
+      card.style = "background: #ffffff; border: 1px solid #d9e2ec; border-radius: 8px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);";
+      card.innerHTML = `
+        <span style="background: #1F4E79; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">${t.ID_Topic || 'TOPIC'}</span>
+        <span style="color: #627d98; font-size: 12px; margin-left: 6px;">${t.Fondamentale_Collegato || ''}</span>
+        <h3 style="color: #102a43; margin: 10px 0 6px 0; font-size: 17px;">${t.Nome_Topic || ''}</h3>
+        <p style="margin: 0 0 8px 0; font-size: 13px; color: #334e68;"><strong>Focus:</strong> ${t.Focus_Tecnico || ''}</p>
+        <p style="margin: 0 0 8px 0; font-size: 13px; color: #334e68;"><strong>Obiettivo:</strong> ${t.Obiettivo_Camp || ''}</p>
+        <div style="background: #f0f4f8; padding: 8px 10px; border-radius: 6px; font-size: 12px; color: #102a43;">
+          <strong>Proposta / Esercizi:</strong><br>${t.Esercizi_Proposte || ''}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // 3. Funzione che crea visivamente le schede degli ERRORI TIPICI
+  function mostraErrori() {
+    const container = document.getElementById("contenitore-errori");
+    if (!container || ERRORI_DB.length === 0) return;
+
+    container.innerHTML = "";
+    ERRORI_DB.forEach(err => {
+      const card = document.createElement("div");
+      card.style = "background: #ffffff; border-left: 5px solid #d9381e; border-top: 1px solid #d9e2ec; border-right: 1px solid #d9e2ec; border-bottom: 1px solid #d9e2ec; border-radius: 6px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.04);";
+      card.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <span style="font-weight: bold; color: #d9381e; font-size: 13px;">${err.Codice_Errore || 'ERRORE'}</span>
+          <span style="font-size: 12px; color: #627d98;">${err.Topic_Correlato || ''}</span>
+        </div>
+        
+        <div style="margin-bottom: 8px;">
+          <strong style="color: #102a43; font-size: 14px;">👀 Cosa vedo:</strong>
+          <span style="font-size: 14px; color: #334e68;"> ${err.Cosa_Vedo || ''}</span>
+        </div>
+
+        <div style="margin-bottom: 8px;">
+          <strong style="color: #102a43; font-size: 14px;">❓ Perché:</strong>
+          <span style="font-size: 13px; color: #486581;"> ${err.Perche_Causa_Biomeccanica || ''}</span>
+        </div>
+
+        <div style="background: #eef9f1; border-left: 3px solid #28a745; padding: 8px 12px; margin-bottom: 8px; border-radius: 4px;">
+          <strong style="color: #155724; font-size: 13px;">💡 Consiglio in pista:</strong>
+          <span style="font-size: 13px; color: #155724; font-weight: 500;"> ${err.Consiglio_In_Pista || ''}</span>
+        </div>
+
+        <div style="background: #f0f4f8; padding: 8px 12px; border-radius: 4px;">
+          <strong style="color: #102a43; font-size: 13px;">🎿 Proposta / Esercizio:</strong>
+          <span style="font-size: 13px; color: #243b53;"> ${err.Esercizio_Risolutivo || ''}</span>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // 4. Avvio al caricamento della pagina
+  async function avviaDatabaseNaturalSkiing() {
     try {
-      console.log("Caricamento database Natural Skiing...");
       TOPICS_DB = await caricaCSV('topics_camp_natural_skiing_v2.csv');
       ERRORI_DB = await caricaCSV('errori_tipici_natural_skiing_v2.csv');
-      console.log("Database caricato con successo!", { TOPICS_DB, ERRORI_DB });
-    } catch (error) {
-      console.error("Errore caricamento CSV:", error);
+      mostraTopics();
+      mostraErrori();
+    } catch (err) {
+      console.error("Errore nel caricamento del database:", err);
     }
   }
 
-  window.addEventListener('DOMContentLoaded', inizializzaDatiNaturalSkiing);
+  window.addEventListener('DOMContentLoaded', avviaDatabaseNaturalSkiing);
 </script>
-
