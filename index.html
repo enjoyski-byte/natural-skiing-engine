@@ -145,7 +145,7 @@
     </div>
   </header>
 
-  <!-- ================= NAV BAR A SCHEDE (RIORGANIZZATA) ================= -->
+  <!-- ================= NAV BAR A SCHEDE ================= -->
   <nav class="sticky top-[57px] z-30 bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800">
     <div class="max-w-4xl mx-auto flex overflow-x-auto no-scrollbar px-2 py-1 gap-1">
       <button onclick="navigateTab('tabAnalisi')" id="nav-tabAnalisi" class="nav-tab min-touch px-3.5 py-2 rounded-xl text-xs font-bold text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/40 whitespace-nowrap">
@@ -254,7 +254,7 @@
           </div>
         </div>
 
-        <!-- 4. ESERCIZI IN PISTA CONSIGLIATI (SOLO CREATI DA VOI) -->
+        <!-- 4. ESERCIZI IN PISTA CONSIGLIATI -->
         <div class="space-y-2.5">
           <div class="flex items-center justify-between">
             <label class="block text-xs font-bold text-slate-600 dark:text-slate-400">4. Esercizi in pista consigliati</label>
@@ -304,7 +304,7 @@
       </div>
     </section>
 
-    <!-- 3. COSA HO FATTO OGGI (REGISTRAZIONE SENZA STORICO SOTTO) -->
+    <!-- 3. COSA HO FATTO OGGI -->
     <section id="tabDiario" class="tab-content space-y-4 hidden">
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm space-y-4">
         <div>
@@ -399,7 +399,7 @@
       </div>
     </section>
 
-    <!-- 4. LE MIE LEZIONI (STORICO PERSONALE DEL COACH LOGGATO) -->
+    <!-- 4. LE MIE LEZIONI -->
     <section id="tabMieLezioni" class="tab-content space-y-4 hidden">
       <div class="flex items-center justify-between">
         <div>
@@ -412,7 +412,7 @@
       </div>
     </section>
 
-    <!-- 5. + NUOVO TOPIC (PAGINA DEDICATA, SENZA METEO/LUOGO/NEVE) -->
+    <!-- 5. + NUOVO TOPIC (CAMPI SEPARATI: COSA È E COME SI FA) -->
     <section id="tabNuovoTopic" class="tab-content space-y-4 hidden">
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm space-y-4">
         <div>
@@ -422,12 +422,19 @@
 
         <div>
           <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Titolo del Topic</label>
-          <input type="text" id="nuovoTopicNome" placeholder="es. La Staccionata, Il Fulmine Dinamico..." class="w-full min-touch px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-sky-500">
+          <input type="text" id="nuovoTopicNome" placeholder="es. Il Mangiacurva, La Staccionata, Il Fulmine Dinamico..." class="w-full min-touch px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-sky-500">
         </div>
 
+        <!-- CAMPO 1: COSA È E SPIEGAZIONE -->
         <div>
-          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Spiega cosa è e come si fa</label>
-          <textarea id="nuovoTopicNote" rows="5" placeholder="Condizione biomeccanica, obiettivo, esercizi e progressione sul campo..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-sky-500"></textarea>
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">1. Cosa è (Spiegazione del concetto & biomeccanica)</label>
+          <textarea id="nuovoTopicCosaE" rows="3" placeholder="es. Azione tecnica per accorciare la fase di massima pendenza sui muri ripidi e gestire la velocità senza subire la discesa..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-sky-500"></textarea>
+        </div>
+
+        <!-- CAMPO 2: COME SI FA -->
+        <div>
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">2. Come si fa (Istruzioni pratiche di esecuzione in pista)</label>
+          <textarea id="nuovoTopicComeSiFa" rows="4" placeholder="es. A inizio curva gira subito i piedi per orientare gli sci verso la diagonale, inclina subito le tibie sulle lamine e fai risalire gli sci verso monte..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-sky-500"></textarea>
         </div>
 
         <!-- PILASTRI E ARCHI -->
@@ -475,7 +482,7 @@
       </div>
     </section>
 
-    <!-- 6. IDEE IN PISTA (PULITA, VOCALE OTTIMIZZATO, SENZA "VEDI GIORNATE") -->
+    <!-- 6. IDEE IN PISTA (CON COSA È E COME SI FA SEPARATI) -->
     <section id="tabIdee" class="tab-content space-y-4 hidden">
       
       <!-- ASSISTENTE VOCALE IN PISTA -->
@@ -515,7 +522,7 @@
       <div class="flex items-center justify-between pt-1">
         <div>
           <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Biblioteca Topic di Lavoro</h2>
-          <p class="text-[11px] text-slate-400">Tocca un topic per leggerne la spiegazione tecnica e gli esercizi</p>
+          <p class="text-[11px] text-slate-400">Tocca un topic per consultare cosa è e le indicazioni pratiche sul campo</p>
         </div>
         <button onclick="navigateTab('tabNuovoTopic')" class="min-touch px-3.5 py-2 rounded-2xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold shadow transition-all active:scale-95">
           + Aggiungi Nuovo Topic
@@ -1059,7 +1066,7 @@
       navigateTab('tabMieLezioni');
     };
 
-    // --- 4. LE MIE LEZIONI (STORICO PRIVATO COACH) ---
+    // --- 4. LE MIE LEZIONI ---
     function renderMieLezioni() {
       const cont = document.getElementById('containerMieLezioni');
       if (!cont) return;
@@ -1069,7 +1076,6 @@
         ? `Tutte le lezioni registrate da ${currentUser.name}` 
         : 'Il tuo storico personale';
 
-      // Filtra solo le lezioni dell'utente loggato (oppure tutte se Admin)
       let mie = diarioList;
       if (currentUser && currentUser.role !== 'admin') {
         mie = diarioList.filter(d => d.coach === coachAttuale);
@@ -1130,15 +1136,20 @@
       }
     };
 
-    // --- 5. + NUOVO TOPIC (SALVATAGGIO DIRETTO IN BIBLIOTECA TOPICS) ---
+    // --- 5. + NUOVO TOPIC (CAMPI SEPARATI: COSA È E COME SI FA) ---
     window.salvaNuovoTopicPagina = async function() {
       const nome = document.getElementById('nuovoTopicNome').value.trim();
-      const note = document.getElementById('nuovoTopicNote').value.trim();
+      const cosaE = document.getElementById('nuovoTopicCosaE').value.trim();
+      const comeSiFa = document.getElementById('nuovoTopicComeSiFa').value.trim();
       const pilastriChecked = Array.from(document.querySelectorAll('input[name="nuovoTopicPilastri"]:checked')).map(el => el.value);
       const archiChecked = Array.from(document.querySelectorAll('input[name="nuovoTopicArchi"]:checked')).map(el => el.value);
 
-      if (!nome || !note) {
-        alert("Inserisci il titolo del topic e la spiegazione.");
+      if (!nome) {
+        alert("Inserisci il titolo del topic.");
+        return;
+      }
+      if (!cosaE && !comeSiFa) {
+        alert("Inserisci almeno una spiegazione in 'Cosa è' o 'Come si fa'.");
         return;
       }
       if (pilastriChecked.length === 0) {
@@ -1149,7 +1160,9 @@
       const id = "TOPIC-" + Date.now();
       await setDoc(doc(db, "topics_biblioteca", id), {
         nome: nome,
-        note: note,
+        cosaE: cosaE,
+        comeSiFa: comeSiFa,
+        note: (cosaE ? `COSA È:\n${cosaE}\n\n` : '') + (comeSiFa ? `COME SI FA:\n${comeSiFa}` : ''),
         pilastri: pilastriChecked,
         archi: archiChecked,
         creatoDa: currentUser ? currentUser.name : 'Stefano',
@@ -1158,7 +1171,8 @@
       });
 
       document.getElementById('nuovoTopicNome').value = "";
-      document.getElementById('nuovoTopicNote').value = "";
+      document.getElementById('nuovoTopicCosaE').value = "";
+      document.getElementById('nuovoTopicComeSiFa').value = "";
       alert("Topic aggiunto alla biblioteca Idee in Pista!");
       navigateTab('tabIdee');
     };
@@ -1171,7 +1185,7 @@
       if (curr) sel.value = curr;
     }
 
-    // --- 6. IDEE IN PISTA (PULITA, SENZA VEDI GIORNATE, ESPANDIBILE) ---
+    // --- 6. IDEE IN PISTA (VISUALIZZA COSA È E COME SI FA SEPARATI) ---
     function renderIdee(filtro = 'Tutti') {
       filtroIdeeAttivo = filtro;
       const cont = document.getElementById('containerIdee');
@@ -1193,6 +1207,10 @@
         const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.name === t.creatoDa);
         const listP = t.pilastri || [];
         const listA = t.archi || [];
+
+        const cosaETesto = t.cosaE || '';
+        const comeSiFaTesto = t.comeSiFa || '';
+        const noteGeneriche = (!cosaETesto && !comeSiFaTesto) ? (t.note || '') : '';
 
         return `
           <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm transition-all">
@@ -1220,10 +1238,27 @@
             </div>
 
             <div id="dettaglio-topic-${t.id}" class="hidden p-4 pt-2 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 space-y-3 text-xs">
-              <div>
-                <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Cosa è, Obiettivo ed Esercizi:</span>
-                <p class="text-xs text-slate-700 dark:text-slate-300 whitespace-pre-line leading-relaxed">${t.note}</p>
-              </div>
+              
+              ${cosaETesto ? `
+                <div class="p-3 bg-white dark:bg-slate-800/60 rounded-xl border border-slate-200/80 dark:border-slate-700/60">
+                  <span class="text-[10px] uppercase font-bold text-sky-600 dark:text-sky-400 block mb-1">📘 Cosa è (Concetto & Biomeccanica):</span>
+                  <p class="text-xs text-slate-700 dark:text-slate-200 whitespace-pre-line leading-relaxed">${cosaETesto}</p>
+                </div>
+              ` : ''}
+
+              ${comeSiFaTesto ? `
+                <div class="p-3 bg-white dark:bg-slate-800/60 rounded-xl border border-slate-200/80 dark:border-slate-700/60">
+                  <span class="text-[10px] uppercase font-bold text-emerald-600 dark:text-emerald-400 block mb-1">🎿 Come si fa (In pista & progressione):</span>
+                  <p class="text-xs text-slate-700 dark:text-slate-200 whitespace-pre-line leading-relaxed">${comeSiFaTesto}</p>
+                </div>
+              ` : ''}
+
+              ${noteGeneriche ? `
+                <div>
+                  <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Spiegazione:</span>
+                  <p class="text-xs text-slate-700 dark:text-slate-300 whitespace-pre-line leading-relaxed">${noteGeneriche}</p>
+                </div>
+              ` : ''}
 
               ${canDelete ? `
                 <div class="pt-2 border-t border-slate-200 dark:border-slate-700 text-right">
@@ -1242,7 +1277,7 @@
       }
     };
 
-    // --- RECOGNITION VOCALE MIGLIORATO ---
+    // --- RECOGNITION VOCALE ---
     let recognizer = null;
     let isListening = false;
 
@@ -1319,17 +1354,17 @@
 
       topicsList.forEach(t => {
         let score = 0;
-        const target = (t.nome + " " + t.note + " " + (t.pilastri || []).join(" ")).toLowerCase();
+        const target = (t.nome + " " + (t.cosaE || '') + " " + (t.comeSiFa || '') + " " + (t.note || '') + " " + (t.pilastri || []).join(" ")).toLowerCase();
         
         paroleInput.forEach(p => {
           if (target.includes(p)) score += 3;
         });
 
-        // Correlazioni biomeccaniche Natural Skiing
         if ((testo.includes("fretta") || testo.includes("forbice") || testo.includes("punta a v") || testo.includes("spigolo")) && t.nome.toLowerCase().includes("staccionata")) score += 10;
         if ((testo.includes("arretramento") || testo.includes("seduto") || testo.includes("schiena") || testo.includes("quadricipiti")) && t.nome.toLowerCase().includes("fulmine")) score += 10;
         if ((testo.includes("bacino") || testo.includes("controruotato") || testo.includes("spalle") || testo.includes("torsione")) && t.nome.toLowerCase().includes("treno")) score += 10;
         if ((testo.includes("sguardo") || testo.includes("testa") || testo.includes("guardo giù") || testo.includes("anticipo")) && t.nome.toLowerCase().includes("sguardo")) score += 10;
+        if ((testo.includes("spinta") || testo.includes("peso") || testo.includes("ripido") || testo.includes("muro") || testo.includes("frenare")) && t.nome.toLowerCase().includes("mangiacurva")) score += 12;
         if ((testo.includes("spinta") || testo.includes("peso") || testo.includes("ghiaccio") || testo.includes("derapa")) && t.nome.toLowerCase().includes("carico")) score += 10;
         if ((testo.includes("rigido") || testo.includes("apnea") || testo.includes("bloccato") || testo.includes("fiato")) && t.nome.toLowerCase().includes("respiro")) score += 10;
 
