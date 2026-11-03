@@ -1610,120 +1610,175 @@
     }
   </script>
 </body>
-</<!-- Libreria PapaParse per leggere i CSV -->
+<!-- ========================================== -->
+<!-- SINCRONIZZAZIONE AUTOMATICA DATABASE CSV   -->
+<!-- ========================================== -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
-<!-- Contenitore visivo per Topics ed Errori -->
-<section id="sezione-database-natural" style="max-width: 1000px; margin: 40px auto; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, sans-serif;">
-  
-  <!-- Blocco Topics -->
-  <div style="margin-bottom: 40px;">
-    <h2 style="color: #1F4E79; border-bottom: 2px solid #1F4E79; padding-bottom: 8px;">📚 Topic del Giorno (Camp Natural Skiing)</h2>
-    <div id="contenitore-topics" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-top: 15px;">
-      <p style="color: #666;">Caricamento Topic in corso...</p>
-    </div>
-  </div>
-
-  <!-- Blocco Errori Tipici -->
-  <div>
-    <h2 style="color: #1F4E79; border-bottom: 2px solid #1F4E79; padding-bottom: 8px;">🎯 Analisi e Correzione Errori</h2>
-    <div id="contenitore-errori" style="display: flex; flex-direction: column; gap: 16px; margin-top: 15px;">
-      <p style="color: #666;">Caricamento Errori in corso...</p>
-    </div>
-  </div>
-
-</section>
-
 <script>
-  let TOPICS_DB = [];
-  let ERRORI_DB = [];
+(function() {
+  // 1. Rimuove eventuali sezioni bianche o blocchi creati in precedenza
+  const oldSec = document.getElementById("sezione-database-natural");
+  if (oldSec) oldSec.remove();
 
-  // 1. Funzione che scarica e converte il file CSV
-  async function caricaCSV(nomeFile) {
-    const response = await fetch(nomeFile + '?v=' + new Date().getTime());
-    const csvText = await response.text();
-    return new Promise((resolve) => {
-      Papa.parse(csvText, {
-        header: true,
-        skipEmptyLines: true,
-        complete: (results) => resolve(results.data)
-      });
-    });
-  }
-
-  // 2. Funzione che crea visivamente le schede dei TOPIC
-  function mostraTopics() {
-    const container = document.getElementById("contenitore-topics");
-    if (!container || TOPICS_DB.length === 0) return;
-
-    container.innerHTML = "";
-    TOPICS_DB.forEach(t => {
-      const card = document.createElement("div");
-      card.style = "background: #ffffff; border: 1px solid #d9e2ec; border-radius: 8px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);";
-      card.innerHTML = `
-        <span style="background: #1F4E79; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">${t.ID_Topic || 'TOPIC'}</span>
-        <span style="color: #627d98; font-size: 12px; margin-left: 6px;">${t.Fondamentale_Collegato || ''}</span>
-        <h3 style="color: #102a43; margin: 10px 0 6px 0; font-size: 17px;">${t.Nome_Topic || ''}</h3>
-        <p style="margin: 0 0 8px 0; font-size: 13px; color: #334e68;"><strong>Focus:</strong> ${t.Focus_Tecnico || ''}</p>
-        <p style="margin: 0 0 8px 0; font-size: 13px; color: #334e68;"><strong>Obiettivo:</strong> ${t.Obiettivo_Camp || ''}</p>
-        <div style="background: #f0f4f8; padding: 8px 10px; border-radius: 6px; font-size: 12px; color: #102a43;">
-          <strong>Proposta / Esercizi:</strong><br>${t.Esercizi_Proposte || ''}
-        </div>
-      `;
-      container.appendChild(card);
-    });
-  }
-
-  // 3. Funzione che crea visivamente le schede degli ERRORI TIPICI
-  function mostraErrori() {
-    const container = document.getElementById("contenitore-errori");
-    if (!container || ERRORI_DB.length === 0) return;
-
-    container.innerHTML = "";
-    ERRORI_DB.forEach(err => {
-      const card = document.createElement("div");
-      card.style = "background: #ffffff; border-left: 5px solid #d9381e; border-top: 1px solid #d9e2ec; border-right: 1px solid #d9e2ec; border-bottom: 1px solid #d9e2ec; border-radius: 6px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.04);";
-      card.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-          <span style="font-weight: bold; color: #d9381e; font-size: 13px;">${err.Codice_Errore || 'ERRORE'}</span>
-          <span style="font-size: 12px; color: #627d98;">${err.Topic_Correlato || ''}</span>
-        </div>
-        
-        <div style="margin-bottom: 8px;">
-          <strong style="color: #102a43; font-size: 14px;">👀 Cosa vedo:</strong>
-          <span style="font-size: 14px; color: #334e68;"> ${err.Cosa_Vedo || ''}</span>
-        </div>
-
-        <div style="margin-bottom: 8px;">
-          <strong style="color: #102a43; font-size: 14px;">❓ Perché:</strong>
-          <span style="font-size: 13px; color: #486581;"> ${err.Perche_Causa_Biomeccanica || ''}</span>
-        </div>
-
-        <div style="background: #eef9f1; border-left: 3px solid #28a745; padding: 8px 12px; margin-bottom: 8px; border-radius: 4px;">
-          <strong style="color: #155724; font-size: 13px;">💡 Consiglio in pista:</strong>
-          <span style="font-size: 13px; color: #155724; font-weight: 500;"> ${err.Consiglio_In_Pista || ''}</span>
-        </div>
-
-        <div style="background: #f0f4f8; padding: 8px 12px; border-radius: 4px;">
-          <strong style="color: #102a43; font-size: 13px;">🎿 Proposta / Esercizio:</strong>
-          <span style="font-size: 13px; color: #243b53;"> ${err.Esercizio_Risolutivo || ''}</span>
-        </div>
-      `;
-      container.appendChild(card);
-    });
-  }
-
-  // 4. Avvio al caricamento della pagina
-  async function avviaDatabaseNaturalSkiing() {
+  // 2. Funzione per leggere e convertire i file CSV
+  async function leggiCSV(percorso) {
     try {
-      TOPICS_DB = await caricaCSV('topics_camp_natural_skiing_v2.csv');
-      ERRORI_DB = await caricaCSV('errori_tipici_natural_skiing_v2.csv');
-      mostraTopics();
-      mostraErrori();
-    } catch (err) {
-      console.error("Errore nel caricamento del database:", err);
+      const resp = await fetch(percorso + '?cache_bust=' + Date.now());
+      if (!resp.ok) return [];
+      const testo = await resp.text();
+      return new Promise(resolve => {
+        Papa.parse(testo, {
+          header: true,
+          skipEmptyLines: true,
+          complete: res => resolve(res.data || [])
+        });
+      });
+    } catch (e) {
+      console.warn("Impossibile caricare " + percorso, e);
+      return [];
     }
   }
 
-  window.addEventListener('DOMContentLoaded', avviaDatabaseNaturalSkiing);
+  // 3. Mappatura automatica dei pilastri e degli archi per i badge nativi
+  function estraiPilastri(testo) {
+    if (!testo) return ["Coltello / Taglio"];
+    const str = testo.toUpperCase();
+    const tags = [];
+    if (str.includes("COLTELLO") || str.includes("TAGLIO")) tags.push("Coltello / Taglio");
+    if (str.includes("FULMINE")) tags.push("Fulmine");
+    if (str.includes("TRENO")) tags.push("Treno");
+    if (str.includes("EXCALIBUR")) tags.push("Excalibur");
+    return tags.length > 0 ? tags : ["Coltello / Taglio"];
+  }
+
+  function estraiArchi(testo) {
+    if (!testo) return ["Medio"];
+    const str = testo.toUpperCase();
+    const archi = [];
+    if (str.includes("AMPIO")) archi.push("Ampio");
+    if (str.includes("MEDIO")) archi.push("Medio");
+    if (str.includes("CORTO")) archi.push("Corto");
+    return archi.length > 0 ? archi : ["Medio"];
+  }
+
+  // 4. Inserimento dei record nel localStorage originale dell'app
+  async function integraDatiNativi() {
+    // Individuazione dinamica delle chiavi usate dall'app
+    let keyAnalisi = "natural_skiing_analyses";
+    let keyIdee = "natural_skiing_ideas";
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      const val = localStorage.getItem(k);
+      if (val && (val.includes("Cosa vedo") || val.includes("sintomo") || val.includes("Bacino controruotato"))) {
+        keyAnalisi = k;
+      }
+      if (val && (val.includes("Cioccolata") || val.includes("Mangiacurva") || val.includes("Brocca"))) {
+        keyIdee = k;
+      }
+    }
+
+    let archivioAnalisi = [];
+    let archivioIdee = [];
+
+    try { archivioAnalisi = JSON.parse(localStorage.getItem(keyAnalisi)) || []; } catch(e) {}
+    try { archivioIdee = JSON.parse(localStorage.getItem(keyIdee)) || []; } catch(e) {}
+
+    // Scarica i due file CSV aggiornati
+    const csvErrori = await leggiCSV('errori_tipici_natural_skiing_v2.csv');
+    const csvTopics = await leggiCSV('topics_camp_natural_skiing_v2.csv');
+
+    let datiAggiornati = false;
+
+    // INSERIMENTO ERRORI IN "ARCHIVIO ANALISI"
+    csvErrori.forEach((row, i) => {
+      const cosaVedo = (row.Cosa_Vedo || row["Cosa vedo"] || "").trim();
+      if (!cosaVedo) return;
+
+      const giaPresente = archivioAnalisi.some(item => {
+        const text = (item.sintomo || item.cosaVedo || item.title || "").trim();
+        return text.toLowerCase() === cosaVedo.toLowerCase();
+      });
+
+      if (!giaPresente) {
+        archivioAnalisi.push({
+          id: "CSV_ERR_" + (Date.now() + i),
+          author: "Stefano",
+          authorName: "Stefano",
+          date: "2026-11-03",
+          sintomo: cosaVedo,
+          cosaVedo: cosaVedo,
+          title: cosaVedo,
+          perche: (row.Perche_Causa_Biomeccanica || row["Perché"] || "").trim(),
+          focus: (row.Consiglio_In_Pista || row["Consiglio"] || "").trim(),
+          consiglio: (row.Consiglio_In_Pista || row["Consiglio"] || "").trim(),
+          pilastri: estraiPilastri((row.Topic_Correlato || "") + " " + cosaVedo),
+          archi: estraiArchi((row.Topic_Correlato || "") + " " + cosaVedo),
+          esercizi: [(row.Esercizio_Risolutivo || row["Proposta"] || "").trim()],
+          proposta: (row.Esercizio_Risolutivo || row["Proposta"] || "").trim(),
+          note: row.Topic_Correlato || ""
+        });
+        datiAggiornati = true;
+      }
+    });
+
+    // INSERIMENTO TOPIC IN "IDEE IN PISTA"
+    csvTopics.forEach((row, i) => {
+      const nomeTopic = (row.Nome_Topic || row["Nome Topic"] || "").trim();
+      if (!nomeTopic) return;
+
+      const giaPresente = archivioIdee.some(item => {
+        const text = (item.titolo || item.nome || item.title || "").trim();
+        return text.toLowerCase() === nomeTopic.toLowerCase();
+      });
+
+      if (!giaPresente) {
+        archivioIdee.push({
+          id: "CSV_TOPIC_" + (Date.now() + i),
+          titolo: nomeTopic,
+          nome: nomeTopic,
+          title: nomeTopic,
+          date: "2026-11-03",
+          lastSessionDate: "2026-11-03",
+          pilastri: estraiPilastri((row.Fondamentale_Collegato || "") + " " + nomeTopic),
+          archi: estraiArchi((row.Fondamentale_Collegato || "") + " " + nomeTopic),
+          focus: (row.Focus_Tecnico || "").trim(),
+          obiettivo: (row.Obiettivo_Camp || "").trim(),
+          esercizi: (row.Esercizi_Proposte || "").trim(),
+          giornateCount: 1,
+          giornate: ["2026-11-03"]
+        });
+        datiAggiornati = true;
+      }
+    });
+
+    // Se ci sono nuovi dati, salva e ricarica i componenti dell'interfaccia
+    if (datiAggiornati) {
+      localStorage.setItem(keyAnalisi, JSON.stringify(archivioAnalisi));
+      localStorage.setItem(keyIdee, JSON.stringify(archivioIdee));
+
+      // Trigger di aggiornamento per ridisegnare le schede scure
+      window.dispatchEvent(new Event('storage'));
+      if (typeof renderAnalisi === "function") renderAnalisi();
+      if (typeof renderIdee === "function") renderIdee();
+      if (typeof loadData === "function") loadData();
+      if (typeof renderAll === "function") renderAll();
+      if (typeof initApp === "function") initApp();
+      
+      // Ricarica pulita solo se necessario al primo inserimento
+      if (!sessionStorage.getItem("db_synced")) {
+        sessionStorage.setItem("db_synced", "true");
+        window.location.reload();
+      }
+    }
+  }
+
+  // Esecuzione immediata e al caricamento completo
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", integraDatiNativi);
+  } else {
+    integraDatiNativi();
+  }
+})();
 </script>
