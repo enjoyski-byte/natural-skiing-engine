@@ -633,6 +633,77 @@
     } catch(e) {}
 
     const colAnalisi = collection(db, "analisi");
+    // CARICAMENTO AUTOMATICO DAI CSV DIRETTAMENTE IN FIRESTORE
+  async function importaCSVDaGitHub() {
+    if (localStorage.getItem("dati_gia_importati_v2")) return;
+    try {
+      console.log("Importazione CSV in corso...");
+      async function leggi(file) {
+        const r = await fetch(file + '?t=' + Date.now());
+        const txt = await r.text();
+        const lines = txt.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+        return lines.slice(1).map(line => {
+          const vals = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || line.split(',');
+          const obj = {};
+          headers.forEach((h, i) => { obj[h] = (vals[i] || '').replace(/^"|"$/g, '').trim(); });
+          return obj;
+        });
+      }
+
+      const csvErrori = await leggi('errori_tipici_natural_skiing_v2.csv');
+      const csvTopics = await leggi('topics_camp_natural_skiing_v2.csv');
+
+      for (const row of csvErrori) {
+        if (!row.Cosa_Vedo) continue;
+        let pil = ["Taglio"];
+        const s = (row.Topic_Correlato || "") + " " + row.Cosa_Vedo;
+        if (s.includes("Fulmine")) pil = ["Fulmine"];
+        if (s.includes("Treno")) pil = ["Treno"];
+        if (s.includes("Excalibur")) pil = ["Excalibur"];
+
+        await addDoc(colAnalisi, {
+          author: "Stefano",
+          createdAt: new Date().toISOString(),
+          sintomo: row.Cosa_Vedo,
+          perche: row.Perche_Causa_Biomeccanica || "",
+          focusMentale: row.Consiglio_In_Pista || "",
+          pilastri: pil,
+          archi: ["Medio"],
+          esercizi: [row.Esercizio_Risolutivo || ""]
+        });
+      }
+
+      for (const row of csvTopics) {
+        if (!row.Nome_Topic) continue;
+        let pil = ["Taglio"];
+        const s = (row.Fondamentale_Collegato || "") + " " + row.Nome_Topic;
+        if (s.includes("Fulmine")) pil = ["Fulmine"];
+        if (s.includes("Treno")) pil = ["Treno"];
+        if (s.includes("Excalibur")) pil = ["Excalibur"];
+
+        await addDoc(colDiario, {
+          coach: "Stefano",
+          data: "2026-11-03",
+          topic: row.Nome_Topic,
+          titolo: row.Nome_Topic,
+          note: (row.Focus_Tecnico || "") + " - " + (row.Obiettivo_Camp || ""),
+          pilastri: pil,
+          archi: ["Ampio", "Medio"],
+          esercizi: [row.Esercizi_Proposte || ""]
+        });
+      }
+
+      localStorage.setItem("dati_gia_importati_v2", "true");
+      console.log("Importazione completata con successo!");
+      window.location.reload();
+    } catch (err) {
+      console.error("Errore importazione:", err);
+    }
+  }
+
+  // Avvia l'importazione
+  importaCSVDaGitHub();
     const colDiario = collection(db, "diario");
     const colEsercizi = collection(db, "esercizi_fissi");
 
