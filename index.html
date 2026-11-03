@@ -1611,3 +1611,36 @@
   </script>
 </body>
 </html>
+<!-- Libreria per leggere i file CSV -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<script>
+  let TOPICS_DB = [];
+  let ERRORI_DB = [];
+
+  async function caricaCSV(nomeFile) {
+    const response = await fetch(nomeFile + '?t=' + new Date().getTime());
+    const csvText = await response.text();
+    return new Promise((resolve) => {
+      Papa.parse(csvText, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => resolve(results.data)
+      });
+    });
+  }
+
+  async function inizializzaDatiNaturalSkiing() {
+    try {
+      console.log("Caricamento database Natural Skiing...");
+      TOPICS_DB = await caricaCSV('topics_camp_natural_skiing_v2.csv');
+      ERRORI_DB = await caricaCSV('errori_tipici_natural_skiing_v2.csv');
+      console.log("Database caricato con successo!", { TOPICS_DB, ERRORI_DB });
+    } catch (error) {
+      console.error("Errore caricamento CSV:", error);
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', inizializzaDatiNaturalSkiing);
+</script>
+
