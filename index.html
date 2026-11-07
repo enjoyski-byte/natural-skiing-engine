@@ -185,9 +185,11 @@
             Nuova Scheda di Rilevamento
           </h2>
           <div class="flex items-center gap-2">
-            <button type="button" onclick="window.apriModalImportCSV('analisi')" class="min-touch px-3 py-1.5 rounded-xl bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-800 text-xs font-bold hover:bg-sky-100 flex items-center gap-1.5 shadow-sm">
-              <span>📥</span>
-              <span>Importa CSV</span>
+            <!-- INPUT FILE CSV ANALISI -->
+            <input type="file" id="fileCsvAnalisi" accept=".csv" class="hidden" onchange="window.gestisciImportCsvAnalisi(event)">
+            <button type="button" onclick="document.getElementById('fileCsvAnalisi').click()" class="min-touch px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 dark:bg-sky-950/50 dark:hover:bg-sky-900/50 text-sky-600 dark:text-sky-400 text-xs font-bold border border-sky-200 dark:border-sky-800 flex items-center gap-1.5 transition-all shadow-sm">
+              <span>📂</span>
+              <span>Importa CSV Analisi</span>
             </button>
             <button id="btnAnnullaModifica" onclick="window.annullaModificaAnalisi()" class="hidden text-xs font-bold text-rose-500 hover:underline">
               Annulla Modifica ✕
@@ -435,9 +437,11 @@
             <p class="text-xs text-slate-500 mt-0.5">Definisci un concetto teorico/pratico da inserire nella biblioteca "Idee in Pista".</p>
           </div>
           <div class="flex items-center gap-2">
-            <button type="button" onclick="window.apriModalImportCSV('topics')" class="min-touch px-3 py-1.5 rounded-xl bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-800 text-xs font-bold hover:bg-sky-100 flex items-center gap-1.5 shadow-sm">
-              <span>📥</span>
-              <span>Importa CSV</span>
+            <!-- INPUT FILE CSV TOPIC -->
+            <input type="file" id="fileCsvTopic" accept=".csv" class="hidden" onchange="window.gestisciImportCsvTopic(event)">
+            <button type="button" onclick="document.getElementById('fileCsvTopic').click()" class="min-touch px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 dark:bg-sky-950/50 dark:hover:bg-sky-900/50 text-sky-600 dark:text-sky-400 text-xs font-bold border border-sky-200 dark:border-sky-800 flex items-center gap-1.5 transition-all shadow-sm">
+              <span>📂</span>
+              <span>Importa CSV Topic</span>
             </button>
             <button id="btnAnnullaModificaTopic" onclick="window.annullaModificaTopic()" class="hidden text-xs font-bold text-rose-500 hover:underline">
               Annulla Modifica ✕
@@ -507,7 +511,7 @@
       </div>
     </section>
 
-    <!-- 6. IDEE IN PISTA -->
+    <!-- 6. IDEE IN PISTA (CON AUDIO CUE COACH & RICERCA TESTUALE) -->
     <section id="tabIdee" class="tab-content space-y-4 hidden">
       
       <!-- ASSISTENTE VOCALE & RICERCA IN PISTA -->
@@ -526,7 +530,7 @@
           </button>
         </div>
 
-        <!-- RIGA PER SCRIVERE O DETTARE DA TASTIERA SMARTPHONE -->
+        <!-- RIGA PER SCRIVERE O DETTARE DA SMARTPHONE -->
         <div class="flex gap-2">
           <input type="text" id="inputRicercaAudioManuale" placeholder="Oppure scrivi qui il difetto (es. fretta a inizio curva, seduto...)" class="flex-1 min-touch px-3.5 bg-white/15 border border-white/25 rounded-2xl text-xs text-white placeholder-sky-200 focus:outline-none focus:bg-white/20 focus:border-white">
           <button type="button" onclick="window.cercaTopicManuale()" class="min-touch px-4 bg-sky-500 hover:bg-sky-400 text-white text-xs font-bold rounded-2xl shadow active:scale-95 transition-all shrink-0">
@@ -618,44 +622,6 @@
 
   </main>
 
-  <!-- ================= MODAL IMPORTAZIONE CSV / TESTO ================= -->
-  <div id="modalImportCSV" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 max-w-lg w-full space-y-4 shadow-2xl">
-      <div class="flex items-center justify-between">
-        <div>
-          <h3 id="titoloModalImport" class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Importa Dati da CSV</h3>
-          <p class="text-xs text-slate-500">Carica il file .csv o incolla il testo generato da NotebookLM</p>
-        </div>
-        <button onclick="window.chiudiModalImportCSV()" class="text-slate-400 hover:text-slate-600 text-sm font-bold">✕</button>
-      </div>
-
-      <!-- CARICA FILE -->
-      <div class="p-4 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 text-center space-y-2 bg-slate-50 dark:bg-slate-800/40">
-        <span class="text-2xl block">📄</span>
-        <label class="cursor-pointer text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline">
-          <span>Seleziona un file CSV dal tuo dispositivo</span>
-          <input type="file" id="inputCsvFile" accept=".csv,text/csv" class="hidden" onchange="window.gestisciFileCsvSelezionato(event)">
-        </label>
-        <p id="nomeFileCaricato" class="text-[11px] text-slate-400 italic">Nessun file selezionato</p>
-      </div>
-
-      <!-- INCOLLA TESTO -->
-      <div>
-        <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">Oppure incolla direttamente qui il testo CSV:</label>
-        <textarea id="areaTestoCsv" rows="6" placeholder="Incolla qui la tabella CSV generata da NotebookLM..." class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-mono"></textarea>
-      </div>
-
-      <div class="flex gap-2 pt-1">
-        <button type="button" onclick="window.chiudiModalImportCSV()" class="flex-1 min-touch bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold rounded-2xl text-xs">
-          Annulla
-        </button>
-        <button id="btnConfermaImport" type="button" onclick="window.eseguiImportazioneCsv()" class="flex-1 min-touch bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-2xl text-xs shadow-lg shadow-sky-600/20 active:scale-95 transition-all">
-          Importa nel Cloud 🚀
-        </button>
-      </div>
-    </div>
-  </div>
-
   <!-- MODAL STAFF COACH -->
   <div id="modalStaff" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 max-w-sm w-full space-y-4">
@@ -732,7 +698,6 @@
 
     let filtroArchivioAttivo = 'Tutti';
     let filtroIdeeAttivo = 'Tutti';
-    let modalImportTipo = 'analisi'; // 'analisi' oppure 'topics'
 
     // 1. Staff Coach Real-time
     onSnapshot(doc(db, "settings", "staff"), (docSnap) => {
@@ -790,139 +755,119 @@
       renderMieLezioni();
     });
 
-    // ==========================================
-    // GESTIONE IMPORTAZIONE CSV / TESTO NOTEBOOK
-    // ==========================================
-    window.apriModalImportCSV = function(tipo) {
-      modalImportTipo = tipo;
-      document.getElementById('titoloModalImport').innerText = tipo === 'analisi' 
-        ? "Importa Analisi Errori da CSV" 
-        : "Importa Nuovi Topic da CSV";
-      document.getElementById('areaTestoCsv').value = '';
-      document.getElementById('inputCsvFile').value = '';
-      document.getElementById('nomeFileCaricato').innerText = 'Nessun file selezionato';
-      
-      const modal = document.getElementById('modalImportCSV');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    };
-
-    window.chiudiModalImportCSV = function() {
-      const modal = document.getElementById('modalImportCSV');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    };
-
-    window.gestisciFileCsvSelezionato = function(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      document.getElementById('nomeFileCaricato').innerText = `File: ${file.name} (${Math.round(file.size / 1024)} KB)`;
-      
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        document.getElementById('areaTestoCsv').value = e.target.result;
-      };
-      reader.readAsText(file);
-    };
-
-    function normalizzaLista(valore, defaultVal = ["Taglio"]) {
-      if (!valore) return defaultVal;
-      if (Array.isArray(valore)) return valore;
-      return valore.split(/[;,]/).map(s => s.trim()).filter(s => s.length > 0);
+    // --- IMPORTAZIONE CSV AUTOMATICA: ANALISI & TOPIC ---
+    function parsePilastriDaTesto(testo) {
+      if (!testo) return ["Taglio"];
+      const str = testo.toUpperCase();
+      const res = [];
+      if (str.includes("TAGLIO") || str.includes("COLTELLO")) res.push("Taglio");
+      if (str.includes("FULMINE")) res.push("Fulmine");
+      if (str.includes("TRENO")) res.push("Treno");
+      if (str.includes("EXCALIBUR")) res.push("Excalibur");
+      return res.length > 0 ? res : ["Taglio"];
     }
 
-    window.eseguiImportazioneCsv = async function() {
-      const testoCsv = document.getElementById('areaTestoCsv').value.trim();
-      if (!testoCsv) {
-        alert("Inserisci del testo CSV o seleziona un file prima di procedere.");
-        return;
-      }
+    function parseArchiDaTesto(testo) {
+      if (!testo) return ["Medio"];
+      const str = testo.toUpperCase();
+      const res = [];
+      if (str.includes("AMPIO")) res.push("Ampio");
+      if (str.includes("MEDIO")) res.push("Medio");
+      if (str.includes("CORTO")) res.push("Corto");
+      return res.length > 0 ? res : ["Medio"];
+    }
 
-      const btn = document.getElementById('btnConfermaImport');
-      const testoOriginaleBtn = btn.innerText;
-      btn.innerText = "Importazione in corso...";
-      btn.disabled = true;
+    window.gestisciImportCsvAnalisi = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
 
-      try {
-        const parsed = Papa.parse(testoCsv, {
-          header: true,
-          skipEmptyLines: true,
-          transformHeader: h => h.trim().replace(/^"|"$/g, '')
-        });
-
-        const righe = parsed.data || [];
-        if (righe.length === 0) {
-          throw new Error("Nessun dato valido trovato nel CSV.");
-        }
-
-        let contatore = 0;
-        const oggi = new Date().toISOString().split('T')[0];
-        const coachNome = currentUser ? currentUser.name : 'Stefano';
-
-        if (modalImportTipo === 'analisi') {
-          for (const row of righe) {
-            const sintomo = (row.Cosa_Vedo || row["Cosa vedo"] || row.sintomo || "").trim();
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: async (results) => {
+          const rows = results.data;
+          let aggiunti = 0;
+          for (let i = 0; i < rows.length; i++) {
+            const r = rows[i];
+            const sintomo = (r.sintomo || r.Sintomo || r.Cosa_Vedo || r["Cosa vedo"] || "").trim();
             if (!sintomo) continue;
 
-            const id = "NS-" + (Date.now() + contatore);
-            const pilastri = normalizzaLista(row.Pilastri || row.pilastro, ["Taglio"]);
-            const archi = normalizzaLista(row.Archi || row.arco || row.raggio, ["Medio"]);
-            const esercizi = normalizzaLista(row.Esercizi || row.Esercizio || row.esercizi, []);
+            const causa = (r.causa || r.Causa || r.Perche || r["Perché"] || "").trim();
+            const focus = (r.focus || r.Focus || r.Consiglio || r["Consiglio"] || "").trim();
+            const pilastroStr = (r.pilastri || r.Pilastri || r.Topic_Correlato || "");
+            const arcoStr = (r.archi || r.Archi || "");
+            const eserciziRaw = (r.esercizi || r.Esercizi || r.Esercizio_Risolutivo || "");
+            const esercizi = Array.isArray(eserciziRaw) ? eserciziRaw : (eserciziRaw ? [eserciziRaw] : []);
+            const topicConsigliato = (r.topicConsigliato || r.Topic_Consigliato || r.Topic_Correlato || "").trim();
 
+            const id = "NS-CSV-" + Date.now() + "-" + i;
             await setDoc(doc(db, "analisi", id), {
-              coach: coachNome,
+              coach: currentUser ? currentUser.name : 'Stefano',
               sintomo: sintomo,
-              causa: (row.Perche || row.Causa || row.causa || "").trim(),
-              focus: (row.Focus_Mentale || row.Focus || row.focus || "").trim(),
-              pilastri: pilastri,
-              archi: archi,
+              causa: causa,
+              focus: focus,
+              pilastri: parsePilastriDaTesto(pilastroStr + " " + sintomo),
+              archi: parseArchiDaTesto(arcoStr),
               esercizi: esercizi,
-              esercizioLibero: "",
-              topicConsigliato: (row.Topic_Consigliato || row.Topic || "").trim(),
-              data: oggi,
-              timestamp: Date.now() + contatore
+              esercizioLibero: '',
+              topicConsigliato: topicConsigliato,
+              data: new Date().toISOString().split('T')[0],
+              timestamp: Date.now() + i
             });
-            contatore++;
+            aggiunti++;
           }
-          alert(`✅ Importazione completata! ${contatore} schede aggiunte ad Archivio Analisi.`);
+          event.target.value = '';
+          alert(`✅ Importazione completata: ${aggiunti} schede analisi aggiunte all'archivio!`);
           navigateTab('tabArchivio');
-        } else {
-          // IMPORTAZIONE TOPICS
-          for (const row of righe) {
-            const nomeTopic = (row.Nome_Topic || row.Titolo || row.Topic || row.nome || "").trim();
-            if (!nomeTopic) continue;
+        },
+        error: (err) => {
+          alert("Errore nella lettura del file CSV: " + err.message);
+        }
+      });
+    };
 
-            const id = "TOPIC-" + (Date.now() + contatore);
-            const cosaE = (row.Cosa_E || row.Cosa || "").trim();
-            const comeSiFa = (row.Come_Si_Fa || row.Come || "").trim();
-            const pilastri = normalizzaLista(row.Pilastri, ["Taglio"]);
-            const archi = normalizzaLista(row.Archi, ["Medio"]);
+    window.gestisciImportCsvTopic = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
 
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: async (results) => {
+          const rows = results.data;
+          let aggiunti = 0;
+          for (let i = 0; i < rows.length; i++) {
+            const r = rows[i];
+            const nome = (r.nome || r.Nome || r.Nome_Topic || r.titolo || r.Titolo || "").trim();
+            if (!nome) continue;
+
+            const cosaE = (r.cosaE || r.Cosa_E || r["Cosa è"] || r.Focus_Tecnico || "").trim();
+            const comeSiFa = (r.comeSiFa || r.Come_Si_Fa || r["Come si fa"] || r.Esercizi_Proposte || "").trim();
+            const pilastroStr = (r.pilastri || r.Pilastri || r.Fondamentale_Collegato || "");
+            const arcoStr = (r.archi || r.Archi || "");
+
+            const id = "TOPIC-CSV-" + Date.now() + "-" + i;
             await setDoc(doc(db, "topics_biblioteca", id), {
-              nome: nomeTopic,
+              nome: nome,
               cosaE: cosaE,
               comeSiFa: comeSiFa,
               note: (cosaE ? `COSA È:\n${cosaE}\n\n` : '') + (comeSiFa ? `COME SI FA:\n${comeSiFa}` : ''),
-              pilastri: pilastri,
-              archi: archi,
-              creatoDa: coachNome,
-              data: oggi,
-              timestamp: Date.now() + contatore
+              pilastri: parsePilastriDaTesto(pilastroStr + " " + nome),
+              archi: parseArchiDaTesto(arcoStr),
+              creatoDa: currentUser ? currentUser.name : 'Stefano',
+              data: new Date().toISOString().split('T')[0],
+              timestamp: Date.now() + i
             });
-            contatore++;
+            aggiunti++;
           }
-          alert(`✅ Importazione completata! ${contatore} nuovi topic aggiunti a Idee in Pista.`);
+          event.target.value = '';
+          alert(`✅ Importazione completata: ${aggiunti} topic aggiunti a Idee in Pista!`);
           navigateTab('tabIdee');
+        },
+        error: (err) => {
+          alert("Errore nella lettura del file CSV: " + err.message);
         }
-
-        window.chiudiModalImportCSV();
-      } catch (err) {
-        console.error("Errore importazione CSV:", err);
-        alert("Errore durante l'importazione: " + err.message);
-      } finally {
-        btn.innerText = testoOriginaleBtn;
-        btn.disabled = false;
-      }
+      });
     };
 
     // --- FORM ANALISI ---
@@ -1247,7 +1192,7 @@
             box.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }
         } else {
-          alert("Topic non trovato nella biblioteca.");
+          alert("Topic non trovato nella biblioteca. Potrebbe essere stato rinominato o rimosso.");
         }
       }, 150);
     };
@@ -1635,7 +1580,7 @@
     window.toggleAscoltoVocale = function() {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
-        alert("Il riconoscimento vocale diretto non è supportato da questo browser.\n\nPuoi usare la comoda riga 'Oppure scrivi qui' subito sotto, anche toccando l'icona del microfono sulla tastiera del tuo smartphone!");
+        alert("Il riconoscimento vocale diretto non è supportato da questo browser.\n\nPuoi usare la riga 'Oppure scrivi qui' subito sotto, toccando l'icona del microfono sulla tastiera dello smartphone.");
         return;
       }
 
@@ -1730,7 +1675,6 @@
       const paroleInput = testo.toLowerCase().split(/\s+/).filter(w => w.length > 2);
       const textLower = testo.toLowerCase();
 
-      // Calcolo punteggio di affinità tecnica
       const scoredTopics = topicsList.map(t => {
         let score = 0;
         const target = (t.nome + " " + (t.cosaE || '') + " " + (t.comeSiFa || '') + " " + (t.note || '') + " " + (t.pilastri || []).join(" ")).toLowerCase();
@@ -1739,7 +1683,6 @@
           if (target.includes(p)) score += 3;
         });
 
-        // Correlazioni Biomeccaniche Natural Skiing
         if ((textLower.includes("fretta") || textLower.includes("forbice") || textLower.includes("punta a v") || textLower.includes("spigolo") || textLower.includes("attraversa")) && t.nome.toLowerCase().includes("staccionata")) score += 15;
         if ((textLower.includes("arretramento") || textLower.includes("seduto") || textLower.includes("schiena") || textLower.includes("quadricipiti") || textLower.includes("piegamento")) && t.nome.toLowerCase().includes("fulmine")) score += 15;
         if ((textLower.includes("bacino") || textLower.includes("controruotato") || textLower.includes("spalle") || textLower.includes("torsione") || textLower.includes("allineamento")) && t.nome.toLowerCase().includes("treno")) score += 15;
@@ -1886,4 +1829,150 @@
     window.attemptCoachLogin = function() {
       const pass = document.getElementById('inputCoachPassword').value.trim();
       const name = document.getElementById('loginCoachSelect').value;
-      if (pass === DEFAULT_COACH_PASS)
+      if (pass === DEFAULT_COACH_PASS) {
+        currentUser = { name: name, role: 'coach' };
+        sessionStorage.setItem('ns_session', JSON.stringify(currentUser));
+        sbloccaInterfaccia();
+      } else {
+        document.getElementById('loginErrorMsg').innerText = "Password non corretta.";
+        document.getElementById('loginErrorMsg').classList.remove('hidden');
+      }
+    };
+
+    window.attemptAdminLogin = function() {
+      const pass = document.getElementById('inputAdminPassword').value.trim();
+      if (pass === DEFAULT_ADMIN_PASS) {
+        currentUser = { name: "Stefano", role: 'admin' };
+        sessionStorage.setItem('ns_session', JSON.stringify(currentUser));
+        sbloccaInterfaccia();
+      } else {
+        document.getElementById('loginErrorMsg').innerText = "Master Password Admin non corretta.";
+        document.getElementById('loginErrorMsg').classList.remove('hidden');
+      }
+    };
+
+    window.lockApp = function() {
+      sessionStorage.removeItem('ns_session');
+      currentUser = null;
+      document.getElementById('authGate').classList.remove('hidden');
+      document.getElementById('inputCoachPassword').value = "";
+      document.getElementById('inputAdminPassword').value = "";
+    };
+
+    function sbloccaInterfaccia() {
+      document.getElementById('authGate').classList.add('hidden');
+      document.getElementById('activeCoachBadge').innerText = `${currentUser.role.toUpperCase()}: ${currentUser.name}`;
+
+      const navAi = document.getElementById('nav-tabAiDataset');
+      const btnStaff = document.getElementById('btnManageCoaches');
+      if (currentUser.role === 'admin') {
+        navAi.classList.remove('hidden');
+        btnStaff.classList.remove('hidden');
+        btnStaff.classList.add('flex');
+      } else {
+        navAi.classList.add('hidden');
+        btnStaff.classList.add('hidden');
+        btnStaff.classList.remove('flex');
+      }
+
+      renderArchivio(filtroArchivioAttivo);
+      renderIdee(filtroIdeeAttivo);
+      renderMieLezioni();
+      renderStats();
+      window.aggiornaEserciziSottoPilastro();
+      window.aggiornaTopicConsigliati();
+    }
+
+    window.navigateTab = function(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.nav-tab').forEach(el => {
+        el.classList.remove('bg-sky-50', 'dark:bg-sky-950/40', 'text-sky-600', 'dark:text-sky-400');
+        el.classList.add('text-slate-600', 'dark:text-slate-400');
+      });
+
+      document.getElementById(tabId).classList.remove('hidden');
+      const activeBtn = document.getElementById('nav-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
+        activeBtn.classList.add('bg-sky-50', 'dark:bg-sky-950/40', 'text-sky-600', 'dark:text-sky-400');
+      }
+      
+      if (tabId === 'tabMieLezioni') renderMieLezioni();
+      if (tabId === 'tabIdee') renderIdee(filtroIdeeAttivo);
+    };
+
+    window.openCoachManager = function() {
+      if (currentUser.role !== 'admin') return;
+      window.renderCoachManagerList();
+      document.getElementById('modalStaff').classList.remove('hidden');
+      document.getElementById('modalStaff').classList.add('flex');
+    };
+
+    window.chiudiCoachManager = function() {
+      document.getElementById('modalStaff').classList.add('hidden');
+      document.getElementById('modalStaff').classList.remove('flex');
+    };
+
+    function renderStats() {
+      const elTot = document.getElementById('statTotaleAnalisi');
+      if (!elTot) return;
+      elTot.innerText = analisiList.length;
+      const sintomiUnici = new Set(analisiList.map(a => a.sintomo.toLowerCase())).size;
+      document.getElementById('statSintomiUnici').innerText = sintomiUnici;
+      const coachAttivi = new Set(analisiList.map(a => a.coach)).size;
+      document.getElementById('statCoachAttivi').innerText = coachAttivi;
+    }
+
+    window.esportaDataset = function(formato) {
+      if (currentUser.role !== 'admin') return;
+      const dataStr = formato === 'json' 
+        ? "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(analisiList, null, 2))
+        : "data:text/csv;charset=utf-8," + encodeURIComponent(convertiInCSV(analisiList));
+      
+      const a = document.createElement('a');
+      a.setAttribute("href", dataStr);
+      a.setAttribute("download", `natural_skiing_dataset_${new Date().toISOString().split('T')[0]}.${formato}`);
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    };
+
+    function convertiInCSV(arr) {
+      if (!arr.length) return "";
+      const headers = Object.keys(arr[0]).join(",");
+      const rows = arr.map(obj => Object.values(obj).map(val => `"${String(val).replace(/"/g, '""')}"`).join(","));
+      return [headers, ...rows].join("\n");
+    }
+
+    window.toggleTheme = function() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('ns_theme', isDark ? 'dark' : 'light');
+      updateThemeIcons(isDark);
+    };
+
+    function updateThemeIcons(isDark) {
+      document.getElementById('themeIconSun').classList.toggle('hidden', !isDark);
+      document.getElementById('themeIconMoon').classList.toggle('hidden', isDark);
+    }
+
+    const savedTheme = localStorage.getItem('ns_theme') || 'dark';
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      updateThemeIcons(true);
+    } else {
+      document.documentElement.classList.remove('dark');
+      updateThemeIcons(false);
+    }
+
+    populateTopicsDropdown();
+
+    const savedSession = sessionStorage.getItem('ns_session');
+    if (savedSession) {
+      currentUser = JSON.parse(savedSession);
+      sbloccaInterfaccia();
+    } else {
+      document.getElementById('authGate').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
