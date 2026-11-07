@@ -6,7 +6,7 @@
   <title>Natural Skiing — Coach Field Engine</title>
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230f172a'/%3E%3Cpath d='M18 82 L82 18' stroke='%2338bdf8' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M36 82 L82 36' stroke='%230284c7' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='78' cy='22' r='5' fill='%23f59e0b'/%3E%3C/svg%3E">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230f172a'/%3E%3Cpath d='M35 145 L145 35' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cpath d='M65 145 L145 65' stroke='%230284c7' stroke-width='12' stroke-linecap='round'/%3E%3Ccircle cx='140' cy='40' r='9' fill='%23f59e0b'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230f172a'/%3E%3Cpath d='M35 145 L145 35' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cpath d='M65 145 L145 65' stroke='%230284c7' stroke-width='12' stroke-linecap='round'/%3E%3Ccircle cx='140' cy='40' r='9' fill='%23f59e0b'/%3E%3C/svg%3E">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Natural Skiing">
@@ -185,7 +185,6 @@
             Nuova Scheda di Rilevamento
           </h2>
           <div class="flex items-center gap-2">
-            <!-- INPUT FILE CSV ANALISI -->
             <input type="file" id="fileCsvAnalisi" accept=".csv" class="hidden" onchange="window.gestisciImportCsvAnalisi(event)">
             <button type="button" onclick="document.getElementById('fileCsvAnalisi').click()" class="min-touch px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 dark:bg-sky-950/50 dark:hover:bg-sky-900/50 text-sky-600 dark:text-sky-400 text-xs font-bold border border-sky-200 dark:border-sky-800 flex items-center gap-1.5 transition-all shadow-sm">
               <span>📂</span>
@@ -437,7 +436,6 @@
             <p class="text-xs text-slate-500 mt-0.5">Definisci un concetto teorico/pratico da inserire nella biblioteca "Idee in Pista".</p>
           </div>
           <div class="flex items-center gap-2">
-            <!-- INPUT FILE CSV TOPIC -->
             <input type="file" id="fileCsvTopic" accept=".csv" class="hidden" onchange="window.gestisciImportCsvTopic(event)">
             <button type="button" onclick="document.getElementById('fileCsvTopic').click()" class="min-touch px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 dark:bg-sky-950/50 dark:hover:bg-sky-900/50 text-sky-600 dark:text-sky-400 text-xs font-bold border border-sky-200 dark:border-sky-800 flex items-center gap-1.5 transition-all shadow-sm">
               <span>📂</span>
@@ -755,15 +753,14 @@
       renderMieLezioni();
     });
 
-    // --- FUNZIONI DI SUPPORTO PER IMPORTAZIONE CSV FLESSIBILE ---
-    function trovaValoreColonna(riga, possibiliNomi) {
-      if (!riga) return "";
+    // --- PARSER ESTRATTORE FLESSIBILE ---
+    function trovaValore(riga, listaNomi) {
       const chiavi = Object.keys(riga);
-      for (const p of possibiliNomi) {
-        const pNorm = p.toLowerCase().replace(/[\s_\-"']/g, '');
+      for (const nome of listaNomi) {
+        const norm = nome.toLowerCase().replace(/[\s_\-"']/g, '');
         for (const k of chiavi) {
           const kNorm = k.toLowerCase().replace(/[\s_\-"']/g, '');
-          if (kNorm === pNorm && riga[k] !== undefined && riga[k] !== null) {
+          if (kNorm === norm && riga[k] !== undefined && riga[k] !== null) {
             return String(riga[k]).trim();
           }
         }
@@ -771,7 +768,7 @@
       return "";
     }
 
-    function parsePilastriDaTesto(testo) {
+    function estraiPilastriArray(testo) {
       if (!testo) return ["Taglio"];
       const str = testo.toUpperCase();
       const res = [];
@@ -782,7 +779,7 @@
       return res.length > 0 ? res : ["Taglio"];
     }
 
-    function parseArchiDaTesto(testo) {
+    function estraiArchiArray(testo) {
       if (!testo) return ["Medio"];
       const str = testo.toUpperCase();
       const res = [];
@@ -792,6 +789,67 @@
       return res.length > 0 ? res : ["Medio"];
     }
 
+    // --- IMPORTAZIONE CSV TOPIC (COMPATIBILE CON NOTEBOOKLM) ---
+    window.gestisciImportCsvTopic = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: 'greedy',
+        complete: async (results) => {
+          const rows = results.data;
+          if (!rows || rows.length === 0) {
+            alert("Il file CSV è vuoto o non contiene dati leggibili.");
+            event.target.value = '';
+            return;
+          }
+
+          let aggiunti = 0;
+          for (let i = 0; i < rows.length; i++) {
+            const r = rows[i];
+            const nome = trovaValore(r, ["Nome_Topic", "NomeTopic", "Nome", "Titolo", "Title", "Topic"]);
+            if (!nome) continue;
+
+            const cosaE = trovaValore(r, ["Cosa_E", "CosaE", "Cosa è", "Cosa_è", "Focus_Tecnico", "Spiegazione"]);
+            const comeSiFa = trovaValore(r, ["Come_Si_Fa", "ComeSiFa", "Come si fa", "Esercizi_Proposte", "Progressione"]);
+            const pilastriRaw = trovaValore(r, ["Pilastri", "Pilastro", "Fondamentale", "Fondamentale_Collegato"]);
+            const archiRaw = trovaValore(r, ["Archi", "Arco", "Raggio"]);
+
+            // Cerca se esiste già un topic con lo stesso nome per aggiornarlo, altrimenti nuovo ID
+            const esistente = topicsList.find(t => t.nome && t.nome.toLowerCase() === nome.toLowerCase());
+            const id = esistente ? esistente.id : ("TOPIC-" + Date.now() + "-" + i);
+
+            await setDoc(doc(db, "topics_biblioteca", id), {
+              nome: nome,
+              cosaE: cosaE,
+              comeSiFa: comeSiFa,
+              note: (cosaE ? `COSA È:\n${cosaE}\n\n` : '') + (comeSiFa ? `COME SI FA:\n${comeSiFa}` : ''),
+              pilastri: estraiPilastriArray(pilastriRaw + " " + nome),
+              archi: estraiArchiArray(archiRaw),
+              creatoDa: esistente ? (esistente.creatoDa || 'Stefano') : (currentUser ? currentUser.name : 'Stefano'),
+              data: esistente ? (esistente.data || new Date().toISOString().split('T')[0]) : new Date().toISOString().split('T')[0],
+              timestamp: Date.now() + i
+            });
+            aggiunti++;
+          }
+
+          event.target.value = '';
+          if (aggiunti === 0) {
+            const colTrovate = Object.keys(rows[0] || {}).join(", ");
+            alert("Nessun topic importato. Colonne lette: " + colTrovate + "\nAssicurati che la prima colonna si chiami Nome_Topic.");
+          } else {
+            alert(`✅ Importazione completata: ${aggiunti} topic sincronizzati con successo in Idee in Pista!`);
+            navigateTab('tabIdee');
+          }
+        },
+        error: (err) => {
+          alert("Errore nella lettura del file CSV: " + err.message);
+          event.target.value = '';
+        }
+      });
+    };
+
     // --- IMPORTAZIONE CSV ANALISI ---
     window.gestisciImportCsvAnalisi = function(event) {
       const file = event.target.files[0];
@@ -800,11 +858,10 @@
       Papa.parse(file, {
         header: true,
         skipEmptyLines: 'greedy',
-        dynamicTyping: false,
         complete: async (results) => {
           const rows = results.data;
           if (!rows || rows.length === 0) {
-            alert("Il file CSV sembra vuoto.");
+            alert("Il file CSV è vuoto.");
             event.target.value = '';
             return;
           }
@@ -812,15 +869,15 @@
           let aggiunti = 0;
           for (let i = 0; i < rows.length; i++) {
             const r = rows[i];
-            const sintomo = trovaValoreColonna(r, ["sintomo", "cosa_vedo", "cosavedo", "cosa vedo", "difetto", "errore", "title", "titolo"]);
+            const sintomo = trovaValore(r, ["Cosa_Vedo", "CosaVedo", "Sintomo", "Cosa vedo", "Difetto", "Errore"]);
             if (!sintomo) continue;
 
-            const causa = trovaValoreColonna(r, ["causa", "perche", "perché", "causa_biomeccanica", "motivo"]);
-            const focus = trovaValoreColonna(r, ["focus", "consiglio", "focus_mentale", "frase_guida"]);
-            const pilastroStr = trovaValoreColonna(r, ["pilastri", "pilastro", "fondamentale", "topic_correlato"]);
-            const arcoStr = trovaValoreColonna(r, ["archi", "arco", "raggio"]);
-            const eserciziRaw = trovaValoreColonna(r, ["esercizi", "esercizio", "esercizio_risolutivo", "proposta"]);
-            const topicConsigliato = trovaValoreColonna(r, ["topic_consigliato", "topicconsigliato", "topic", "topic_correlato"]);
+            const causa = trovaValore(r, ["Perche", "Perché", "Causa", "Perche_Causa_Biomeccanica"]);
+            const focus = trovaValore(r, ["Consiglio", "Focus", "Consiglio_In_Pista", "Focus_Mentale"]);
+            const pilastroRaw = trovaValore(r, ["Pilastri", "Pilastro", "Topic_Correlato"]);
+            const arcoRaw = trovaValore(r, ["Archi", "Arco"]);
+            const esRaw = trovaValore(r, ["Esercizio_Risolutivo", "Esercizi", "Esercizio", "Proposta"]);
+            const topicConsigliato = trovaValore(r, ["Topic_Consigliato", "Topic_Correlato", "Topic"]);
 
             const id = "NS-CSV-" + Date.now() + "-" + i;
             await setDoc(doc(db, "analisi", id), {
@@ -828,9 +885,9 @@
               sintomo: sintomo,
               causa: causa,
               focus: focus,
-              pilastri: parsePilastriDaTesto(pilastroStr + " " + sintomo),
-              archi: parseArchiDaTesto(arcoStr),
-              esercizi: eserciziRaw ? [eserciziRaw] : [],
+              pilastri: estraiPilastriArray(pilastroRaw + " " + sintomo),
+              archi: estraiArchiArray(arcoRaw),
+              esercizi: esRaw ? [esRaw] : [],
               esercizioLibero: '',
               topicConsigliato: topicConsigliato,
               data: new Date().toISOString().split('T')[0],
@@ -840,13 +897,8 @@
           }
 
           event.target.value = '';
-          if (aggiunti === 0) {
-            const col = Object.keys(rows[0] || {}).join(", ");
-            alert("Nessuna analisi importata!\nColonne trovate: " + col + "\nAssicurati che vi sia la colonna 'Cosa_Vedo' o 'Sintomo'.");
-          } else {
-            alert(`✅ Importazione completata: ${aggiunti} schede analisi aggiunte all'archivio!`);
-            navigateTab('tabArchivio');
-          }
+          alert(`✅ Importazione completata: ${aggiunti} schede analisi caricate in Archivio!`);
+          navigateTab('tabArchivio');
         },
         error: (err) => {
           alert("Errore nella lettura del file: " + err.message);
@@ -855,66 +907,7 @@
       });
     };
 
-    // --- IMPORTAZIONE CSV TOPIC (COMPATIBILITÀ DIRETTA CON NOTEBOOKLM) ---
-    window.gestisciImportCsvTopic = function(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      Papa.parse(file, {
-        header: true,
-        skipEmptyLines: 'greedy',
-        dynamicTyping: false,
-        complete: async (results) => {
-          const rows = results.data;
-          if (!rows || rows.length === 0) {
-            alert("Il file CSV sembra vuoto.");
-            event.target.value = '';
-            return;
-          }
-
-          let aggiunti = 0;
-          for (let i = 0; i < rows.length; i++) {
-            const r = rows[i];
-            const nome = trovaValoreColonna(r, ["nome_topic", "nometopic", "nome", "titolo", "title", "topic"]);
-            if (!nome) continue;
-
-            const cosaE = trovaValoreColonna(r, ["cosa_e", "cosae", "cosa è", "cosa_è", "focus_tecnico", "spiegazione", "concetto"]);
-            const comeSiFa = trovaValoreColonna(r, ["come_si_fa", "comesifa", "come si fa", "esercizi_proposte", "progressione", "istruzioni"]);
-            const pilastroStr = trovaValoreColonna(r, ["pilastri", "pilastro", "fondamentale", "fondamentale_collegato"]);
-            const arcoStr = trovaValoreColonna(r, ["archi", "arco", "raggio"]);
-
-            const id = "TOPIC-CSV-" + Date.now() + "-" + i;
-            await setDoc(doc(db, "topics_biblioteca", id), {
-              nome: nome,
-              cosaE: cosaE,
-              comeSiFa: comeSiFa,
-              note: (cosaE ? `COSA È:\n${cosaE}\n\n` : '') + (comeSiFa ? `COME SI FA:\n${comeSiFa}` : ''),
-              pilastri: parsePilastriDaTesto(pilastroStr + " " + nome),
-              archi: parseArchiDaTesto(arcoStr),
-              creatoDa: currentUser ? currentUser.name : 'Stefano',
-              data: new Date().toISOString().split('T')[0],
-              timestamp: Date.now() + i
-            });
-            aggiunti++;
-          }
-
-          event.target.value = '';
-          if (aggiunti === 0) {
-            const col = Object.keys(rows[0] || {}).join(", ");
-            alert("Nessun topic importato!\nColonne trovate: " + col + "\nAssicurati che vi sia la colonna 'Nome_Topic' o 'Nome'.");
-          } else {
-            alert(`✅ Importazione completata: ${aggiunti} topic aggiunti a Idee in Pista!`);
-            navigateTab('tabIdee');
-          }
-        },
-        error: (err) => {
-          alert("Errore nella lettura del file: " + err.message);
-          event.target.value = '';
-        }
-      });
-    };
-
-    // --- GESTIONE INTERFACCIA E SALVATAGGI MANUALI ---
+    // --- FORM ANALISI ---
     window.onCambiamentoPilastriArchiAnalisi = function() {
       window.aggiornaEserciziSottoPilastro();
       window.aggiornaTopicConsigliati();
@@ -1236,7 +1229,7 @@
             box.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }
         } else {
-          alert("Topic non trovato nella biblioteca.");
+          alert("Topic non trovato nella biblioteca. Potrebbe essere stato rinominato o rimosso.");
         }
       }, 150);
     };
