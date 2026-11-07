@@ -755,7 +755,22 @@
       renderMieLezioni();
     });
 
-    // --- IMPORTAZIONE CSV AUTOMATICA: ANALISI & TOPIC ---
+    // --- FUNZIONI DI SUPPORTO PER IMPORTAZIONE CSV FLESSIBILE ---
+    function trovaValoreColonna(riga, possibiliNomi) {
+      if (!riga) return "";
+      const chiavi = Object.keys(riga);
+      for (const p of possibiliNomi) {
+        const pNorm = p.toLowerCase().replace(/[\s_\-"']/g, '');
+        for (const k of chiavi) {
+          const kNorm = k.toLowerCase().replace(/[\s_\-"']/g, '');
+          if (kNorm === pNorm && riga[k] !== undefined && riga[k] !== null) {
+            return String(riga[k]).trim();
+          }
+        }
+      }
+      return "";
+    }
+
     function parsePilastriDaTesto(testo) {
       if (!testo) return ["Taglio"];
       const str = testo.toUpperCase();
@@ -777,28 +792,35 @@
       return res.length > 0 ? res : ["Medio"];
     }
 
+    // --- IMPORTAZIONE CSV ANALISI ---
     window.gestisciImportCsvAnalisi = function(event) {
       const file = event.target.files[0];
       if (!file) return;
 
       Papa.parse(file, {
         header: true,
-        skipEmptyLines: true,
+        skipEmptyLines: 'greedy',
+        dynamicTyping: false,
         complete: async (results) => {
           const rows = results.data;
+          if (!rows || rows.length === 0) {
+            alert("Il file CSV sembra vuoto.");
+            event.target.value = '';
+            return;
+          }
+
           let aggiunti = 0;
           for (let i = 0; i < rows.length; i++) {
             const r = rows[i];
-            const sintomo = (r.sintomo || r.Sintomo || r.Cosa_Vedo || r["Cosa vedo"] || "").trim();
+            const sintomo = trovaValoreColonna(r, ["sintomo", "cosa_vedo", "cosavedo", "cosa vedo", "difetto", "errore", "title", "titolo"]);
             if (!sintomo) continue;
 
-            const causa = (r.causa || r.Causa || r.Perche || r["Perché"] || "").trim();
-            const focus = (r.focus || r.Focus || r.Consiglio || r["Consiglio"] || "").trim();
-            const pilastroStr = (r.pilastri || r.Pilastri || r.Topic_Correlato || "");
-            const arcoStr = (r.archi || r.Archi || "");
-            const eserciziRaw = (r.esercizi || r.Esercizi || r.Esercizio_Risolutivo || "");
-            const esercizi = Array.isArray(eserciziRaw) ? eserciziRaw : (eserciziRaw ? [eserciziRaw] : []);
-            const topicConsigliato = (r.topicConsigliato || r.Topic_Consigliato || r.Topic_Correlato || "").trim();
+            const causa = trovaValoreColonna(r, ["causa", "perche", "perché", "causa_biomeccanica", "motivo"]);
+            const focus = trovaValoreColonna(r, ["focus", "consiglio", "focus_mentale", "frase_guida"]);
+            const pilastroStr = trovaValoreColonna(r, ["pilastri", "pilastro", "fondamentale", "topic_correlato"]);
+            const arcoStr = trovaValoreColonna(r, ["archi", "arco", "raggio"]);
+            const eserciziRaw = trovaValoreColonna(r, ["esercizi", "esercizio", "esercizio_risolutivo", "proposta"]);
+            const topicConsigliato = trovaValoreColonna(r, ["topic_consigliato", "topicconsigliato", "topic", "topic_correlato"]);
 
             const id = "NS-CSV-" + Date.now() + "-" + i;
             await setDoc(doc(db, "analisi", id), {
@@ -808,7 +830,7 @@
               focus: focus,
               pilastri: parsePilastriDaTesto(pilastroStr + " " + sintomo),
               archi: parseArchiDaTesto(arcoStr),
-              esercizi: esercizi,
+              esercizi: eserciziRaw ? [eserciziRaw] : [],
               esercizioLibero: '',
               topicConsigliato: topicConsigliato,
               data: new Date().toISOString().split('T')[0],
@@ -816,35 +838,50 @@
             });
             aggiunti++;
           }
+
           event.target.value = '';
-          alert(`✅ Importazione completata: ${aggiunti} schede analisi aggiunte all'archivio!`);
-          navigateTab('tabArchivio');
+          if (aggiunti === 0) {
+            const col = Object.keys(rows[0] || {}).join(", ");
+            alert("Nessuna analisi importata!\nColonne trovate: " + col + "\nAssicurati che vi sia la colonna 'Cosa_Vedo' o 'Sintomo'.");
+          } else {
+            alert(`✅ Importazione completata: ${aggiunti} schede analisi aggiunte all'archivio!`);
+            navigateTab('tabArchivio');
+          }
         },
         error: (err) => {
-          alert("Errore nella lettura del file CSV: " + err.message);
+          alert("Errore nella lettura del file: " + err.message);
+          event.target.value = '';
         }
       });
     };
 
+    // --- IMPORTAZIONE CSV TOPIC (COMPATIBILITÀ DIRETTA CON NOTEBOOKLM) ---
     window.gestisciImportCsvTopic = function(event) {
       const file = event.target.files[0];
       if (!file) return;
 
       Papa.parse(file, {
         header: true,
-        skipEmptyLines: true,
+        skipEmptyLines: 'greedy',
+        dynamicTyping: false,
         complete: async (results) => {
           const rows = results.data;
+          if (!rows || rows.length === 0) {
+            alert("Il file CSV sembra vuoto.");
+            event.target.value = '';
+            return;
+          }
+
           let aggiunti = 0;
           for (let i = 0; i < rows.length; i++) {
             const r = rows[i];
-            const nome = (r.nome || r.Nome || r.Nome_Topic || r.titolo || r.Titolo || "").trim();
+            const nome = trovaValoreColonna(r, ["nome_topic", "nometopic", "nome", "titolo", "title", "topic"]);
             if (!nome) continue;
 
-            const cosaE = (r.cosaE || r.Cosa_E || r["Cosa è"] || r.Focus_Tecnico || "").trim();
-            const comeSiFa = (r.comeSiFa || r.Come_Si_Fa || r["Come si fa"] || r.Esercizi_Proposte || "").trim();
-            const pilastroStr = (r.pilastri || r.Pilastri || r.Fondamentale_Collegato || "");
-            const arcoStr = (r.archi || r.Archi || "");
+            const cosaE = trovaValoreColonna(r, ["cosa_e", "cosae", "cosa è", "cosa_è", "focus_tecnico", "spiegazione", "concetto"]);
+            const comeSiFa = trovaValoreColonna(r, ["come_si_fa", "comesifa", "come si fa", "esercizi_proposte", "progressione", "istruzioni"]);
+            const pilastroStr = trovaValoreColonna(r, ["pilastri", "pilastro", "fondamentale", "fondamentale_collegato"]);
+            const arcoStr = trovaValoreColonna(r, ["archi", "arco", "raggio"]);
 
             const id = "TOPIC-CSV-" + Date.now() + "-" + i;
             await setDoc(doc(db, "topics_biblioteca", id), {
@@ -860,17 +897,24 @@
             });
             aggiunti++;
           }
+
           event.target.value = '';
-          alert(`✅ Importazione completata: ${aggiunti} topic aggiunti a Idee in Pista!`);
-          navigateTab('tabIdee');
+          if (aggiunti === 0) {
+            const col = Object.keys(rows[0] || {}).join(", ");
+            alert("Nessun topic importato!\nColonne trovate: " + col + "\nAssicurati che vi sia la colonna 'Nome_Topic' o 'Nome'.");
+          } else {
+            alert(`✅ Importazione completata: ${aggiunti} topic aggiunti a Idee in Pista!`);
+            navigateTab('tabIdee');
+          }
         },
         error: (err) => {
-          alert("Errore nella lettura del file CSV: " + err.message);
+          alert("Errore nella lettura del file: " + err.message);
+          event.target.value = '';
         }
       });
     };
 
-    // --- FORM ANALISI ---
+    // --- GESTIONE INTERFACCIA E SALVATAGGI MANUALI ---
     window.onCambiamentoPilastriArchiAnalisi = function() {
       window.aggiornaEserciziSottoPilastro();
       window.aggiornaTopicConsigliati();
@@ -1192,7 +1236,7 @@
             box.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }
         } else {
-          alert("Topic non trovato nella biblioteca. Potrebbe essere stato rinominato o rimosso.");
+          alert("Topic non trovato nella biblioteca.");
         }
       }, 150);
     };
